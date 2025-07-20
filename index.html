@@ -17,15 +17,15 @@
             background: linear-gradient(to right bottom, #e0f2fe, #bfdbfe); /* Degradado suave de fondo */
         }
         /* Estilos para el área de texto de la cita generada */
-        #citationOutput {
+        #citationOutput, #inTextCitationOutput {
             white-space: pre-wrap; /* Mantiene los saltos de línea y espacios */
             word-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento */
             user-select: all; /* Permite seleccionar todo el texto fácilmente */
             min-height: 100px; /* Aumenta la altura mínima para visibilidad */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            text-align: left; /* Alinea el texto a la izquierda para APA */
+            display: block; /* Asegura que se comporte como un elemento de bloque para el flujo de texto adecuado */
+            padding-left: 2.5em; /* Sangría para todas las líneas excepto la primera */
+            text-indent: -2.5em; /* Mueve la primera línea hacia atrás (sangría francesa) */
             font-size: 0.95rem; /* Ligeramente más grande */
             line-height: 1.5;
             color: #374151; /* Color de texto más oscuro */
@@ -70,7 +70,8 @@
         input[type="date"],
         input[type="url"],
         input[type="number"],
-        select {
+        select,
+        textarea {
             padding: 0.75rem 1rem; /* Más padding interno */
             border: 1px solid #d1d5db; /* Borde más definido */
             border-radius: 0.5rem; /* Bordes redondeados */
@@ -81,7 +82,8 @@
         input[type="date"]:focus,
         input[type="url"]:focus,
         input[type="number"]:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             border-color: #60a5fa; /* Borde azul al enfocar */
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3); /* Anillo de enfoque azul */
             outline: none; /* Eliminar el contorno por defecto */
@@ -99,18 +101,18 @@
             transform: translateY(-2px); /* Efecto de "levantamiento" al pasar el ratón */
             box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Sombra más grande al pasar el ratón */
         }
-        #generateCitationBtn {
+        #generateCitationBtn, #generateInTextCitationBtn {
             background: linear-gradient(to right, #3b82f6, #2563eb); /* Degradado azul */
             color: white;
         }
-        #generateCitationBtn:hover {
+        #generateCitationBtn:hover, #generateInTextCitationBtn:hover {
             background: linear-gradient(to right, #2563eb, #1d4ed8); /* Degradado más oscuro */
         }
-        #copyCitationBtn {
+        #copyCitationBtn, #copyInTextCitationBtn {
             background: linear-gradient(to right, #10b981, #059669); /* Degradado verde */
             color: white;
         }
-        #copyCitationBtn:hover {
+        #copyCitationBtn:hover, #copyInTextCitationBtn:hover {
             background: linear-gradient(to right, #059669, #047857); /* Degradado más oscuro */
         }
 
@@ -240,6 +242,46 @@
             </button>
             <div id="messageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
         </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Nueva sección para Citas en el Texto -->
+        <div class="space-y-4">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Generador de Citas en el Texto (Directas)</h2>
+            <p class="text-gray-600 text-center mb-8">Introduce los detalles para generar el formato de cita directa en el texto (APA 7ª edición).</p>
+
+            <div>
+                <label for="inTextAuthorInput" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido(s) (separa con punto y coma para múltiples autores):</label>
+                <input type="text" id="inTextAuthorInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García; Pérez; Smith">
+            </div>
+            <div>
+                <label for="inTextYearInput" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                <input type="number" id="inTextYearInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+            </div>
+            <div>
+                <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
+                <input type="text" id="inTextPageInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: p. 42 o pp. 120-125 o párr. 3">
+            </div>
+            <div>
+                <label for="inTextQuoteInput" class="block text-gray-700 text-sm font-semibold mb-2">Texto de la Cita Directa (opcional, para contexto):</label>
+                <textarea id="inTextQuoteInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Pega aquí el texto exacto que estás citando."></textarea>
+            </div>
+
+            <button id="generateInTextCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
+                Generar Cita en el Texto
+            </button>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita en el Texto Generada:</h2>
+            <div id="inTextCitationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                La cita en el texto aparecerá aquí.
+            </div>
+            <button id="copyInTextCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                Copiar Cita en el Texto
+            </button>
+        </div>
+
     </div>
 
     <script>
@@ -252,22 +294,22 @@
 
             const authorNameInput = document.getElementById('authorName');
             
-            // Specific date/year inputs
+            // Specific date/year inputs for full reference
             const publicationDateWebsiteInput = document.getElementById('publicationDateWebsite');
             const publicationYearBookInput = document.getElementById('publicationYearBook');
             const publicationYearJournalInput = document.getElementById('publicationYearJournal');
 
-            // Website specific fields
+            // Website specific fields for full reference
             const articleTitleInput = document.getElementById('articleTitle');
             const websiteNameInput = document.getElementById('websiteName');
             const pageUrlInput = document.getElementById('pageUrl');
 
-            // Book specific fields
+            // Book specific fields for full reference
             const bookTitleInput = document.getElementById('bookTitle');
             const publisherInput = document.getElementById('publisher');
             const isbnInput = document.getElementById('isbn');
 
-            // Journal Article specific fields
+            // Journal Article specific fields for full reference
             const journalArticleTitleInput = document.getElementById('journalArticleTitle');
             const journalNameInput = document.getElementById('journalName');
             const journalVolumeInput = document.getElementById('journalVolume');
@@ -279,6 +321,16 @@
             const citationOutput = document.getElementById('citationOutput');
             const copyCitationBtn = document.getElementById('copyCitationBtn');
             const messageBox = document.getElementById('messageBox');
+
+            // New elements for In-Text Citation Generator
+            const inTextAuthorInput = document.getElementById('inTextAuthorInput');
+            const inTextYearInput = document.getElementById('inTextYearInput');
+            const inTextPageInput = document.getElementById('inTextPageInput');
+            const inTextQuoteInput = document.getElementById('inTextQuoteInput');
+            const generateInTextCitationBtn = document.getElementById('generateInTextCitationBtn');
+            const inTextCitationOutput = document.getElementById('inTextCitationOutput');
+            const copyInTextCitationBtn = document.getElementById('copyInTextCitationBtn');
+
 
             // Function to display temporary messages
             function showMessage(message, type = 'info') {
@@ -384,6 +436,32 @@
                     return first19Authors + ', ...., & ' + lastAuthor;
                 }
             }
+
+            // Function to format authors for in-text citation (Lastname, Lastname & Lastname, or Lastname et al.)
+            function formatAuthorsForInTextCitation(authorString) {
+                if (!authorString) return '';
+
+                const rawAuthors = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
+                const numAuthors = rawAuthors.length;
+
+                if (numAuthors === 0) {
+                    return '';
+                } else if (numAuthors === 1) {
+                    // Just the last name
+                    const parts = rawAuthors[0].split(',');
+                    return parts[0].trim();
+                } else if (numAuthors === 2) {
+                    // Lastname & Lastname
+                    const author1 = rawAuthors[0].split(',')[0].trim();
+                    const author2 = rawAuthors[1].split(',')[0].trim();
+                    return `${author1} & ${author2}`;
+                } else {
+                    // Lastname et al.
+                    const firstAuthorLastName = rawAuthors[0].split(',')[0].trim();
+                    return `${firstAuthorLastName} et al.`;
+                }
+            }
+
 
             // Function to format title for sentence case according to APA 7th edition
             function formatTitleForSentenceCase(titleString) {
@@ -595,6 +673,74 @@
                     showMessage('Cita copiada al portapapeles.', 'success');
                 } catch (err) {
                     showMessage('Error al copiar la cita. Por favor, cópiala manualmente.', 'error');
+                }
+                document.body.removeChild(textArea);
+            });
+
+            // Logic for In-Text Citation Generator
+            generateInTextCitationBtn.addEventListener('click', () => {
+                const inTextAuthorString = inTextAuthorInput.value.trim();
+                const inTextYear = inTextYearInput.value.trim();
+                const inTextPage = inTextPageInput.value.trim();
+                const inTextQuote = inTextQuoteInput.value.trim();
+
+                let inTextCitation = '';
+                let isValidInText = true;
+
+                if (!inTextAuthorString || !inTextYear || !inTextPage) {
+                    showMessage('Para la Cita en el Texto: rellena Autor(es), Año de Publicación y Número(s) de Página/Párrafo.', 'error');
+                    isValidInText = false;
+                }
+
+                if (!isValidInText) {
+                    inTextCitationOutput.textContent = 'La cita en el texto aparecerá aquí.';
+                    copyInTextCitationBtn.style.display = 'none';
+                    return;
+                }
+
+                const formattedInTextAuthors = formatAuthorsForInTextCitation(inTextAuthorString);
+                const pageInfo = inTextPage ? `, ${inTextPage}` : '';
+
+                // Parenthetical citation
+                const parentheticalCitation = `(${formattedInTextAuthors}, ${inTextYear}${pageInfo})`;
+
+                // Narrative citation
+                const narrativeCitation = `${formattedInTextAuthors} (${inTextYear})${pageInfo}`;
+
+                let quoteDisplay = '';
+                if (inTextQuote) {
+                    // Check if quote is 40 words or more for block quote formatting
+                    const words = inTextQuote.split(/\s+/).filter(word => word.length > 0);
+                    if (words.length >= 40) {
+                        quoteDisplay = `
+<p style="margin-left: 1.27cm; text-align: justify;">${inTextQuote}</p>
+<p>${parentheticalCitation}</p>
+                        `; // Removed text-align: right from parenthetical citation within block quote
+                        inTextCitation = `<b>Cita en Bloque:</b><br>${quoteDisplay}<br><b>Ejemplo Narrativo:</b> ${narrativeCitation} comentó: "..." (ver cita en bloque).`;
+                    } else {
+                        quoteDisplay = `"${inTextQuote}"`;
+                        inTextCitation = `<b>Ejemplo Parentético:</b> ${quoteDisplay} ${parentheticalCitation}<br><b>Ejemplo Narrativo:</b> ${narrativeCitation} afirmó: ${quoteDisplay}.`;
+                    }
+                } else {
+                    inTextCitation = `<b>Ejemplo Parentético:</b> ${parentheticalCitation}<br><b>Ejemplo Narrativo:</b> ${formattedInTextAuthors} (${inTextYear})${pageInfo}`;
+                }
+
+                inTextCitationOutput.innerHTML = inTextCitation;
+                copyInTextCitationBtn.style.display = 'block';
+                showMessage('Cita en el texto generada con éxito.', 'success');
+            });
+
+            copyInTextCitationBtn.addEventListener('click', () => {
+                const citationText = inTextCitationOutput.innerText; // Use innerText to copy only the text
+                const textArea = document.createElement('textarea');
+                textArea.value = citationText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showMessage('Cita en el texto copiada al portapapeles.', 'success');
+                } catch (err) {
+                    showMessage('Error al copiar la cita en el texto. Por favor, cópiala manualmente.', 'error');
                 }
                 document.body.removeChild(textArea);
             });
