@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Citas APA por URL</title>
+    <title>Generador de Citas APA Universal</title>
     <!-- Metadato de autor para esta página -->
     <meta name="author" content="Esto Es Historia">
+    <!-- Metadato de año de creación para esta página -->
+    <meta name="creation_year" content="2025">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -32,81 +34,6 @@
             border-radius: 0.75rem; /* Bordes más redondeados */
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna sutil */
         }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #3b82f6;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Mejoras para el contenedor principal */
-        .main-container {
-            background-color: #ffffff;
-            padding: 2.5rem; /* Más padding */
-            border-radius: 1.5rem; /* Más redondeado */
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05); /* Sombra más pronunciada */
-            max-width: 600px; /* Ancho máximo para desktop */
-            width: 100%;
-            box-sizing: border-box; /* Asegura que padding no aumente el ancho */
-        }
-
-        /* Inputs mejorados */
-        input[type="text"],
-        input[type="date"],
-        input[type="url"] {
-            padding: 0.75rem 1rem; /* Más padding interno */
-            border: 1px solid #d1d5db; /* Borde más definido */
-            border-radius: 0.5rem; /* Bordes redondeados */
-            transition: all 0.2s ease-in-out; /* Transición suave */
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03); /* Sombra interna */
-        }
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        input[type="url"]:focus {
-            border-color: #60a5fa; /* Borde azul al enfocar */
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3); /* Anillo de enfoque azul */
-            outline: none; /* Eliminar el contorno por defecto */
-        }
-
-        /* Botones mejorados */
-        button {
-            font-weight: 600; /* Semi-bold */
-            padding: 0.85rem 1.5rem; /* Más padding */
-            border-radius: 0.75rem; /* Más redondeado */
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra sutil */
-        }
-        button:hover {
-            transform: translateY(-2px); /* Efecto de "levantamiento" al pasar el ratón */
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Sombra más grande al pasar el ratón */
-        }
-        #extractDataBtn {
-            background: linear-gradient(to right, #3b82f6, #2563eb); /* Degradado azul */
-            color: white;
-        }
-        #extractDataBtn:hover {
-            background: linear-gradient(to right, #2563eb, #1d4ed8); /* Degradado más oscuro */
-        }
-        #generateCitationBtn {
-            background: linear-gradient(to right, #10b981, #059669); /* Degradado verde */
-            color: white;
-        }
-        #generateCitationBtn:hover {
-            background: linear-gradient(to right, #059669, #047857); /* Degradado más oscuro */
-        }
-        #copyCitationBtn {
-            background: linear-gradient(to right, #60a5fa, #3b82f6); /* Degradado azul claro */
-            color: white;
-        }
-        #copyCitationBtn:hover {
-            background: linear-gradient(to right, #3b82f6, #2563eb); /* Degradado más oscuro */
-        }
-
         /* Mensajes de alerta */
         #messageBox {
             font-weight: 500;
@@ -127,6 +54,66 @@
             color: #1f2937; /* Gris muy oscuro para títulos */
         }
 
+        /* Mejoras para el contenedor principal */
+        .main-container {
+            background-color: #ffffff;
+            padding: 2.5rem; /* Más padding */
+            border-radius: 1.5rem; /* Más redondeado */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05); /* Sombra más pronunciada */
+            max-width: 600px; /* Ancho máximo para desktop */
+            width: 100%;
+            box-sizing: border-box; /* Asegura que padding no aumente el ancho */
+        }
+
+        /* Inputs mejorados */
+        input[type="text"],
+        input[type="date"],
+        input[type="url"],
+        input[type="number"],
+        select {
+            padding: 0.75rem 1rem; /* Más padding interno */
+            border: 1px solid #d1d5db; /* Borde más definido */
+            border-radius: 0.5rem; /* Bordes redondeados */
+            transition: all 0.2s ease-in-out; /* Transición suave */
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03); /* Sombra interna */
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #60a5fa; /* Borde azul al enfocar */
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3); /* Anillo de enfoque azul */
+            outline: none; /* Eliminar el contorno por defecto */
+        }
+
+        /* Botones mejorados */
+        button {
+            font-weight: 600; /* Semi-bold */
+            padding: 0.85rem 1.5rem; /* Más padding */
+            border-radius: 0.75rem; /* Más redondeado */
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra sutil */
+        }
+        button:hover {
+            transform: translateY(-2px); /* Efecto de "levantamiento" al pasar el ratón */
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Sombra más grande al pasar el ratón */
+        }
+        #generateCitationBtn {
+            background: linear-gradient(to right, #3b82f6, #2563eb); /* Degradado azul */
+            color: white;
+        }
+        #generateCitationBtn:hover {
+            background: linear-gradient(to right, #2563eb, #1d4ed8); /* Degradado más oscuro */
+        }
+        #copyCitationBtn {
+            background: linear-gradient(to right, #10b981, #059669); /* Degradado verde */
+            color: white;
+        }
+        #copyCitationBtn:hover {
+            background: linear-gradient(to right, #059669, #047857); /* Degradado más oscuro */
+        }
+
         /* Responsividad general */
         @media (max-width: 768px) {
             .main-container {
@@ -143,49 +130,102 @@
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="main-container"> <!-- Aplicamos la clase main-container aquí -->
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas APA por URL</h1>
-        <p class="text-gray-600 text-center mb-8">Introduce una URL y la aplicación intentará obtener los datos para generar la cita APA (7ª edición).</p>
-        <p class="text-red-600 text-sm mb-4">
-            <strong>¡Importante!</strong> La extracción automática de datos de URLs externas (como Notion) a menudo falla debido a restricciones de seguridad del navegador (CORS).
-            Si el botón "Obtener Datos" no funciona, por favor, rellena los campos manualmente.
-        </p>
+    <div class="main-container">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas APA Universal</h1>
+        <p class="text-gray-600 text-center mb-8">Introduce los detalles del documento para generar la cita en formato APA (7ª edición).</p>
 
         <div class="space-y-4">
             <div>
-                <label for="inputUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
-                <input type="url" id="inputUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
+                <label for="documentType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Documento:</label>
+                <select id="documentType" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="website">Página Web</option>
+                    <option value="book">Libro</option>
+                    <option value="journalArticle">Artículo de Revista</option>
+                </select>
             </div>
 
-            <button id="extractDataBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md flex items-center justify-center">
-                <span id="buttonText">Obtener Datos de la URL</span>
-                <div id="loadingSpinner" class="spinner ml-2" style="display: none;"></div>
-            </button>
-
-            <hr class="my-6 border-gray-200">
-
-            <!-- Campos para mostrar/editar los datos extraídos -->
-            <div>
-                <label for="authorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) (opcional) - Apellido, Iniciales. (separa con punto y coma para múltiples autores):</label>
-                <input type="text" id="authorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García, M. o García Manuel; Pérez, J.">
+            <div id="commonFields" class="space-y-4">
+                <div>
+                    <label for="authorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. (separa con punto y coma para múltiples autores):</label>
+                    <input type="text" id="authorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García, M. o García Manuel; Pérez, J.">
+                </div>
             </div>
 
-            <div>
-                <label for="publicationDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (opcional):</label>
-                <input type="date" id="publicationDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <!-- Campos específicos para Página Web -->
+            <div id="websiteFields" class="space-y-4">
+                <div>
+                    <label for="publicationDateWebsite" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible):</label>
+                    <input type="date" id="publicationDateWebsite" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
+                    <input type="text" id="articleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
+                </div>
+                <div>
+                    <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
+                    <input type="text" id="websiteName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Wikipedia, BBC News, Esto Es Historia">
+                </div>
+                <div>
+                    <label for="pageUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
+                    <input type="url" id="pageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
+                </div>
             </div>
 
-            <div>
-                <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
-                <input type="text" id="articleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
+            <!-- Campos específicos para Libro -->
+            <div id="bookFields" class="space-y-4 hidden">
+                <div>
+                    <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="publicationYearBook" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
+                    <input type="text" id="bookTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El Quijote de la Mancha">
+                </div>
+                <div>
+                    <label for="publisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
+                    <input type="text" id="publisher" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Penguin Random House">
+                </div>
+                <div>
+                    <label for="isbn" class="block text-gray-700 text-sm font-semibold mb-2">ISBN (opcional):</label>
+                    <input type="text" id="isbn" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 978-3-16-148410-0">
+                </div>
             </div>
 
-            <div>
-                <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
-                <input type="text" id="websiteName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Wikipedia, BBC News, Esto Es Historia">
+            <!-- Campos específicos para Artículo de Revista -->
+            <div id="journalArticleFields" class="space-y-4 hidden">
+                <div>
+                    <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="publicationYearJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
+                    <input type="text" id="journalArticleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El impacto de la IA en la sociedad moderna">
+                </div>
+                <div>
+                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Revista:</label>
+                    <input type="text" id="journalName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Revista de Psicología Aplicada">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen:</label>
+                        <input type="text" id="journalVolume" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 15">
+                    </div>
+                    <div>
+                        <label for="journalIssue" class="block text-gray-700 text-sm font-semibold mb-2">Número (opcional):</label>
+                        <input type="text" id="journalIssue" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 3">
+                    </div>
+                </div>
+                <div>
+                    <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas:</label>
+                    <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 123-145">
+                </div>
+                <div>
+                    <label for="doi" class="block text-gray-700 text-sm font-semibold mb-2">DOI (opcional):</label>
+                    <input type="text" id="doi" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 10.1037/a0028240">
+                </div>
             </div>
 
-            <button id="generateCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out shadow-md">
+            <button id="generateCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
                 Generar Cita APA
             </button>
         </div>
@@ -195,7 +235,7 @@
             <div id="citationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
                 La cita aparecerá aquí.
             </div>
-            <button id="copyCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+            <button id="copyCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
                 Copiar Cita
             </button>
             <div id="messageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
@@ -204,22 +244,44 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const inputUrl = document.getElementById('inputUrl');
-            const extractDataBtn = document.getElementById('extractDataBtn');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const buttonText = document.getElementById('buttonText');
+            const documentTypeSelect = document.getElementById('documentType');
+            const commonFieldsDiv = document.getElementById('commonFields');
+            const websiteFieldsDiv = document.getElementById('websiteFields');
+            const bookFieldsDiv = document.getElementById('bookFields');
+            const journalArticleFieldsDiv = document.getElementById('journalArticleFields');
 
             const authorNameInput = document.getElementById('authorName');
+            
+            // Specific date/year inputs
+            const publicationDateWebsiteInput = document.getElementById('publicationDateWebsite');
+            const publicationYearBookInput = document.getElementById('publicationYearBook');
+            const publicationYearJournalInput = document.getElementById('publicationYearJournal');
+
+            // Website specific fields
             const articleTitleInput = document.getElementById('articleTitle');
-            const publicationDateInput = document.getElementById('publicationDate');
             const websiteNameInput = document.getElementById('websiteName');
+            const pageUrlInput = document.getElementById('pageUrl');
+
+            // Book specific fields
+            const bookTitleInput = document.getElementById('bookTitle');
+            const publisherInput = document.getElementById('publisher');
+            const isbnInput = document.getElementById('isbn');
+
+            // Journal Article specific fields
+            const journalArticleTitleInput = document.getElementById('journalArticleTitle');
+            const journalNameInput = document.getElementById('journalName');
+            const journalVolumeInput = document.getElementById('journalVolume');
+            const journalIssueInput = document.getElementById('journalIssue');
+            const pageRangeInput = document.getElementById('pageRange');
+            const doiInput = document.getElementById('doi');
+
             const generateCitationBtn = document.getElementById('generateCitationBtn');
             const citationOutput = document.getElementById('citationOutput');
             const copyCitationBtn = document.getElementById('copyCitationBtn');
             const messageBox = document.getElementById('messageBox');
 
-            // Function to display messages with a type and a timeout
-            function showMessage(message, type = 'info', timeout = 5000) {
+            // Function to display temporary messages
+            function showMessage(message, type = 'info') {
                 messageBox.textContent = message;
                 // Reset class to clear previous styling
                 messageBox.className = 'mt-4 p-3 rounded-md text-sm text-center';
@@ -239,17 +301,20 @@
                 messageBox.timeoutId = setTimeout(() => {
                     messageBox.style.display = 'none';
                     messageBox.timeoutId = null; // Clear the ID after hiding
-                }, timeout);
+                }, 3000); // Hide after 3 seconds
             }
 
-            // Function to format the date
-            function formatDate(dateString) {
+            // Function to format a date string to "YYYY, Month Day" or "s.f."
+            function formatDateForWebsite(dateString) {
                 if (!dateString) return 's.f.'; // If no date, use s.f.
                 const date = new Date(dateString + 'T00:00:00'); // Add T00:00:00 to avoid timezone issues
                 if (isNaN(date.getTime())) return 's.f.'; // If date is invalid, use s.f.
 
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                return date.toLocaleDateString('es-ES', options);
+                const year = date.getFullYear();
+                const month = date.toLocaleDateString('es-ES', { month: 'long' });
+                const day = date.getDate();
+
+                return `${year}, ${day} de ${month}`; // Example: 2023, 20 de julio
             }
 
             // Helper function to format a single author name to "Lastname, F. M."
@@ -343,193 +408,160 @@
                     formattedTitle = formattedTitle.substring(0, colonIndex + 1) + ' ' + subtitlePart;
                 }
 
-                // Note: This function does not automatically capitalize proper nouns within the title.
-                // Users should ensure proper nouns are capitalized in their input.
-
+                // NOTA IMPORTANTE: Esta función capitaliza la primera letra del título y la primera letra después de un subtítulo.
+                // NO capitaliza automáticamente nombres propios dentro del título (ej. "Estados Unidos", "Google").
+                // El usuario debe asegurarse de que los nombres propios estén correctamente capitalizados en su entrada.
                 return formattedTitle;
             }
 
-            // Function to format text for Title Case (for website names)
+            // Function to format text for Title Case (for website names, journal names)
             function formatForTitleCase(textString) {
                 if (!textString) return '';
 
                 return textString.split(' ').map(word => {
                     if (word.length === 0) return '';
-                    // Do not capitalize minor words like "a", "an", "the", "and", "but", "or", "nor", "at", "by", "for", "from", "in", "into", "of", "on", "to", "with"
-                    // unless they are the first word. This is a simplified list.
-                    const minorWords = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'at', 'by', 'for', 'from', 'in', 'into', 'of', 'on', 'to', 'with']);
+                    // No capitalizar palabras menores (artículos, conjunciones, preposiciones cortas)
+                    // a menos que sean la primera palabra de la frase.
+                    const minorWords = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'at', 'by', 'for', 'from', 'in', 'into', 'of', 'on', 'to', 'with', 'y', 'o', 'con', 'sin', 'para', 'por', 'de', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas']);
                     const lowerCaseWord = word.toLowerCase();
 
-                    if (minorWords.has(lowerCaseWord) && textString.indexOf(word) !== 0) {
-                        return lowerCaseWord;
+                    // Si es la primera palabra o no es una palabra menor, capitalizar.
+                    // Se asume que la primera palabra de la frase siempre debe capitalizarse.
+                    if (textString.indexOf(word) === 0 || !minorWords.has(lowerCaseWord)) {
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
                     }
-                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    return lowerCaseWord;
                 }).join(' ');
             }
 
-            // Function to extract metadata from a parsed HTML document
-            function extractMetadata(doc) {
-                let title = doc.querySelector('title')?.textContent || '';
-                let author = '';
-                let websiteName = '';
-                let publicationDate = '';
+            // Function to toggle visibility of fields based on document type
+            function toggleFieldsVisibility() {
+                const selectedType = documentTypeSelect.value;
 
-                // Try to get author from meta tags
-                const authorMeta = doc.querySelector('meta[name="author"]') ||
-                                   doc.querySelector('meta[property="author"]') ||
-                                   doc.querySelector('meta[property="article:author"]');
-                if (authorMeta) {
-                    author = authorMeta.getAttribute('content');
+                // Hide all specific fields first
+                websiteFieldsDiv.classList.add('hidden');
+                bookFieldsDiv.classList.add('hidden');
+                journalArticleFieldsDiv.classList.add('hidden');
+
+                // Clear all specific fields when switching type to avoid old data lingering
+                publicationDateWebsiteInput.value = '';
+                articleTitleInput.value = '';
+                websiteNameInput.value = '';
+                pageUrlInput.value = '';
+                
+                publicationYearBookInput.value = '';
+                bookTitleInput.value = '';
+                publisherInput.value = '';
+                isbnInput.value = '';
+
+                publicationYearJournalInput.value = '';
+                journalArticleTitleInput.value = '';
+                journalNameInput.value = '';
+                journalVolumeInput.value = '';
+                journalIssueInput.value = '';
+                pageRangeInput.value = '';
+                doiInput.value = '';
+                
+                // Also clear common fields
+                authorNameInput.value = '';
+
+
+                // Show fields based on selected type
+                if (selectedType === 'website') {
+                    websiteFieldsDiv.classList.remove('hidden');
+                } else if (selectedType === 'book') {
+                    bookFieldsDiv.classList.remove('hidden');
+                } else if (selectedType === 'journalArticle') {
+                    journalArticleFieldsDiv.classList.remove('hidden');
                 }
-
-                // Try to get website name from og:site_name or fallback to hostname
-                const ogSiteNameMeta = doc.querySelector('meta[property="og:site_name"]');
-                if (ogSiteNameMeta) {
-                    websiteName = ogSiteNameMeta.getAttribute('content');
-                } else if (inputUrl.value) {
-                    try {
-                        const urlObj = new URL(inputUrl.value);
-                        websiteName = urlObj.hostname.replace('www.', '');
-                        // Capitalize the first letter of each part of the hostname
-                        websiteName = websiteName.split('.').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('.');
-                    } catch (e) {
-                        // Invalid URL, websiteName remains empty or as provided
-                    }
-                }
-
-                // Try to get publication date from meta tags
-                const pubDateMeta = doc.querySelector('meta[property="article:published_time"]') ||
-                                    doc.querySelector('meta[name="pubdate"]') ||
-                                    doc.querySelector('meta[name="date"]'); // Less common for pub date
-                if (pubDateMeta) {
-                    publicationDate = pubDateMeta.getAttribute('content');
-                    // Attempt to parse to YYYY-MM-DD if it's a full date string
-                    try {
-                        const date = new Date(publicationDate);
-                        if (!isNaN(date.getTime())) {
-                            publicationDate = date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
-                        } else {
-                            publicationDate = ''; // If parsing fails, clear it
-                        }
-                    } catch (e) {
-                        publicationDate = '';
-                    }
-                }
-
-                // Fallback for title if meta title is empty
-                if (!title) {
-                    const ogTitleMeta = doc.querySelector('meta[property="og:title"]');
-                    if (ogTitleMeta) {
-                        title = ogTitleMeta.getAttribute('content');
-                    }
-                }
-
-                return { title, author, websiteName, publicationDate };
             }
 
-            extractDataBtn.addEventListener('click', async () => {
-                const url = inputUrl.value.trim();
-                if (!url) {
-                    showMessage('Por favor, introduce una URL.', 'error');
-                    return;
-                }
+            // Initial call to set correct fields on load
+            toggleFieldsVisibility();
 
-                // Reset message box before starting new operation
-                messageBox.style.display = 'none';
-                if (messageBox.timeoutId) {
-                    clearTimeout(messageBox.timeoutId);
-                    messageBox.timeoutId = null;
-                }
-                
-                // Reset fields and show loading
-                authorNameInput.value = '';
-                articleTitleInput.value = '';
-                publicationDateInput.value = '';
-                websiteNameInput.value = '';
-                citationOutput.textContent = 'La cita aparecerá aquí.';
-                copyCitationBtn.style.display = 'none';
-                loadingSpinner.style.display = 'block';
-                buttonText.textContent = 'Obteniendo...';
-                extractDataBtn.disabled = true;
+            // Event listener for document type change
+            documentTypeSelect.addEventListener('change', toggleFieldsVisibility);
 
-                try {
-                    // The `fetch` request will likely be blocked by CORS for most external sites.
-                    // This is a browser security feature and cannot be bypassed client-side.
-                    // A server-side proxy would be needed for reliable cross-origin fetching.
-                    const response = await fetch(url);
-
-                    if (!response.ok) {
-                        throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
-                    }
-
-                    const htmlText = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(htmlText, 'text/html');
-
-                    const extracted = extractMetadata(doc);
-
-                    articleTitleInput.value = extracted.title;
-                    authorNameInput.value = extracted.author;
-                    publicationDateInput.value = extracted.publicationDate;
-                    websiteNameInput.value = extracted.websiteName;
-
-                    showMessage('Datos obtenidos (revisa y edita si es necesario).', 'success');
-
-                } catch (error) {
-                    console.error('Error al obtener o parsear la URL:', error);
-                    let errorMessage = 'Error al obtener los datos de la URL.';
-                    if (error.message.includes('CORS') || error.name === 'TypeError' && error.message.includes('network')) {
-                        errorMessage = 'Error de conexión (CORS). No se pudieron obtener los datos. Por favor, rellena los campos manualmente.';
-                    } else if (error.message.includes('HTTP')) {
-                        errorMessage = `Error HTTP ${error.message.split('-')[0].trim()}. Por favor, verifica la URL.`;
-                    } else {
-                        errorMessage = `Error inesperado: ${error.message}. Por favor, rellena los campos manualmente.`;
-                    }
-                    showMessage(errorMessage, 'error', 15000); // Muestra el error por 15 segundos
-                } finally {
-                    loadingSpinner.style.display = 'none';
-                    buttonText.textContent = 'Obtener Datos de la URL';
-                    extractDataBtn.disabled = false;
-                }
-            });
 
             generateCitationBtn.addEventListener('click', () => {
-                const rawAuthorName = authorNameInput.value.trim();
-                const rawArticleTitle = articleTitleInput.value.trim();
-                const publicationDate = publicationDateInput.value;
-                const rawWebsiteName = websiteNameInput.value.trim();
-                const pageUrl = inputUrl.value.trim(); // Use the URL from the input field
+                const docType = documentTypeSelect.value;
+                const author = formatAuthorsForReference(authorNameInput.value.trim());
+                let citation = '';
+                let isValid = true;
 
-                // Validate required fields
-                if (!rawArticleTitle || !rawWebsiteName || !pageUrl) {
-                    showMessage('Por favor, rellena el Título, el Nombre del Sitio Web y la URL.', 'error');
+                // Validate common required fields (author is always required)
+                if (!author) {
+                    showMessage('Por favor, rellena el Autor(es).', 'error');
+                    isValid = false;
+                }
+
+                if (docType === 'website') {
+                    const publicationDate = publicationDateWebsiteInput.value.trim();
+                    const articleTitle = formatTitleForSentenceCase(articleTitleInput.value.trim());
+                    const websiteName = formatForTitleCase(websiteNameInput.value.trim());
+                    const pageUrl = pageUrlInput.value.trim();
+
+                    if (!publicationDate || !articleTitle || !websiteName || !pageUrl) {
+                        showMessage('Para Página Web: rellena la Fecha de Publicación, Título del Artículo, Nombre del Sitio Web y URL.', 'error');
+                        isValid = false;
+                    } else {
+                        const formattedPublicationDate = formatDateForWebsite(publicationDate);
+                        const currentDate = new Date();
+                        const formattedRetrievalDate = currentDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                        citation = `${author}. (${formattedPublicationDate}). <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                    }
+                } else if (docType === 'book') {
+                    const year = publicationYearBookInput.value.trim();
+                    const bookTitle = formatTitleForSentenceCase(bookTitleInput.value.trim());
+                    const publisher = publisherInput.value.trim();
+                    const isbn = isbnInput.value.trim();
+
+                    if (!year || !bookTitle || !publisher) {
+                        showMessage('Para Libro: rellena el Año de Publicación, Título del Libro y Editorial.', 'error');
+                        isValid = false;
+                    } else {
+                        citation = `${author}. (${year}). <i>${bookTitle}</i>. ${publisher}.`;
+                        if (isbn) {
+                            citation += ` ISBN ${isbn}.`;
+                        }
+                    }
+                } else if (docType === 'journalArticle') {
+                    const year = publicationYearJournalInput.value.trim();
+                    const journalArticleTitle = formatTitleForSentenceCase(journalArticleTitleInput.value.trim());
+                    const journalName = formatForTitleCase(journalNameInput.value.trim());
+                    const journalVolume = journalVolumeInput.value.trim();
+                    const journalIssue = journalIssueInput.value.trim();
+                    const pageRange = pageRangeInput.value.trim();
+                    const doi = doiInput.value.trim();
+
+                    if (!year || !journalArticleTitle || !journalName || !journalVolume || !pageRange) {
+                        showMessage('Para Artículo de Revista: rellena Año de Publicación, Título del Artículo, Nombre de la Revista, Volumen y Rango de Páginas.', 'error');
+                        isValid = false;
+                    } else {
+                        let issuePart = journalIssue ? `(${journalIssue})` : '';
+                        citation = `${author}. (${year}). ${journalArticleTitle}. <i>${journalName}</i>, <i>${journalVolume}</i>${issuePart}, ${pageRange}.`;
+                        if (doi) {
+                            // APA recomienda "https://doi.org/" como prefijo para DOIs
+                            citation += ` ${doi.startsWith('https://doi.org/') ? '' : 'https://doi.org/'}${doi.replace('https://doi.org/', '')}`; // No hay punto final si hay DOI
+                        }
+                        citation += '.'; // Añadir punto final si no se añadió por DOI
+                    }
+                }
+
+                if (!isValid) {
                     citationOutput.textContent = 'La cita aparecerá aquí.';
                     copyCitationBtn.style.display = 'none';
                     return;
                 }
 
-                const formattedPublicationDate = formatDate(publicationDate);
-                const currentDate = new Date();
-                const formattedRetrievalDate = currentDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-
-                let citation = '';
-                const formattedAuthor = formatAuthorsForReference(rawAuthorName);
-                const formattedArticleTitle = formatTitleForSentenceCase(rawArticleTitle);
-                const formattedWebsiteName = formatForTitleCase(rawWebsiteName);
-
-                if (formattedAuthor) {
-                    citation = `${formattedAuthor}. (${formattedPublicationDate}). <i>${formattedArticleTitle}</i>. ${formattedWebsiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
-                } else {
-                    citation = `<i>${formattedArticleTitle}</i>. (${formattedPublicationDate}). ${formattedWebsiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
-                }
-
-                citationOutput.innerHTML = citation;
+                citationOutput.innerHTML = citation; // Use innerHTML for italics
                 copyCitationBtn.style.display = 'block';
                 showMessage('Cita generada con éxito.', 'success');
             });
 
             copyCitationBtn.addEventListener('click', () => {
-                const citationText = citationOutput.innerText;
+                const citationText = citationOutput.innerText; // Use innerText to copy only the text
+                // Use document.execCommand('copy') for compatibility in iframes
                 const textArea = document.createElement('textarea');
                 textArea.value = citationText;
                 document.body.appendChild(textArea);
