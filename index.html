@@ -20,16 +20,18 @@
             font-family: 'Inter', sans-serif;
             background-color: #6c6454; /* Color sólido de fondo */
         }
-        /* Estilos para el área de texto de la cita generada */
-        #citationOutput, #inTextCitationOutput {
+        /* Estilos para el área de texto de la cita generada (para la lista de referencias) */
+        .reference-output-box {
             white-space: pre-wrap; /* Mantiene los saltos de línea y espacios */
-            word-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento */
+            word-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento (compatibilidad antigua) */
+            overflow-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento (moderno) */
+            word-break: break-word; /* Asegura que las palabras largas se rompan si es necesario */
             user-select: all; /* Permite seleccionar todo el texto fácilmente */
             min-height: 100px; /* Aumenta la altura mínima para visibilidad */
             text-align: left; /* Alinea el texto a la izquierda para APA */
             display: block; /* Asegura que se comporte como un elemento de bloque para el flujo de texto adecuado */
-            padding-left: 2.5em; /* Sangría para todas las líneas excepto la primera */
-            text-indent: -2.5em; /* Mueve la primera línea hacia atrás (sangría francesa) */
+            padding-left: 2.5em; /* Sangría francesa */
+            text-indent: -2.5em; /* Sangría francesa */
             font-size: 0.95rem; /* Ligeramente más grande */
             line-height: 1.5;
             color: #374151; /* Color de texto más oscuro */
@@ -38,6 +40,27 @@
             border-radius: 0.75rem; /* Bordes más redondeados */
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna sutil */
         }
+
+        /* Estilos para las citas en el texto (sin sangría francesa) */
+        .in-text-citation-output-box {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            user-select: all;
+            min-height: 100px;
+            text-align: left;
+            display: block;
+            padding: 1rem; /* Padding normal */
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #374151;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
         /* Mensajes de alerta */
         #messageBox {
             font-weight: 500;
@@ -64,7 +87,7 @@
             padding: 2.5rem; /* Más padding */
             border-radius: 1.5rem; /* Más redondeado */
             box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05); /* Sombra más pronunciada */
-            max-width: 600px; /* Ancho máximo para desktop */
+            max-width: 650px; /* Aumentado ligeramente el ancho máximo para desktop */
             width: 100%;
             box-sizing: border-box; /* Asegura que padding no aumente el ancho */
         }
@@ -128,11 +151,11 @@
         #generateCitationBtn:hover, #generateInTextCitationBtn:hover {
             background: linear-gradient(to right, #2563eb, #1d4ed8); /* Degradado más oscuro */
         }
-        #copyCitationBtn, #copyInTextCitationBtn {
+        .copy-btn { /* Clase para los botones de copiar */
             background: linear-gradient(to right, #10b981, #059669); /* Degradado verde */
             color: white;
         }
-        #copyCitationBtn:hover, #copyInTextCitationBtn:hover {
+        .copy-btn:hover {
             background: linear-gradient(to right, #059669, #047857); /* Degradado más oscuro */
         }
 
@@ -296,10 +319,10 @@
 
             <div class="mt-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita Generada:</h2>
-                <div id="citationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                <div id="citationOutput" class="reference-output-box bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
                     La cita aparecerá aquí.
                 </div>
-                <button id="copyCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                <button id="copyCitationBtn" class="w-full copy-btn font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
                     Copiar Cita
                 </button>
                 <div id="messageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
@@ -337,14 +360,26 @@
             </div>
 
             <div class="mt-8">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita en el Texto Generada:</h2>
-                <div id="inTextCitationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
-                    La cita en el texto aparecerá aquí.
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Parentético:</h3>
+                <div id="inTextParentheticalOutput" class="in-text-citation-output-box bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                    La cita parentética aparecerá aquí.
                 </div>
-                <button id="copyInTextCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
-                    Copiar Cita en el Texto
+                <button id="copyParentheticalBtn" class="w-full copy-btn font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                    Copiar Cita Parentética
                 </button>
             </div>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Narrativo:</h3>
+                <div id="inTextNarrativeOutput" class="in-text-citation-output-box bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                    La cita narrativa aparecerá aquí.
+                </div>
+                <button id="copyNarrativeBtn" class="w-full copy-btn font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                    Copiar Cita Narrativa
+                </button>
+            </div>
+
+            <div id="inTextMessageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
         </div> <!-- Fin de la sección del Generador de Citas en el Texto (Directas) -->
 
     </div>
@@ -368,7 +403,7 @@
 
             // Website specific fields for full reference
             const articleTitleInput = document.getElementById('articleTitle');
-            const websiteNameInput = document.getElementById('websiteName');
+            const websiteNameInput = document = document.getElementById('websiteName');
             const pageUrlInput = document.getElementById('pageUrl');
 
             // Book specific fields for full reference
@@ -395,31 +430,34 @@
             const inTextPageInput = document.getElementById('inTextPageInput');
             const inTextQuoteInput = document.getElementById('inTextQuoteInput');
             const generateInTextCitationBtn = document.getElementById('generateInTextCitationBtn');
-            const inTextCitationOutput = document.getElementById('inTextCitationOutput');
-            const copyInTextCitationBtn = document.getElementById('copyInTextCitationBtn');
+            const inTextParentheticalOutput = document.getElementById('inTextParentheticalOutput');
+            const inTextNarrativeOutput = document.getElementById('inTextNarrativeOutput');
+            const copyParentheticalBtn = document.getElementById('copyParentheticalBtn');
+            const copyNarrativeBtn = document.getElementById('copyNarrativeBtn');
+            const inTextMessageBox = document.getElementById('inTextMessageBox');
 
 
             // Function to display temporary messages
-            function showMessage(message, type = 'info') {
-                messageBox.textContent = message;
+            function showMessage(message, type = 'info', targetMessageBox = messageBox) {
+                targetMessageBox.textContent = message;
                 // Reset class to clear previous styling
-                messageBox.className = 'mt-4 p-3 rounded-md text-sm text-center';
+                targetMessageBox.className = 'mt-4 p-3 rounded-md text-sm text-center';
                 if (type === 'success') {
-                    messageBox.classList.add('bg-green-100', 'text-green-800');
+                    targetMessageBox.classList.add('bg-green-100', 'text-green-800');
                 } else if (type === 'error') {
-                    messageBox.classList.add('bg-red-100', 'text-red-800');
+                    targetMessageBox.classList.add('bg-red-100', 'text-red-800');
                 } else { // info
-                    messageBox.classList.add('bg-blue-100', 'text-blue-800');
+                    targetMessageBox.classList.add('bg-blue-100', 'text-blue-800');
                 }
-                messageBox.style.display = 'block'; // Ensure it's visible
+                targetMessageBox.style.display = 'block'; // Ensure it's visible
 
                 // Clear any previous timeout to ensure new messages are not hidden prematurely
-                if (messageBox.timeoutId) {
-                    clearTimeout(messageBox.timeoutId);
+                if (targetMessageBox.timeoutId) {
+                    clearTimeout(targetMessageBox.timeoutId);
                 }
-                messageBox.timeoutId = setTimeout(() => {
-                    messageBox.style.display = 'none';
-                    messageBox.timeoutId = null; // Clear the ID after hiding
+                targetMessageBox.timeoutId = setTimeout(() => {
+                    targetMessageBox.style.display = 'none';
+                    targetMessageBox.timeoutId = null; // Clear the ID after hiding
                 }, 3000); // Hide after 3 seconds
             }
 
@@ -476,6 +514,19 @@
                 return `${lastName}, ${initials}`;
             }
 
+            // Helper function to get the capitalized last name from a raw author string for in-text citations
+            function getLastNameCapitalized(rawAuthorString) {
+                if (!rawAuthorString) return '';
+                const parts = rawAuthorString.trim().split(',');
+                let lastNamePart = parts[0].trim(); // Get the part before the comma (assumed last name)
+
+                // Split the last name part into words and capitalize the first letter of each word
+                return lastNamePart.split(' ').map(word => {
+                    if (word.length === 0) return '';
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }).join(' ');
+            }
+
             // Function to format authors for the reference list according to APA 7th edition
             function formatAuthorsForReference(authorString) {
                 if (!authorString) return '';
@@ -514,17 +565,13 @@
                 if (numAuthors === 0) {
                     return '';
                 } else if (numAuthors === 1) {
-                    // Just the last name
-                    const parts = rawAuthors[0].split(',');
-                    return parts[0].trim();
+                    return getLastNameCapitalized(rawAuthors[0]);
                 } else if (numAuthors === 2) {
-                    // Lastname & Lastname
-                    const author1 = rawAuthors[0].split(',')[0].trim();
-                    const author2 = rawAuthors[1].split(',')[0].trim();
-                    return `${author1} & ${author2}`;
+                    const author1LastName = getLastNameCapitalized(rawAuthors[0]);
+                    const author2LastName = getLastNameCapitalized(rawAuthors[1]);
+                    return `${author1LastName} & ${author2LastName}`;
                 } else {
-                    // Lastname et al.
-                    const firstAuthorLastName = rawAuthors[0].split(',')[0].trim();
+                    const firstAuthorLastName = getLastNameCapitalized(rawAuthors[0]);
                     return `${firstAuthorLastName} et al.`;
                 }
             }
@@ -752,65 +799,80 @@
                 const inTextPage = inTextPageInput.value.trim();
                 const inTextQuote = inTextQuoteInput.value.trim();
 
-                let inTextCitation = '';
+                let parentheticalCitationText = '';
+                let narrativeCitationText = '';
                 let isValidInText = true;
 
                 if (!inTextAuthorString || !inTextYear || !inTextPage) {
-                    showMessage('Para la Cita en el Texto: rellena Autor(es), Año de Publicación y Número(s) de Página/Párrafo.', 'error');
+                    showMessage('Para la Cita en el Texto: rellena Autor(es), Año de Publicación y Número(s) de Página/Párrafo.', 'error', inTextMessageBox);
                     isValidInText = false;
                 }
 
                 if (!isValidInText) {
-                    inTextCitationOutput.textContent = 'La cita en el texto aparecerá aquí.';
-                    copyInTextCitationBtn.style.display = 'none';
+                    inTextParentheticalOutput.textContent = 'La cita parentética aparecerá aquí.';
+                    inTextNarrativeOutput.textContent = 'La cita narrativa aparecerá aquí.';
+                    copyParentheticalBtn.style.display = 'none';
+                    copyNarrativeBtn.style.display = 'none';
                     return;
                 }
 
                 const formattedInTextAuthors = formatAuthorsForInTextCitation(inTextAuthorString);
-                const pageInfo = inTextPage ? `, ${inTextPage}` : '';
+                const pageInfoForCitation = inTextPage ? `, ${inTextPage}` : ''; // For parenthetical and narrative final page
 
                 // Parenthetical citation
-                const parentheticalCitation = `(${formattedInTextAuthors}, ${inTextYear}${pageInfo})`;
+                parentheticalCitationText = `(${formattedInTextAuthors}, ${inTextYear}${pageInfoForCitation})`;
 
-                // Narrative citation
-                const narrativeCitation = `${formattedInTextAuthors} (${inTextYear})${pageInfo}`;
-
-                let quoteDisplay = '';
                 if (inTextQuote) {
-                    // Check if quote is 40 words or more for block quote formatting
                     const words = inTextQuote.split(/\s+/).filter(word => word.length > 0);
                     if (words.length >= 40) {
-                        quoteDisplay = `
-<p style="margin-left: 1.27cm; text-align: justify;">${inTextQuote}</p>
-<p>${parentheticalCitation}</p>
-                        `; // Removed text-align: right from parenthetical citation within block quote
-                        inTextCitation = `<b>Cita en Bloque:</b><br>${quoteDisplay}<br><b>Ejemplo Narrativo:</b> ${narrativeCitation} comentó: "..." (ver cita en bloque).`;
+                        // Block quote for parenthetical
+                        inTextParentheticalOutput.innerHTML = `<p style="margin-left: 1.27cm; text-align: justify;">${inTextQuote}</p><p>${parentheticalCitationText}</p>`;
+                        
+                        // Block quote for narrative
+                        // For narrative block quotes, the page number is *after* the block quote.
+                        inTextNarrativeOutput.innerHTML = `<p>${formattedInTextAuthors} (${inTextYear}) comentó:</p><p style="margin-left: 1.27cm; text-align: justify;">${inTextQuote}</p><p>(${inTextPage})</p>`;
                     } else {
-                        quoteDisplay = `"${inTextQuote}"`;
-                        inTextCitation = `<b>Ejemplo Parentético:</b> ${quoteDisplay} ${parentheticalCitation}<br><b>Ejemplo Narrativo:</b> ${narrativeCitation} afirmó: ${quoteDisplay}.`;
+                        // Short quote for parenthetical
+                        inTextParentheticalOutput.textContent = `"${inTextQuote}" ${parentheticalCitationText}`;
+                        
+                        // Short quote for narrative
+                        // Modified to "Según Autor (Año), "Cita" (p. X)."
+                        narrativeCitationText = `Según ${formattedInTextAuthors} (${inTextYear}), "${inTextQuote}" (${inTextPage}).`;
+                        inTextNarrativeOutput.textContent = narrativeCitationText;
                     }
                 } else {
-                    inTextCitation = `<b>Ejemplo Parentético:</b> ${parentheticalCitation}<br><b>Ejemplo Narrativo:</b> ${formattedInTextAuthors} (${inTextYear})${pageInfo}`;
+                    // No quote, just citation
+                    inTextParentheticalOutput.textContent = parentheticalCitationText;
+                    narrativeCitationText = `${formattedInTextAuthors} (${inTextYear}${pageInfoForCitation})`;
+                    inTextNarrativeOutput.textContent = narrativeCitationText;
                 }
 
-                inTextCitationOutput.innerHTML = inTextCitation;
-                copyInTextCitationBtn.style.display = 'block';
-                showMessage('Cita en el texto generada con éxito.', 'success');
+                copyParentheticalBtn.style.display = 'block';
+                copyNarrativeBtn.style.display = 'block';
+                showMessage('Citas en el texto generadas con éxito.', 'success', inTextMessageBox);
             });
 
-            copyInTextCitationBtn.addEventListener('click', () => {
-                const citationText = inTextCitationOutput.innerText; // Use innerText to copy only the text
+            // Function to copy text to clipboard
+            function copyToClipboard(textToCopy, targetMessageBox) {
                 const textArea = document.createElement('textarea');
-                textArea.value = citationText;
+                textArea.value = textToCopy;
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    showMessage('Cita en el texto copiada al portapapeles.', 'success');
+                    showMessage('Cita copiada al portapapeles.', 'success', targetMessageBox);
                 } catch (err) {
-                    showMessage('Error al copiar la cita en el texto. Por favor, cópiala manualmente.', 'error');
+                    showMessage('Error al copiar la cita. Por favor, cópiala manualmente.', 'error', targetMessageBox);
                 }
                 document.body.removeChild(textArea);
+            }
+
+            copyParentheticalBtn.addEventListener('click', () => {
+                copyToClipboard(inTextParentheticalOutput.innerText, inTextMessageBox);
+            });
+
+            copyNarrativeBtn.addEventListener('click', () => {
+                copyToClipboard(inTextNarrativeOutput.innerText, inTextMessageBox);
             });
         });
     </script>
