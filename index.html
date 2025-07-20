@@ -140,7 +140,7 @@
                 <select id="documentType" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="website">Página Web</option>
                     <option value="book">Libro</option>
-                    <option value="journalArticle">Artículo de Revista</option>
+                    <option value="journalArticle">Publicación o Artículo</option>
                 </select>
             </div>
 
@@ -167,7 +167,7 @@
                 </div>
                 <div>
                     <label for="pageUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
-                    <input type="url" id="pageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
+                    <input type="url" id="pageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
                 </div>
             </div>
 
@@ -191,7 +191,7 @@
                 </div>
             </div>
 
-            <!-- Campos específicos para Artículo de Revista -->
+            <!-- Campos específicos para Publicación o Artículo (anteriormente Artículo de Revista) -->
             <div id="journalArticleFields" class="space-y-4 hidden">
                 <div>
                     <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
@@ -202,12 +202,12 @@
                     <input type="text" id="journalArticleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El impacto de la IA en la sociedad moderna">
                 </div>
                 <div>
-                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Revista:</label>
-                    <input type="text" id="journalName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Revista de Psicología Aplicada">
+                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Publicación/Revista:</label>
+                    <input type="text" id="journalName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Nature, Communications Earth & Environment">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen:</label>
+                        <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen (opcional):</label>
                         <input type="text" id="journalVolume" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 15">
                     </div>
                     <div>
@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <div>
-                    <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas:</label>
+                    <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas (opcional):</label>
                     <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 123-145">
                 </div>
                 <div>
@@ -304,7 +304,7 @@
                 }, 3000); // Hide after 3 seconds
             }
 
-            // Function to format a date string to "YYYY, Month Day" or "s.f."
+            // Function to format a date string to "Year, Day de Month" or "s.f."
             function formatDateForWebsite(dateString) {
                 if (!dateString) return 's.f.'; // If no date, use s.f.
                 const date = new Date(dateString + 'T00:00:00'); // Add T00:00:00 to avoid timezone issues
@@ -462,7 +462,7 @@
                 pageRangeInput.value = '';
                 doiInput.value = '';
                 
-                // Also clear common fields
+                // Also clear common author field, but it's not hidden
                 authorNameInput.value = '';
 
 
@@ -489,26 +489,28 @@
                 let citation = '';
                 let isValid = true;
 
-                // Validate common required fields (author is always required)
-                if (!author) {
-                    showMessage('Por favor, rellena el Autor(es).', 'error');
-                    isValid = false;
-                }
-
+                // Validation logic based on document type
                 if (docType === 'website') {
                     const publicationDate = publicationDateWebsiteInput.value.trim();
                     const articleTitle = formatTitleForSentenceCase(articleTitleInput.value.trim());
                     const websiteName = formatForTitleCase(websiteNameInput.value.trim());
                     const pageUrl = pageUrlInput.value.trim();
 
-                    if (!publicationDate || !articleTitle || !websiteName || !pageUrl) {
-                        showMessage('Para Página Web: rellena la Fecha de Publicación, Título del Artículo, Nombre del Sitio Web y URL.', 'error');
+                    // For websites, author is optional. Title, website name, and URL are mandatory.
+                    if (!articleTitle || !websiteName || !pageUrl) {
+                        showMessage('Para Página Web: rellena el Título del Artículo, Nombre del Sitio Web y URL.', 'error');
                         isValid = false;
                     } else {
-                        const formattedPublicationDate = formatDateForWebsite(publicationDate);
+                        const formattedPublicationDate = publicationDate ? `(${formatDateForWebsite(publicationDate)})` : '(s.f.)';
                         const currentDate = new Date();
                         const formattedRetrievalDate = currentDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-                        citation = `${author}. (${formattedPublicationDate}). <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                        
+                        if (author) {
+                            citation = `${author}. ${formattedPublicationDate}. <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                        } else {
+                            // If no author, title moves to author position and is NOT italicized.
+                            citation = `${articleTitle}. ${formattedPublicationDate}. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                        }
                     }
                 } else if (docType === 'book') {
                     const year = publicationYearBookInput.value.trim();
@@ -516,8 +518,9 @@
                     const publisher = publisherInput.value.trim();
                     const isbn = isbnInput.value.trim();
 
-                    if (!year || !bookTitle || !publisher) {
-                        showMessage('Para Libro: rellena el Año de Publicación, Título del Libro y Editorial.', 'error');
+                    // For books, author, year, title, and publisher are mandatory.
+                    if (!author || !year || !bookTitle || !publisher) {
+                        showMessage('Para Libro: rellena el Autor, Año de Publicación, Título del Libro y Editorial.', 'error');
                         isValid = false;
                     } else {
                         citation = `${author}. (${year}). <i>${bookTitle}</i>. ${publisher}.`;
@@ -534,17 +537,38 @@
                     const pageRange = pageRangeInput.value.trim();
                     const doi = doiInput.value.trim();
 
-                    if (!year || !journalArticleTitle || !journalName || !journalVolume || !pageRange) {
-                        showMessage('Para Artículo de Revista: rellena Año de Publicación, Título del Artículo, Nombre de la Revista, Volumen y Rango de Páginas.', 'error');
+                    // For journal articles, author, year, title, and journal name are mandatory.
+                    // Volume, Issue, and Page Range are now optional.
+                    if (!author || !year || !journalArticleTitle || !journalName) {
+                        showMessage('Para Publicación o Artículo: rellena Autor, Año de Publicación, Título del Artículo y Nombre de la Publicación/Revista.', 'error');
                         isValid = false;
                     } else {
                         let issuePart = journalIssue ? `(${journalIssue})` : '';
-                        citation = `${author}. (${year}). ${journalArticleTitle}. <i>${journalName}</i>, <i>${journalVolume}</i>${issuePart}, ${pageRange}.`;
+                        let volumePart = journalVolume ? `<i>${journalVolume}</i>` : '';
+                        let pagesPart = pageRange ? `, ${pageRange}` : ''; // Comma before page range if it exists
+                        let doiUrl = '';
+
                         if (doi) {
-                            // APA recomienda "https://doi.org/" como prefijo para DOIs
-                            citation += ` ${doi.startsWith('https://doi.org/') ? '' : 'https://doi.org/'}${doi.replace('https://doi.org/', '')}`; // No hay punto final si hay DOI
+                            let formattedDoi = doi.trim();
+                            if (!formattedDoi.startsWith('http://') && !formattedDoi.startsWith('https://')) {
+                                formattedDoi = `https://doi.org/${formattedDoi}`;
+                            }
+                            doiUrl = formattedDoi;
                         }
-                        citation += '.'; // Añadir punto final si no se añadió por DOI
+
+                        let journalDetails = `<i>${journalName}</i>`;
+                        if (volumePart) {
+                            journalDetails += `, ${volumePart}${issuePart}`;
+                        } else if (journalIssue) { // If only issue is provided, APA usually needs volume. But if user provides, include it.
+                            journalDetails += `, ${issuePart}`;
+                        }
+                        
+                        journalDetails += `${pagesPart}`; // Add pages part
+                        
+                        citation = `${author}. (${year}). ${journalArticleTitle}. ${journalDetails}.`; 
+                        if (doiUrl) {
+                            citation += ` ${doiUrl}`;
+                        }
                     }
                 }
 
