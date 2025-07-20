@@ -10,11 +10,15 @@
     <meta name="creation_year" content="2025">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <style>
-        /* Fuente Inter */
+        /* Fuente Inter (general) */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(to right bottom, #e0f2fe, #bfdbfe); /* Degradado suave de fondo */
+            background-color: #6c6454; /* Color sólido de fondo */
         }
         /* Estilos para el área de texto de la cita generada */
         #citationOutput, #inTextCitationOutput {
@@ -63,6 +67,22 @@
             max-width: 600px; /* Ancho máximo para desktop */
             width: 100%;
             box-sizing: border-box; /* Asegura que padding no aumente el ancho */
+        }
+
+        /* Estilos para las secciones diferenciadas */
+        .section-card {
+            background-color: #f0f9ff; /* Un azul muy claro para el fondo de la sección principal */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); /* Sombra para diferenciar el bloque */
+            margin-bottom: 2.5rem; /* Espacio entre secciones */
+            border: 1px solid #e0f2fe; /* Borde suave */
+        }
+
+        /* Estilo específico para la segunda sección (amarillo pastel) */
+        .section-card-yellow {
+            background-color: #fffacd; /* Amarillo pastel (lemon chiffon) */
+            border: 1px solid #ffe0a3; /* Borde suave para el amarillo */
         }
 
         /* Inputs mejorados */
@@ -128,159 +148,204 @@
             p {
                 font-size: 0.9rem; /* Texto más pequeño en móviles */
             }
+            .section-card {
+                padding: 1.5rem; /* Menos padding en móviles */
+                margin-bottom: 2rem;
+            }
+            .header-content {
+                flex-direction: column; /* Apila los elementos en columnas en pantallas pequeñas */
+                text-align: center;
+            }
+            .header-content h1 {
+                font-size: 1.8rem; /* Ajusta el tamaño del título en móviles */
+                margin-top: 0.5rem;
+            }
+            .header-content a {
+                margin-top: 0.5rem;
+            }
         }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="main-container">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas APA Universal</h1>
-        <p class="text-gray-600 text-center mb-8">Introduce los detalles del documento para generar la cita en formato APA (7ª edición).</p>
-
-        <div class="space-y-4">
-            <div>
-                <label for="documentType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Documento:</label>
-                <select id="documentType" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="website">Página Web</option>
-                    <option value="book">Libro</option>
-                    <option value="journalArticle">Publicación o Artículo</option>
-                </select>
+        <!-- Nueva sección de cabecera con logo, título y enlace -->
+        <div class="flex items-center justify-between flex-wrap mb-8 p-4 bg-white rounded-lg shadow-md">
+            <!-- Logo de ejemplo (SVG simple) -->
+            <div class="flex-shrink-0 mr-4">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-500">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 7.5L17 10L12 12.5L7 10L12 7.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 10V17L12 19.5V12.5L7 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 10V17L12 19.5V12.5L17 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </div>
-
-            <div id="commonFields" class="space-y-4">
-                <div>
-                    <label for="authorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. (separa con punto y coma para múltiples autores):</label>
-                    <input type="text" id="authorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García, M. o García Manuel; Pérez, J.">
-                </div>
+            
+            <!-- Título "Esto Es Historia" con color HEX #780707 y fuente Playfair Display -->
+            <h1 class="text-3xl font-extrabold tracking-tight flex-grow text-center md:text-left" style="color: #780707; font-family: 'Playfair Display', serif;">
+                Esto Es Historia
+            </h1>
+            
+            <!-- Enlace a la web -->
+            <div class="flex-shrink-0 ml-4">
+                <a href="https://www.facebook.com/TodoEstoEsHistoria" target="_blank" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200">
+                    Visita nuestra web
+                </a>
             </div>
-
-            <!-- Campos específicos para Página Web -->
-            <div id="websiteFields" class="space-y-4">
-                <div>
-                    <label for="publicationDateWebsite" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible):</label>
-                    <input type="date" id="publicationDateWebsite" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
-                    <input type="text" id="articleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
-                </div>
-                <div>
-                    <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
-                    <input type="text" id="websiteName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Wikipedia, BBC News, Esto Es Historia">
-                </div>
-                <div>
-                    <label for="pageUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
-                    <input type="url" id="pageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
-                </div>
-            </div>
-
-            <!-- Campos específicos para Libro -->
-            <div id="bookFields" class="space-y-4 hidden">
-                <div>
-                    <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearBook" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
-                </div>
-                <div>
-                    <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
-                    <input type="text" id="bookTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El Quijote de la Mancha">
-                </div>
-                <div>
-                    <label for="publisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
-                    <input type="text" id="publisher" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Penguin Random House">
-                </div>
-                <div>
-                    <label for="isbn" class="block text-gray-700 text-sm font-semibold mb-2">ISBN (opcional):</label>
-                    <input type="text" id="isbn" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 978-3-16-148410-0">
-                </div>
-            </div>
-
-            <!-- Campos específicos para Publicación o Artículo (anteriormente Artículo de Revista) -->
-            <div id="journalArticleFields" class="space-y-4 hidden">
-                <div>
-                    <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
-                </div>
-                <div>
-                    <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
-                    <input type="text" id="journalArticleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El impacto de la IA en la sociedad moderna">
-                </div>
-                <div>
-                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Publicación/Revista:</label>
-                    <input type="text" id="journalName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Nature, Communications Earth & Environment">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen (opcional):</label>
-                        <input type="text" id="journalVolume" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 15">
-                    </div>
-                    <div>
-                        <label for="journalIssue" class="block text-gray-700 text-sm font-semibold mb-2">Número (opcional):</label>
-                        <input type="text" id="journalIssue" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 3">
-                    </div>
-                </div>
-                <div>
-                    <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas (opcional):</label>
-                    <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 123-145">
-                </div>
-                <div>
-                    <label for="doi" class="block text-gray-700 text-sm font-semibold mb-2">DOI (opcional):</label>
-                    <input type="text" id="doi" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 10.1037/a0028240">
-                </div>
-            </div>
-
-            <button id="generateCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
-                Generar Cita APA
-            </button>
         </div>
 
-        <div class="mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita Generada:</h2>
-            <div id="citationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
-                La cita aparecerá aquí.
+        <!-- Sección del Generador de Citas APA Universal -->
+        <div class="section-card">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas APA Universal</h1>
+            <p class="text-gray-600 text-center mb-8">Introduce los detalles del documento para generar la cita en formato APA (7ª edición).</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label for="documentType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Documento:</label>
+                    <select id="documentType" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="website">Página Web</option>
+                        <option value="book">Libro</option>
+                        <option value="journalArticle">Publicación o Artículo</option>
+                    </select>
+                </div>
+
+                <div id="commonFields" class="space-y-4">
+                    <div>
+                        <label for="authorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. (separa con punto y coma para múltiples autores):</label>
+                        <input type="text" id="authorName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García, M. o García Manuel; Pérez, J.">
+                    </div>
+                </div>
+
+                <!-- Campos específicos para Página Web -->
+                <div id="websiteFields" class="space-y-4">
+                    <div>
+                        <label for="publicationDateWebsite" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible):</label>
+                        <input type="date" id="publicationDateWebsite" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
+                        <input type="text" id="articleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
+                    </div>
+                    <div>
+                        <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
+                        <input type="text" id="websiteName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Wikipedia, BBC News, Esto Es Historia">
+                    </div>
+                    <div>
+                        <label for="pageUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
+                        <input type="url" id="pageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-2 focus:ring-blue-500" placeholder="Ej: https://ejemplo.com/articulo">
+                    </div>
+                </div>
+
+                <!-- Campos específicos para Libro -->
+                <div id="bookFields" class="space-y-4 hidden">
+                    <div>
+                        <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                        <input type="number" id="publicationYearBook" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
+                    </div>
+                    <div>
+                        <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
+                        <input type="text" id="bookTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El Quijote de la Mancha">
+                    </div>
+                    <div>
+                        <label for="publisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
+                        <input type="text" id="publisher" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Penguin Random House">
+                    </div>
+                    <div>
+                        <label for="isbn" class="block text-gray-700 text-sm font-semibold mb-2">ISBN (opcional):</label>
+                        <input type="text" id="isbn" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 978-3-16-148410-0">
+                    </div>
+                </div>
+
+                <!-- Campos específicos para Publicación o Artículo (anteriormente Artículo de Revista) -->
+                <div id="journalArticleFields" class="space-y-4 hidden">
+                    <div>
+                        <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                        <input type="number" id="publicationYearJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
+                    </div>
+                    <div>
+                        <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
+                        <input type="text" id="journalArticleTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: El impacto de la IA en la sociedad moderna">
+                    </div>
+                    <div>
+                        <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Publicación/Revista:</label>
+                        <input type="text" id="journalName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: Nature, Communications Earth & Environment">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen (opcional):</label>
+                            <input type="text" id="journalVolume" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 15">
+                        </div>
+                        <div>
+                            <label for="journalIssue" class="block text-gray-700 text-sm font-semibold mb-2">Número (opcional):</label>
+                            <input type="text" id="journalIssue" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 3">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas (opcional):</label>
+                        <input type="text" id="pageRange" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 123-145">
+                    </div>
+                    <div>
+                        <label for="doi" class="block text-gray-700 text-sm font-semibold mb-2">DOI (opcional):</label>
+                        <input type="text" id="doi" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 10.1037/a0028240">
+                    </div>
+                </div>
+
+                <button id="generateCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
+                    Generar Cita APA
+                </button>
             </div>
-            <button id="copyCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
-                Copiar Cita
-            </button>
-            <div id="messageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
-        </div>
+
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita Generada:</h2>
+                <div id="citationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                    La cita aparecerá aquí.
+                </div>
+                <button id="copyCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                    Copiar Cita
+                </button>
+                <div id="messageBox" class="mt-4 p-3 rounded-md text-sm text-center" style="display: none;"></div>
+            </div>
+        </div> <!-- Fin de la sección del Generador de Citas APA Universal -->
 
         <hr class="my-8 border-gray-300">
 
-        <!-- Nueva sección para Citas en el Texto -->
-        <div class="space-y-4">
+        <!-- Sección del Generador de Citas en el Texto (Directas) -->
+        <div class="section-card section-card-yellow">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Generador de Citas en el Texto (Directas)</h2>
             <p class="text-gray-600 text-center mb-8">Introduce los detalles para generar el formato de cita directa en el texto (APA 7ª edición).</p>
 
-            <div>
-                <label for="inTextAuthorInput" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido(s) (separa con punto y coma para múltiples autores):</label>
-                <input type="text" id="inTextAuthorInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García; Pérez; Smith">
-            </div>
-            <div>
-                <label for="inTextYearInput" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                <input type="number" id="inTextYearInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
-            </div>
-            <div>
-                <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
-                <input type="text" id="inTextPageInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: p. 42 o pp. 120-125 o párr. 3">
-            </div>
-            <div>
-                <label for="inTextQuoteInput" class="block text-gray-700 text-sm font-semibold mb-2">Texto de la Cita Directa (opcional, para contexto):</label>
-                <textarea id="inTextQuoteInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Pega aquí el texto exacto que estás citando."></textarea>
+            <div class="space-y-4">
+                <div>
+                    <label for="inTextAuthorInput" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido(s) (separa con punto y coma para múltiples autores):</label>
+                    <input type="text" id="inTextAuthorInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: García; Pérez; Smith">
+                </div>
+                <div>
+                    <label for="inTextYearInput" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="inTextYearInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
+                    <input type="text" id="inTextPageInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: p. 42 o pp. 120-125 o párr. 3">
+                </div>
+                <div>
+                    <label for="inTextQuoteInput" class="block text-gray-700 text-sm font-semibold mb-2">Texto de la Cita Directa (opcional, para contexto):</label>
+                    <textarea id="inTextQuoteInput" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Pega aquí el texto exacto que estás citando."></textarea>
+                </div>
+
+                <button id="generateInTextCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
+                    Generar Cita en el Texto
+                </button>
             </div>
 
-            <button id="generateInTextCitationBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md">
-                Generar Cita en el Texto
-            </button>
-        </div>
-
-        <div class="mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita en el Texto Generada:</h2>
-            <div id="inTextCitationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
-                La cita en el texto aparecerá aquí.
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita en el Texto Generada:</h2>
+                <div id="inTextCitationOutput" class="bg-gray-50 p-4 rounded-md border border-gray-200 text-gray-800 text-sm break-words min-h-[80px] flex items-center justify-center text-center">
+                    La cita en el texto aparecerá aquí.
+                </div>
+                <button id="copyInTextCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
+                    Copiar Cita en el Texto
+                </button>
             </div>
-            <button id="copyInTextCitationBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-md hover:bg-green-700 transition duration-300 ease-in-out mt-4 shadow-md" style="display: none;">
-                Copiar Cita en el Texto
-            </button>
-        </div>
+        </div> <!-- Fin de la sección del Generador de Citas en el Texto (Directas) -->
 
     </div>
 
