@@ -177,7 +177,7 @@
             <div id="bookFields" class="space-y-4 hidden">
                 <div>
                     <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearBook" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+                    <input type="number" id="publicationYearBook" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
                 </div>
                 <div>
                     <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
@@ -197,7 +197,7 @@
             <div id="journalArticleFields" class="space-y-4 hidden">
                 <div>
                     <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023">
+                    <input type="number" id="publicationYearJournal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej: 2023 (obligatorio)">
                 </div>
                 <div>
                     <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
@@ -297,7 +297,9 @@
             // Specific date/year inputs for full reference
             const publicationDateWebsiteInput = document.getElementById('publicationDateWebsite');
             const publicationYearBookInput = document.getElementById('publicationYearBook');
+            // Removed month and day for book
             const publicationYearJournalInput = document.getElementById('publicationYearJournal');
+            // Removed month and day for journal article
 
             // Website specific fields for full reference
             const articleTitleInput = document.getElementById('articleTitle');
@@ -601,6 +603,7 @@
                         showMessage('Para Libro: rellena el Autor, Año de Publicación, Título del Libro y Editorial.', 'error');
                         isValid = false;
                     } else {
+                        // APA reference list for books typically only uses the year.
                         citation = `${author}. (${year}). <i>${bookTitle}</i>. ${publisher}.`;
                         if (isbn) {
                             citation += ` ISBN ${isbn}.`;
