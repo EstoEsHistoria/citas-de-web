@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Citas en el Texto (Directas) - Esto Es Historia</title>
+    <!-- Metadato de autor para esta página -->
+    <meta name="author" content="Esto Es Historia">
+    <!-- Metadato de año de creación para esta página -->
+    <meta name="creation_year" content="2025">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter (para el cuerpo) y Playfair Display (para el título principal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales del cuerpo */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #dad7d7; /* Color de fondo de la página: HEX #dad7d7 */
+            display: flex;
+            flex-direction: column; /* Para que el nav se apile sobre el main-container */
+            align-items: center;
+            justify-content: flex-start; /* Alinea el contenido al inicio de la columna */
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Estilos para el contenedor principal de la aplicación */
+        .main-container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
+            max-width: 750px; /* Ancho máximo para el diseño */
+            width: 100%;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr; /* Una sola columna para las secciones principales */
+            gap: 2.5rem; /* Espacio entre las secciones */
+            margin-top: 2rem; /* Espacio para el nav bar */
+        }
+
+        /* Estilos para las tarjetas de sección */
+        .section-card {
+            background-color: #fffacd; /* Fondo del formulario: amarillo pastel */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e0f2fe;
+            width: 100%;
+        }
+
+        /* Estilos para los inputs de texto, fecha, URL, número y selectores */
+        input[type="text"],
+        input[type="date"],
+        input[type="url"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+            width: 100%; /* Asegura que tomen el 100% del ancho de su contenedor */
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+            outline: none;
+        }
+
+        /* Estilos para los botones */
+        button {
+            font-weight: 600;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%; /* Asegura que los botones ocupen todo el ancho */
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        .generate-btn {
+            background: linear-gradient(to right, #3b82f6, #2563eb); /* Degradado azul */
+            color: white;
+        }
+        .generate-btn:hover {
+            background: linear-gradient(to right, #2563eb, #1d4ed8);
+        }
+        .copy-btn {
+            background: linear-gradient(to right, #10b981, #059669); /* Degradado verde */
+            color: white;
+        }
+        .copy-btn:hover {
+            background: linear-gradient(to right, #059669, #047857);
+        }
+
+        /* Estilos para el área de texto de la cita generada */
+        .in-text-citation-output-box {
+            white-space: pre-wrap; /* Mantiene los saltos de línea y espacios */
+            word-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento (compatibilidad antigua) */
+            overflow-wrap: break-word; /* Rompe palabras largas para evitar desbordamiento (moderno) */
+            word-break: break-all; /* FUERZA la ruptura de palabras muy largas (como URLs) */
+            user-select: all; /* Permite seleccionar todo el texto fácilmente */
+            min-height: 50px; /* Altura mínima para visibilidad, ajustada para el ejemplo */
+            text-align: left; /* Alinea el texto a la izquierda */
+            display: flex; /* Usar flexbox para centrar contenido verticalmente */
+            align-items: center; /* Centrar verticalmente */
+            justify-content: center; /* Centrar horizontalmente si el contenido es corto */
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #374151;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            padding: 1rem; /* Padding para el contenido de la cita */
+            margin-top: 1rem; /* Espacio superior para separar del botón */
+        }
+
+        /* Mensajes de alerta */
+        #inTextMessageBox {
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            display: none; /* Oculto por defecto */
+        }
+        .text-red-600 { color: #dc2626; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-gray-800 { color: #1f2937; }
+
+        /* Estilos para el menú de navegación */
+        .navbar {
+            width: 100%;
+            max-width: 750px; /* Mismo ancho máximo que el main-container */
+            background-color: #374151; /* Color oscuro para el nav */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center; /* Centra los elementos del nav */
+            gap: 2rem; /* Espacio entre los enlaces */
+            margin-bottom: 1rem; /* Espacio entre el nav y el main-container */
+        }
+        .navbar a {
+            color: #d1d5db; /* Texto claro para los enlaces */
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #4b5563; /* Fondo ligeramente más claro al pasar el ratón */
+            color: #ffffff;
+        }
+        .navbar .active {
+            background-color: #2563eb; /* Color azul para el enlace activo */
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Responsividad para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+                gap: 1.5rem;
+                margin-top: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .section-card {
+                padding: 1.5rem;
+            }
+            .navbar {
+                flex-direction: column; /* Apila los enlaces en pantallas pequeñas */
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+            }
+            .navbar a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de Navegación -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-link" id="navReferencias">Citas de Referencia</a>
+        <a href="citas-directas.html" class="nav-link active" id="navDirectas">Citas Directas</a>
+    </nav>
+
+    <div class="main-container">
+        <!-- Sección de cabecera con logo, título y enlace -->
+        <div class="flex items-center justify-between flex-wrap p-4 bg-white rounded-lg shadow-md">
+            <!-- Contenedor del Logo -->
+            <div class="flex-shrink-0 mr-4">
+                <!-- URL del logo proporcionada por el usuario -->
+                <img src="logo.png" 
+                     alt="Logo de Esto Es Historia" 
+                     class="w-12 h-12 rounded-full"
+                     onerror="this.onerror=null; this.src='https://placehold.co/48x48/CCCCCC/000000?text=Logo';">
+            </div>
+            
+            <!-- Título "Esto Es Historia" con color HEX #780707 y fuente Playfair Display -->
+            <h1 class="text-3xl font-extrabold tracking-tight flex-grow text-center md:text-left" style="color: #780707; font-family: 'Playfair Display', serif;">
+                Esto Es Historia
+            </h1>
+            
+            <!-- Enlace a la web -->
+            <div class="flex-shrink-0 ml-4">
+                <a href="https://www.facebook.com/TodoEstoEsHistoria" target="_blank" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200">
+                    Visita nuestra web
+                </a>
+            </div>
+        </div>
+
+        <!-- Sección del Generador de Citas en el Texto (Directas) -->
+        <div class="section-card">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas en el Texto (Directas)</h1>
+            <p class="text-gray-600 text-center mb-8">Introduce los detalles para generar el formato de cita directa en el texto (APA 7ª edición).</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label for="inTextAuthorInput" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido(s) (separa con punto y coma para múltiples autores):</label>
+                    <input type="text" id="inTextAuthorInput" placeholder="Ej: García; Pérez; Smith">
+                </div>
+                <div>
+                    <label for="inTextYearInput" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="inTextYearInput" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
+                    <input type="text" id="inTextPageInput" placeholder="Ej: p. 42 o pp. 120-125 o párr. 3">
+                </div>
+                <div>
+                    <label for="inTextQuoteInput" class="block text-gray-700 text-sm font-semibold mb-2">Texto de la Cita Directa (opcional, para contexto):</label>
+                    <textarea id="inTextQuoteInput" rows="3" placeholder="Pega aquí el texto exacto que estás citando."></textarea>
+                </div>
+
+                <button id="generateInTextCitationBtn" class="generate-btn mt-6">
+                    Generar Cita en el Texto
+                </button>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Parentético:</h3>
+                <div id="inTextParentheticalOutput" class="in-text-citation-output-box">
+                    La cita parentética aparecerá aquí.
+                </div>
+                <button id="copyParentheticalBtn" class="copy-btn mt-4" style="display: none;">
+                    Copiar Cita Parentética
+                </button>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Narrativo:</h3>
+                <div id="inTextNarrativeOutput" class="in-text-citation-output-box">
+                    La cita narrativa aparecerá aquí.
+                </div>
+                <button id="copyNarrativeBtn" class="copy-btn mt-4" style="display: none;">
+                    Copiar Cita Narrativa
+                </button>
+            </div>
+
+            <div id="inTextMessageBox" class="mt-4"></div>
+        </div> <!-- Fin de la sección del Generador de Citas en el Texto (Directas) -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referencias a los elementos del DOM
+            const inTextAuthorInput = document.getElementById('inTextAuthorInput');
+            const inTextYearInput = document.getElementById('inTextYearInput');
+            const inTextPageInput = document.getElementById('inTextPageInput');
+            const inTextQuoteInput = document.getElementById('inTextQuoteInput');
+            const generateInTextCitationBtn = document.getElementById('generateInTextCitationBtn');
+            const inTextParentheticalOutput = document.getElementById('inTextParentheticalOutput');
+            const copyParentheticalBtn = document.getElementById('copyParentheticalBtn');
+            const inTextNarrativeOutput = document.getElementById('inTextNarrativeOutput');
+            const copyNarrativeBtn = document.getElementById('copyNarrativeBtn');
+            const inTextMessageBox = document.getElementById('inTextMessageBox'); // Usar el ID correcto
+
+            // Función para mostrar mensajes temporales al usuario
+            function showMessage(message, type = 'info') {
+                inTextMessageBox.textContent = message;
+                inTextMessageBox.className = 'mt-4 p-3 rounded-md text-sm text-center'; // Resetear clases
+                if (type === 'success') {
+                    inTextMessageBox.classList.add('bg-green-100', 'text-green-800');
+                } else if (type === 'error') {
+                    inTextMessageBox.classList.add('bg-red-100', 'text-red-800');
+                } else { // info
+                    inTextMessageBox.classList.add('bg-blue-100', 'text-blue-800');
+                }
+                inTextMessageBox.style.display = 'block';
+
+                if (inTextMessageBox.timeoutId) {
+                    clearTimeout(inTextMessageBox.timeoutId);
+                }
+                inTextMessageBox.timeoutId = setTimeout(() => {
+                    inTextMessageBox.style.display = 'none';
+                    inTextMessageBox.timeoutId = null;
+                }, 3000);
+            }
+
+            // Función para formatear un solo apellido de autor a "Apellido" (para citas en el texto)
+            function formatSingleLastName(nameString) {
+                if (!nameString) return '';
+                let cleanedName = nameString.trim();
+
+                // Si contiene una coma, asumimos "Apellido, Nombre(s)" y tomamos la parte antes de la coma.
+                // Luego capitalizamos cada palabra en esa parte.
+                if (cleanedName.includes(',')) {
+                    let lastNamePart = cleanedName.split(',')[0].trim();
+                    return lastNamePart.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                } else {
+                    // Si no contiene coma, asumimos que toda la cadena es el apellido (puede ser compuesto)
+                    // Capitalizamos cada palabra en la cadena.
+                    return cleanedName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                }
+            }
+
+            // Función para formatear múltiples autores para citas en el texto
+            function formatAuthorsForInText(authorString, citationType) {
+                if (!authorString) return '';
+
+                const rawAuthors = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
+                const formattedLastNames = rawAuthors.map(name => formatSingleLastName(name));
+                const numAuthors = formattedLastNames.length;
+
+                if (numAuthors === 0) {
+                    return '';
+                } else if (numAuthors === 1) {
+                    return formattedLastNames[0];
+                } else if (numAuthors === 2) {
+                    // Para 2 autores, se usa "Apellido & Apellido" en parentéticas y "Apellido y Apellido" en narrativas
+                    if (citationType === 'parenthetical') {
+                        return `${formattedLastNames[0]} & ${formattedLastNames[1]}`;
+                    } else { // narrative
+                        return `${formattedLastNames[0]} y ${formattedLastNames[1]}`;
+                    }
+                } else if (numAuthors >= 3) {
+                    // Para 3 o más autores, se usa "Apellido et al."
+                    return `${formattedLastNames[0]} et al.`;
+                }
+            }
+
+            // Event listener para el botón de generar cita en el texto
+            generateInTextCitationBtn.addEventListener('click', () => {
+                const author = inTextAuthorInput.value.trim();
+                const year = inTextYearInput.value.trim();
+                const pageOrParagraph = inTextPageInput.value.trim();
+                const quoteContent = inTextQuoteInput.value.trim();
+
+                // Limpiar salidas y ocultar botones de copiar al generar
+                inTextParentheticalOutput.textContent = 'La cita parentética aparecerá aquí.';
+                copyParentheticalBtn.style.display = 'none';
+                inTextNarrativeOutput.textContent = 'La cita narrativa aparecerá aquí.';
+                copyNarrativeBtn.style.display = 'none';
+                inTextMessageBox.style.display = 'none';
+
+                if (!author || !year) {
+                    showMessage('Por favor, rellena el Autor y el Año de Publicación.', 'error');
+                    return;
+                }
+
+                let locationPart = '';
+                if (pageOrParagraph) {
+                    // Asegurarse de que el prefijo "p." o "párr." esté presente
+                    if (!pageOrParagraph.toLowerCase().startsWith('p.') && !pageOrParagraph.toLowerCase().startsWith('párr.')) {
+                        locationPart = `, p. ${pageOrParagraph}`; // Asumir página por defecto si no se especifica
+                    } else {
+                        locationPart = `, ${pageOrParagraph}`;
+                    }
+                }
+
+                // Generar Cita Parentética
+                const formattedAuthorParenthetical = formatAuthorsForInText(author, 'parenthetical');
+                let parentheticalCitation = '';
+                if (quoteContent) {
+                    parentheticalCitation = `"${quoteContent}" (${formattedAuthorParenthetical}, ${year}${locationPart})`;
+                } else {
+                    parentheticalCitation = `(${formattedAuthorParenthetical}, ${year}${locationPart})`;
+                }
+                inTextParentheticalOutput.textContent = parentheticalCitation;
+                copyParentheticalBtn.style.display = 'block';
+
+                // Generar Cita Narrativa
+                const formattedAuthorNarrative = formatAuthorsForInText(author, 'narrative');
+                let narrativeCitation = '';
+                if (quoteContent) {
+                    narrativeCitation = `Según ${formattedAuthorNarrative} (${year}${locationPart}), "${quoteContent}".`;
+                } else {
+                    narrativeCitation = `Según ${formattedAuthorNarrative} (${year}${locationPart}).`;
+                }
+                inTextNarrativeOutput.textContent = narrativeCitation;
+                copyNarrativeBtn.style.display = 'block';
+
+                showMessage('Citas generadas con éxito.', 'success');
+            });
+
+            // Lógica para los botones de copiar
+            copyParentheticalBtn.addEventListener('click', () => {
+                const citationText = inTextParentheticalOutput.innerText;
+                const textArea = document.createElement('textarea');
+                textArea.value = citationText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showMessage('Cita parentética copiada al portapapeles.', 'success');
+                } catch (err) {
+                    showMessage('Error al copiar la cita parentética. Por favor, cópiala manualmente.', 'error');
+                }
+                document.body.removeChild(textArea);
+            });
+
+            copyNarrativeBtn.addEventListener('click', () => {
+                const citationText = inTextNarrativeOutput.innerText;
+                const textArea = document.createElement('textarea');
+                textArea.value = citationText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showMessage('Cita narrativa copiada al portapapeles.', 'success');
+                } catch (err) {
+                    showMessage('Error al copiar la cita narrativa. Por favor, cópiala manualmente.', 'error');
+                }
+                document.body.removeChild(textArea);
+            });
+        });
+    </script>
+</body>
+</html>
