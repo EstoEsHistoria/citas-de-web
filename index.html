@@ -239,7 +239,7 @@
     <!-- Barra de Navegación -->
     <nav class="navbar">
         <a href="index.html" class="nav-link active" id="navReferencias">Citas de Referencia</a>
-        <a href="citas directas.html" class="nav-link" id="navDirectas">Citas Directas</a>
+        <a href="citas-directas.html" class="nav-link" id="navDirectas">Citas Directas</a>
     </nav>
 
     <div class="main-container">
@@ -314,7 +314,7 @@
                 <div>
                     <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
                     <input type="text" id="articleTitle" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
-                    <p class="text-gray-600 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
@@ -700,37 +700,41 @@
                 return `${year}, ${day} de ${month}`;
             }
 
-            // Función para formatear un solo nombre de autor a "Apellido, I." o "Apellido, I. I."
+            // Función para formatear un solo nombre de autor a "Apellido, I." o "Apellido"
             function formatSingleAuthor(nameString) {
                 if (!nameString) return '';
 
                 let cleanedName = nameString.trim();
                 let lastName = '';
-                let initials = '';
+                let initialsParts = []; // To hold "J", "P"
 
                 // Si contiene una coma, asumimos "Apellido, Nombre(s)"
                 if (cleanedName.includes(',')) {
                     const parts = cleanedName.split(',');
                     lastName = parts[0].trim();
                     const firstNames = parts.slice(1).join(' ').trim();
-                    initials = firstNames.split(' ').map(part => part.charAt(0).toUpperCase() + '.').join(' ').trim();
+                    initialsParts = firstNames.split(' ').filter(p => p.length > 0).map(part => part.charAt(0).toUpperCase());
                 } else {
                     // Si no contiene coma, asumimos "Nombre(s) Apellido" o "Apellido"
-                    const parts = cleanedName.split(' ');
+                    const parts = cleanedName.split(' ').filter(p => p.length > 0);
                     if (parts.length > 1) {
                         lastName = parts[parts.length - 1].trim(); // Última palabra es el apellido
-                        const firstNames = parts.slice(0, parts.length - 1).join(' ').trim();
-                        initials = firstNames.split(' ').map(part => part.charAt(0).toUpperCase() + '.').join(' ').trim();
+                        initialsParts = parts.slice(0, parts.length - 1).map(part => part.charAt(0).toUpperCase());
                     } else {
                         lastName = parts[0].trim(); // Si solo hay una palabra, es el apellido
                     }
                 }
                 
                 // Asegurarse de que el apellido esté en minúsculas antes de capitalizar solo la primera letra
-                lastName = lastName.toLowerCase();
-                lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+                lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
 
-                return `${lastName}, ${initials}`.trim(); // Eliminar espacios extra si no hay iniciales
+                let authorPart = lastName;
+                if (initialsParts.length > 0) {
+                    authorPart += `, ${initialsParts.join('.')}.`; // Add comma, initials joined by dot, and final dot
+                }
+                // No extra comma or dot if no initials.
+
+                return authorPart;
             }
 
             // Función para formatear múltiples autores para la lista de referencias
@@ -887,9 +891,9 @@
                 socialMediaUsernameInput.value = '';
                 socialMediaPublicationDateInput.value = '';
                 socialMediaContentInput.value = '';
-                // socialMediaTypeSelect.value = '[Tweet]'; // Este selector ha sido eliminado
-                socialMediaPlatformInput.value = '';
-                socialMediaUrlInput.value = '';
+                // socialMediaTypeSelect ha sido eliminado
+                const socialMediaPlatformInput = document.getElementById('socialMediaPlatform');
+                const socialMediaUrlInput = document.getElementById('socialMediaUrl');
                 dictionaryAuthorNameInput.value = '';
                 dictionaryPublicationYearInput.value = '';
                 dictionaryEntryTitleInput.value = '';
@@ -989,8 +993,10 @@
                     } else {
                         const formattedPublicationDate = publicationDate ? `(${formatDateForReference(publicationDate)})` : '(s.f.)';
                         
+                        // Eliminar el punto extra después del autor si ya lo tiene
+                        const authorSuffix = author.endsWith('.') ? '' : '.';
                         if (author) {
-                            citation = `${author}. ${formattedPublicationDate}. <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                            citation = `${author}${authorSuffix} (${formattedPublicationDate}). <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
                         } else {
                             citation = `<i>${articleTitle}</i>. (${formattedPublicationDate}). ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
                         }
@@ -1006,7 +1012,9 @@
                         showMessage('Para Libro: rellena el Autor, Año de Publicación, Título del Libro y Editorial.', 'error');
                         isValid = false;
                     } else {
-                        citation = `${author}. (${year}). <i>${bookTitle}</i>. ${publisher}.`;
+                        // Eliminar el punto extra después del autor si ya lo tiene
+                        const authorSuffix = author.endsWith('.') ? '' : '.';
+                        citation = `${author}${authorSuffix} (${year}). <i>${bookTitle}</i>. ${publisher}.`;
                         if (isbn) {
                             citation += ` ISBN ${isbn}.`;
                         }
@@ -1047,7 +1055,9 @@
                         
                         journalDetails += `${pagesPart}`;
                         
-                        citation = `${author}. (${year}). ${journalArticleTitle}. ${journalDetails}.`; 
+                        // Eliminar el punto extra después del autor si ya lo tiene
+                        const authorSuffix = author.endsWith('.') ? '' : '.';
+                        citation = `${author}${authorSuffix} (${year}). ${journalArticleTitle}. ${journalDetails}.`; 
                         if (doiUrl) {
                             citation += ` ${doiUrl}`;
                         }
@@ -1069,7 +1079,9 @@
                         let pagesPart = chapterPageRange ? `(pp. ${chapterPageRange})` : '';
                         let doiPart = doiChapter ? ` ${doiChapter}` : '';
                         
-                        citation = `${chapterAuthor}. (${chapterYear}). ${chapterTitle}. En ${bookEditor} (Ed.${bookEditor.includes('&') ? 's' : ''}), <i>${bookTitle}</i> ${pagesPart}. ${publisherChapter}.${doiPart}`;
+                        // Eliminar el punto extra después del autor del capítulo si ya lo tiene
+                        const chapterAuthorSuffix = chapterAuthor.endsWith('.') ? '' : '.';
+                        citation = `${chapterAuthor}${chapterAuthorSuffix} (${chapterYear}). ${chapterTitle}. En ${bookEditor} (Ed.${bookEditor.includes('&') ? 's' : ''}), <i>${bookTitle}</i> ${pagesPart}. ${publisherChapter}.${doiPart}`;
                     }
                 } else if (docType === 'thesis') {
                     const thesisAuthor = formatAuthorsForReference(thesisAuthorNameInput.value.trim());
@@ -1084,7 +1096,9 @@
                         isValid = false;
                     } else {
                         let urlPart = thesisUrl ? ` ${thesisUrl}` : '';
-                        citation = `${thesisAuthor}. (${thesisYear}). <i>${thesisTitle}</i> [${thesisType}, ${universityName}].${urlPart}`;
+                        // Eliminar el punto extra después del autor de la tesis si ya lo tiene
+                        const thesisAuthorSuffix = thesisAuthor.endsWith('.') ? '' : '.';
+                        citation = `${thesisAuthor}${thesisAuthorSuffix} (${thesisYear}). <i>${thesisTitle}</i> [${thesisType}, ${universityName}].${urlPart}`;
                     }
                 } else if (docType === 'report') {
                     const reportAuthor = formatAuthorsForReference(reportAuthorNameInput.value.trim()); // Aplicar formato de autor
@@ -1102,7 +1116,9 @@
                         let publisherPart = reportPublisher && reportPublisher !== reportAuthor ? `. ${reportPublisher}` : '';
                         let urlPart = reportUrl ? ` ${reportUrl}` : '';
 
-                        citation = `${reportAuthor}. (${reportYear}). <i>${reportTitle}</i>${numberPart}.${publisherPart}${urlPart}`;
+                        // Eliminar el punto extra después del autor del informe si ya lo tiene
+                        const reportAuthorSuffix = reportAuthor.endsWith('.') ? '' : '.';
+                        citation = `${reportAuthor}${reportAuthorSuffix} (${reportYear}). <i>${reportTitle}</i>${numberPart}.${publisherPart}${urlPart}`;
                     }
                 } else if (docType === 'video') {
                     const videoAuthor = formatAuthorsForReference(videoAuthorNameInput.value.trim()); // Aplicar formato de autor
@@ -1116,7 +1132,9 @@
                         isValid = false;
                     } else {
                         const formattedVideoDate = videoDate ? `(${formatDateForReference(videoDate)})` : '(s.f.)';
-                        citation = `${videoAuthor}. ${formattedVideoDate}. <i>${videoTitle}</i> [Video]. ${videoPlatform}. Recuperado ${formattedRetrievalDate}, de ${videoUrl}`;
+                        // Eliminar el punto extra después del autor del video si ya lo tiene
+                        const videoAuthorSuffix = videoAuthor.endsWith('.') ? '' : '.';
+                        citation = `${videoAuthor}${videoAuthorSuffix} ${formattedVideoDate}. <i>${videoTitle}</i> [Video]. ${videoPlatform}. Recuperado ${formattedRetrievalDate}, de ${videoUrl}`;
                     }
                 } else if (docType === 'socialMedia') {
                     const smAuthorName = formatAuthorsForReference(socialMediaAuthorNameInput.value.trim()); // Aplicar formato de autor
@@ -1148,6 +1166,7 @@
                         const contentFormatted = contentSnippet.length > 0 ? `"${contentSnippet}"` : '';
                         
                         // The citation now includes "[Publicación]" as the type
+                        // smAuthorName already has the dot if needed, and the dot after username is part of APA format
                         citation = `${smAuthorName} [${smUsername}]. ${formattedSmDate}. ${contentFormatted} [Publicación]. ${smPlatform}. Recuperado ${formattedRetrievalDate}, de ${smUrl}`;
                     }
                 } else if (docType === 'dictionaryEntry') {
@@ -1162,7 +1181,8 @@
                         isValid = false;
                     } else {
                         const yearPart = dictYear ? `(${dictYear})` : '(s.f.)';
-                        let authorPart = dictAuthor ? `${dictAuthor}. ` : '';
+                        // Eliminar el punto extra después del autor si ya lo tiene
+                        let authorPart = dictAuthor ? `${dictAuthor}${dictAuthor.endsWith('.') ? '' : '.'} ` : '';
                         
                         citation = `${authorPart}${yearPart}. ${dictEntryTitle}. En <i>${dictName}</i>. Recuperado ${formattedRetrievalDate}, de ${dictUrl}`;
                     }
