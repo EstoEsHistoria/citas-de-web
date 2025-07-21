@@ -10,10 +10,10 @@
     <meta name="creation_year" content="2025">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter (para el cuerpo) y Playfair Display (para el título principal) -->
+    <!-- Google Fonts - Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <style>
         /* Estilos generales del cuerpo */
         body {
@@ -235,71 +235,92 @@
         <!-- Sección del Generador de Citas en el Texto (Directas) -->
         <div class="section-card">
             <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Generador de Citas en el Texto (Directas)</h1>
-            <p class="text-gray-600 text-center mb-8">Introduce los detalles para generar el formato de cita directa en el texto </be>(APA 7ª edición).</p>
+            <p class="text-gray-600 text-center mb-8">Introduce los detalles para generar el formato de cita directa en el texto <br>(APA 7ª edición).</p>
 
             <div class="space-y-4">
                 <div>
                     <label for="inTextAuthorInput" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido(s) (separa con punto y coma para múltiples autores):</label>
-                    <input type="text" id="inTextAuthorInput" placeholder="Ej: García; Pérez; Smith">
+                    <input type="text" id="inTextAuthorInput" placeholder="Ej: García; Pérez; Smith o García, J.">
+                    <p class="text-gray-500 text-xs mt-1">Para múltiples autores, usa punto y coma (;) para separarlos.</p>
                 </div>
                 <div>
                     <label for="inTextYearInput" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
                     <input type="number" id="inTextYearInput" placeholder="Ej: 2023">
                 </div>
                 <div>
-                    <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
-                    <input type="text" id="inTextPageInput" placeholder="Ej: p. 42 o pp. 120-125 o párr. 3">
-                </div>
-                <div>
                     <label for="inTextQuoteInput" class="block text-gray-700 text-sm font-semibold mb-2">Texto de la Cita Directa (opcional, para contexto):</label>
                     <textarea id="inTextQuoteInput" rows="3" placeholder="Pega aquí el texto exacto que estás citando."></textarea>
+                    <p class="text-gray-500 text-xs mt-1">El formato se ajustará automáticamente.</p>
                 </div>
-
-                <button id="generateInTextCitationBtn" class="generate-btn mt-6">
-                    Generar Cita en el Texto
-                </button>
+                <div>
+                    <label for="inTextPageInput" class="block text-gray-700 text-sm font-semibold mb-2">Número(s) de Página/Párrafo (Ej: p. 1, pp. 1-5, párr. 3):</label>
+                    <input type="text" id="inTextPageInput" placeholder="Ej: 45 o 123-125 o párr. 3">
+                </div>
             </div>
 
+            <!-- Botón para generar la cita -->
+            <button id="generateInTextCitationBtn" class="generate-btn mt-6">
+                Generar Cita en el Texto
+            </button>
+
+            <!-- Sección de salida de las citas -->
             <div class="mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Parentético:</h3>
-                <div id="inTextParentheticalOutput" class="in-text-citation-output-box">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Citas Generadas:</h2>
+                
+                <!-- Ejemplo Parentético -->
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Ejemplo Parentético:</h3>
+                <div id="inTextCitationOutputParenthetical" class="in-text-citation-output-box">
                     La cita parentética aparecerá aquí.
                 </div>
-                <button id="copyParentheticalBtn" class="copy-btn mt-4" style="display: none;">
+                <button id="copyParentheticalCitationBtn" class="copy-btn mt-4" style="display: none;">
                     Copiar Cita Parentética
                 </button>
-            </div>
 
-            <div class="mt-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ejemplo Narrativo:</h3>
-                <div id="inTextNarrativeOutput" class="in-text-citation-output-box">
+                <!-- Ejemplo Narrativo -->
+                <h3 class="text-lg font-semibold text-gray-700 mt-6 mb-2">Ejemplo Narrativo:</h3>
+                <div id="inTextCitationOutputNarrative" class="in-text-citation-output-box">
                     La cita narrativa aparecerá aquí.
                 </div>
-                <button id="copyNarrativeBtn" class="copy-btn mt-4" style="display: none;">
+                <button id="copyNarrativeCitationBtn" class="copy-btn mt-4" style="display: none;">
                     Copiar Cita Narrativa
                 </button>
-            </div>
 
-            <div id="inTextMessageBox" class="mt-4"></div>
-        </div> <!-- Fin de la sección del Generador de Citas en el Texto (Directas) -->
+                <div id="inTextMessageBox" class="mt-4"></div>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM completamente cargado.'); // Log al inicio
+
             // Referencias a los elementos del DOM
             const inTextAuthorInput = document.getElementById('inTextAuthorInput');
+            console.log('inTextAuthorInput:', inTextAuthorInput);
             const inTextYearInput = document.getElementById('inTextYearInput');
-            const inTextPageInput = document.getElementById('inTextPageInput');
+            console.log('inTextYearInput:', inTextYearInput);
             const inTextQuoteInput = document.getElementById('inTextQuoteInput');
+            console.log('inTextQuoteInput:', inTextQuoteInput);
+            const inTextPageInput = document.getElementById('inTextPageInput');
+            console.log('inTextPageInput:', inTextPageInput);
             const generateInTextCitationBtn = document.getElementById('generateInTextCitationBtn');
-            const inTextParentheticalOutput = document.getElementById('inTextParentheticalOutput');
-            const copyParentheticalBtn = document.getElementById('copyParentheticalBtn');
-            const inTextNarrativeOutput = document.getElementById('inTextNarrativeOutput');
-            const copyNarrativeBtn = document.getElementById('copyNarrativeBtn');
-            const inTextMessageBox = document.getElementById('inTextMessageBox'); // Usar el ID correcto
+            console.log('generateInTextCitationBtn:', generateInTextCitationBtn);
+            const inTextCitationOutputParenthetical = document.getElementById('inTextCitationOutputParenthetical');
+            console.log('inTextCitationOutputParenthetical:', inTextCitationOutputParenthetical);
+            const inTextCitationOutputNarrative = document.getElementById('inTextCitationOutputNarrative');
+            console.log('inTextCitationOutputNarrative:', inTextCitationOutputNarrative);
+            
+            // Declarar con 'const' para asegurar que las referencias no cambien
+            const copyParentheticalCitationBtn = document.getElementById('copyParentheticalCitationBtn');
+            console.log('copyParentheticalCitationBtn:', copyParentheticalCitationBtn);
+            const copyNarrativeCitationBtn = document.getElementById('copyNarrativeCitationBtn');
+            console.log('copyNarrativeCitationBtn:', copyNarrativeCitationBtn);
+            
+            const inTextMessageBox = document.getElementById('inTextMessageBox');
+            console.log('inTextMessageBox:', inTextMessageBox);
 
             // Función para mostrar mensajes temporales al usuario
-            function showMessage(message, type = 'info') {
+            function showInTextMessageBox(message, type = 'info') {
                 inTextMessageBox.textContent = message;
                 inTextMessageBox.className = 'mt-4 p-3 rounded-md text-sm text-center'; // Resetear clases
                 if (type === 'success') {
@@ -320,132 +341,169 @@
                 }, 3000);
             }
 
-            // Función para formatear un solo apellido de autor a "Apellido" (para citas en el texto)
-            function formatSingleLastName(nameString) {
-                if (!nameString) return '';
-                let cleanedName = nameString.trim();
-
-                // Si contiene una coma, asumimos "Apellido, Nombre(s)" y tomamos la parte antes de la coma.
-                // Luego capitalizamos cada palabra en esa parte.
-                if (cleanedName.includes(',')) {
-                    let lastNamePart = cleanedName.split(',')[0].trim();
-                    return lastNamePart.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+            // Helper function to get the capitalized last name from a raw author string for in-text citations
+            function getLastNameCapitalized(rawAuthorString) {
+                if (!rawAuthorString) return '';
+                let lastName = '';
+                // If the string contains a comma, assume "Lastname, Firstname(s)" format
+                if (rawAuthorString.includes(',')) {
+                    lastName = rawAuthorString.split(',')[0].trim();
                 } else {
-                    // Si no contiene coma, asumimos que toda la cadena es el apellido (puede ser compuesto)
-                    // Capitalizamos cada palabra en la cadena.
-                    return cleanedName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                    // Otherwise, assume "Firstname(s) Lastname" or just "Lastname"
+                    const words = rawAuthorString.trim().split(/\s+/).filter(w => w.length > 0);
+                    lastName = words[words.length - 1] || ''; // Take the last word as the last name
                 }
+
+                // Capitalize the first letter of the last name
+                if (lastName.length > 0) {
+                    return lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+                }
+                return lastName;
             }
 
-            // Función para formatear múltiples autores para citas en el texto
-            function formatAuthorsForInText(authorString, citationType) {
+            // Function to format multiple authors for citations in the text
+            // Returns only the capitalized last name(s) or "et al." for use in parenthetical or narrative.
+            function formatAuthorsForInTextCitation(authorString) {
                 if (!authorString) return '';
 
-                const rawAuthors = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
-                const formattedLastNames = rawAuthors.map(name => formatSingleLastName(name));
-                const numAuthors = formattedLastNames.length;
+                // Split by semicolon to get individual author entries
+                const rawAuthorEntries = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
+                
+                // Capitalize each last name using the helper function
+                const capitalizedLastNames = rawAuthorEntries.map(entry => getLastNameCapitalized(entry));
+                console.log('Apellidos capitalizados:', capitalizedLastNames); // Log para depuración
+
+                const numAuthors = capitalizedLastNames.length;
 
                 if (numAuthors === 0) {
                     return '';
                 } else if (numAuthors === 1) {
-                    return formattedLastNames[0];
+                    return capitalizedLastNames[0];
                 } else if (numAuthors === 2) {
-                    // Para 2 autores, se usa "Apellido & Apellido" en parentéticas y "Apellido y Apellido" en narrativas
-                    if (citationType === 'parenthetical') {
-                        return `${formattedLastNames[0]} & ${formattedLastNames[1]}`;
-                    } else { // narrative
-                        return `${formattedLastNames[0]} y ${formattedLastNames[1]}`;
-                    }
-                } else if (numAuthors >= 3) {
-                    // Para 3 o más autores, se usa "Apellido et al."
-                    return `${formattedLastNames[0]} et al.`;
+                    return `${capitalizedLastNames[0]} & ${capitalizedLastNames[1]}`;
+                } else {
+                    // For 3 or more authors, APA 7th ed. uses "FirstAuthorLastName et al." from the first citation
+                    return `${capitalizedLastNames[0]} et al.`;
                 }
             }
 
-            // Event listener para el botón de generar cita en el texto
+            // Event listener para el botón de generar cita
             generateInTextCitationBtn.addEventListener('click', () => {
-                const author = inTextAuthorInput.value.trim();
+                console.log('Botón Generar Cita en el Texto clickeado.'); // Log al inicio del click
+                const authorsRaw = inTextAuthorInput.value.trim();
                 const year = inTextYearInput.value.trim();
-                const pageOrParagraph = inTextPageInput.value.trim();
-                const quoteContent = inTextQuoteInput.value.trim();
+                let quoteText = inTextQuoteInput.value.trim(); // Get quote text
+                const page = inTextPageInput.value.trim();
+                
+                let parentheticalCitation = '';
+                let narrativeCitation = '';
+                let isValid = true;
 
-                // Limpiar salidas y ocultar botones de copiar al generar
-                inTextParentheticalOutput.textContent = 'La cita parentética aparecerá aquí.';
-                copyParentheticalBtn.style.display = 'none';
-                inTextNarrativeOutput.textContent = 'La cita narrativa aparecerá aquí.';
-                copyNarrativeBtn.style.display = 'none';
+                // Reset outputs and hide copy buttons
+                inTextCitationOutputParenthetical.textContent = 'La cita parentética aparecerá aquí.';
+                inTextCitationOutputNarrative.textContent = 'La cita narrativa aparecerá aquí.';
+                copyParentheticalCitationBtn.style.display = 'none';
+                copyNarrativeCitationBtn.style.display = 'none';
                 inTextMessageBox.style.display = 'none';
 
-                if (!author || !year) {
-                    showMessage('Por favor, rellena el Autor y el Año de Publicación.', 'error');
-                    return;
+                if (!authorsRaw || !year || !page) { // Page is now mandatory for direct quotes
+                    showInTextMessageBox('Para la Cita en el Texto: rellena Autor(es), Año de Publicación y Número(s) de Página/Párrafo.', 'error');
+                    isValid = false;
+                }
+                console.log('Validación inicial - isValid:', isValid); // Log después de validación
+                
+                // Clean up quote text: remove extra spaces and line breaks
+                if (quoteText) {
+                    quoteText = quoteText.replace(/\s+/g, ' ').trim();
+                    console.log('Texto de cita limpiado:', quoteText); // Log de limpieza
                 }
 
-                let locationPart = '';
-                if (pageOrParagraph) {
-                    // Asegurarse de que el prefijo "p." o "párr." esté presente
-                    if (!pageOrParagraph.toLowerCase().startsWith('p.') && !pageOrParagraph.toLowerCase().startsWith('párr.')) {
-                        locationPart = `, p. ${pageOrParagraph}`; // Asumir página por defecto si no se especifica
-                    } else {
-                        locationPart = `, ${pageOrParagraph}`;
+                // Format authors for in-text citation (last name only, or et al.)
+                const authorsFormatted = formatAuthorsForInTextCitation(authorsRaw);
+                console.log('Autores formateados para cita en texto:', authorsFormatted); // Log de autores formateados
+                
+                let pagePart = '';
+                if (page) {
+                    // Normalize to lowercase for robust checking
+                    const lowerCasePage = page.toLowerCase();
+                    console.log('Página original:', page, 'Página en minúsculas:', lowerCasePage); // Log de página
+                    if (lowerCasePage.startsWith('p.') || lowerCasePage.startsWith('pp.') || lowerCasePage.startsWith('párr.')) {
+                        pagePart = page; // Use as is if it already has the prefix
+                        console.log('Página con prefijo existente:', pagePart);
+                    } else if (page.includes('-')) {
+                        pagePart = `pp. ${page}`; // Assume page range
+                        console.log('Rango de páginas:', pagePart);
+                    } else if (lowerCasePage.startsWith('parr')) { 
+                        // Handle cases like "parr 3" or "parr. 3" where user might omit dot
+                        pagePart = `párr. ${page.replace(/parr\.?\s*/i, '')}`;
+                        console.log('Párrafo formateado:', pagePart);
+                    }
+                    else {
+                        pagePart = `p. ${page}`; // Assume single page number
+                        console.log('Página simple formateada:', pagePart);
                     }
                 }
 
-                // Generar Cita Parentética
-                const formattedAuthorParenthetical = formatAuthorsForInText(author, 'parenthetical');
-                let parentheticalCitation = '';
-                if (quoteContent) {
-                    parentheticalCitation = `"${quoteContent}" (${formattedAuthorParenthetical}, ${year}${locationPart})`;
-                } else {
-                    parentheticalCitation = `(${formattedAuthorParenthetical}, ${year}${locationPart})`;
-                }
-                inTextParentheticalOutput.textContent = parentheticalCitation;
-                copyParentheticalBtn.style.display = 'block';
+                if (isValid) {
+                    // Generate Parenthetical Citation
+                    if (quoteText) { // Only include quote if provided
+                        parentheticalCitation = `"${quoteText}" (${authorsFormatted}, ${year}${pagePart ? `, ${pagePart}` : ''}).`;
+                    } else {
+                        parentheticalCitation = `(${authorsFormatted}, ${year}).`;
+                    }
+                    inTextCitationOutputParenthetical.textContent = parentheticalCitation;
+                    copyParentheticalCitationBtn.style.display = 'block';
+                    console.log('Cita parentética generada:', parentheticalCitation);
 
-                // Generar Cita Narrativa
-                const formattedAuthorNarrative = formatAuthorsForInText(author, 'narrative');
-                let narrativeCitation = '';
-                if (quoteContent) {
-                    narrativeCitation = `Según ${formattedAuthorNarrative} (${year}${locationPart}), "${quoteContent}".`;
-                } else {
-                    narrativeCitation = `Según ${formattedAuthorNarrative} (${year}${locationPart}).`;
-                }
-                inTextNarrativeOutput.textContent = narrativeCitation;
-                copyNarrativeBtn.style.display = 'block';
+                    // Generate Narrative Citation
+                    if (quoteText) { // Only include quote if provided
+                        narrativeCitation = `Según ${authorsFormatted} (${year}), "${quoteText}" (${pagePart}).`;
+                    } else {
+                        narrativeCitation = `Según ${authorsFormatted} (${year}).`;
+                    }
+                    inTextCitationOutputNarrative.textContent = narrativeCitation;
+                    copyNarrativeCitationBtn.style.display = 'block';
+                    console.log('Cita narrativa generada:', narrativeCitation);
 
-                showMessage('Citas generadas con éxito.', 'success');
+                    showInTextMessageBox('Citas generadas con éxito.', 'success');
+                }
             });
 
-            // Lógica para los botones de copiar
-            copyParentheticalBtn.addEventListener('click', () => {
-                const citationText = inTextParentheticalOutput.innerText;
+            // Function to copy text to clipboard
+            function copyToClipboard(textToCopy) {
+                console.log('Intentando copiar al portapapeles:', textToCopy); // Log de copia
                 const textArea = document.createElement('textarea');
-                textArea.value = citationText;
+                textArea.value = textToCopy;
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    showMessage('Cita parentética copiada al portapapeles.', 'success');
+                    showInTextMessageBox('Cita copiada al portapapeles.', 'success');
+                    console.log('Copia exitosa.');
                 } catch (err) {
-                    showMessage('Error al copiar la cita parentética. Por favor, cópiala manualmente.', 'error');
+                    showInTextMessageBox('Error al copiar la cita. Por favor, cópiala manualmente.', 'error');
+                    console.error('Error al copiar:', err); // Log de error de copia
                 }
                 document.body.removeChild(textArea);
-            });
+            }
 
-            copyNarrativeBtn.addEventListener('click', () => {
-                const citationText = inTextNarrativeOutput.innerText;
-                const textArea = document.createElement('textarea');
-                textArea.value = citationText;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showMessage('Cita narrativa copiada al portapapeles.', 'success');
-                } catch (err) {
-                    showMessage('Error al copiar la cita narrativa. Por favor, cópiala manualmente.', 'error');
-                }
-                document.body.removeChild(textArea);
-            });
+            // Adjuntar event listeners a los botones de copiar
+            // Asegurarse de que los botones existan antes de adjuntar el listener
+            if (copyParentheticalCitationBtn) {
+                copyParentheticalCitationBtn.addEventListener('click', () => {
+                    copyToClipboard(inTextCitationOutputParenthetical.innerText);
+                });
+            } else {
+                console.error('El botón copyParentheticalCitationBtn no se encontró en el DOM.');
+            }
+
+            if (copyNarrativeCitationBtn) {
+                copyNarrativeCitationBtn.addEventListener('click', () => {
+                    copyToClipboard(inTextCitationOutputNarrative.innerText);
+                });
+            } else {
+                console.error('El botón copyNarrativeCitationBtn no se encontró en el DOM.');
+            }
         });
     </script>
 </body>

@@ -191,7 +191,7 @@
             .section-card {
                 padding: 1.5rem;
             }
-            /* Asegura que los desplegables se apilan en móviles */
+            /* Asegura que los desplegables se apilen en móviles */
             .document-type-selectors {
                 flex-direction: column;
                 gap: 1rem;
@@ -314,6 +314,7 @@
                 <div>
                     <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
                     <input type="text" id="articleTitle" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
+                    <p class="text-gray-600 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
@@ -334,6 +335,7 @@
                 <div>
                     <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
                     <input type="text" id="bookTitle" placeholder="Ej: El Quijote de la Mancha">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="publisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
@@ -354,6 +356,7 @@
                 <div>
                     <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
                     <input type="text" id="journalArticleTitle" placeholder="Ej: El impacto de la IA en la sociedad moderna">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Publicación/Revista:</label>
@@ -392,6 +395,7 @@
                 <div>
                     <label for="chapterTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Capítulo:</label>
                     <input type="text" id="chapterTitle" placeholder="Ej: La evolución de la escritura">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="bookEditorName" class="block text-gray-700 text-sm font-semibold mb-2">Editor(es) del Libro (Apellido, Iniciales.; separa con punto y coma):</label>
@@ -400,6 +404,7 @@
                 <div>
                     <label for="bookTitleChapter" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
                     <input type="text" id="bookTitleChapter" placeholder="Ej: Manual de historia antigua">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="chapterPageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas del Capítulo (Ej: 123-145):</label>
@@ -428,6 +433,7 @@
                 <div>
                     <label for="thesisTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Tesis/Disertación:</label>
                     <input type="text" id="thesisTitle" placeholder="Ej: Impacto del cambio climático en la flora patagónica">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="thesisType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Tesis:</label>
@@ -440,11 +446,11 @@
                 </div>
                 <div>
                     <label for="universityName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Universidad:</label>
-                    <input type="text" id="universityName" placeholder="Ej: Universidad de Sevilla">
+                    <input type="text" id="universityName" placeholder="Ej: Universidad Nacional de Cuyo">
                 </div>
                 <div>
                     <label for="thesisUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si es de un repositorio online):</label>
-                    <input type="url" id="thesisUrl" placeholder="Ej: https://repositorio.universidad.edu.es/tesis/123">
+                    <input type="url" id="thesisUrl" placeholder="Ej: https://repositorio.uncuyo.edu.ar/tesis/123">
                 </div>
             </div>
 
@@ -461,6 +467,7 @@
                 <div>
                     <label for="reportTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Informe:</label>
                     <input type="text" id="reportTitle" placeholder="Ej: Informe anual de desarrollo sostenible">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="reportNumber" class="block text-gray-700 text-sm font-semibold mb-2">Número de Informe (opcional):</label>
@@ -489,6 +496,7 @@
                 <div>
                     <label for="videoTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Video:</label>
                     <input type="text" id="videoTitle" placeholder="Ej: La historia del Imperio Romano en 5 minutos">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="videoPlatform" class="block text-gray-700 text-sm font-semibold mb-2">Plataforma:</label>
@@ -504,11 +512,11 @@
             <div id="socialMediaFields" class="space-y-4 hidden">
                 <div>
                     <label for="socialMediaAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor (Nombre real, si conocido):</label>
-                    <input type="text" id="socialMediaAuthorName" placeholder="Ej: Pérez, Juan">
+                    <input type="text" id="socialMediaAuthorName" placeholder="Ej: Juan Pérez">
                 </div>
                 <div>
                     <label for="socialMediaUsername" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de Usuario (@handle):</label>
-                    <input type="text" id="socialMediaUsername" placeholder="Ej: @TodoEstoEsHistoria">
+                    <input type="text" id="socialMediaUsername" placeholder="Ej: @JuanPerezHistoria">
                 </div>
                 <div>
                     <label for="socialMediaPublicationDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa):</label>
@@ -517,6 +525,7 @@
                 <div>
                     <label for="socialMediaContent" class="block text-gray-700 text-sm font-semibold mb-2">Contenido del Post (primeras 20 palabras):</label>
                     <textarea id="socialMediaContent" rows="3" placeholder="Ej: 'Hoy exploramos la fascinante historia de la civilización maya y sus grandes avances...'"></textarea>
+                    <p class="text-gray-500 text-xs mt-1">El formato se ajustará automáticamente.</p>
                 </div>
                 <!-- Eliminado: Tipo de Publicación -->
                 <div>
@@ -542,6 +551,7 @@
                 <div>
                     <label for="dictionaryEntryTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Entrada:</label>
                     <input type="text" id="dictionaryEntryTitle" placeholder="Ej: Civilización">
+                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="dictionaryName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Diccionario/Enciclopedia:</label>
@@ -749,43 +759,76 @@
             function formatTitleForSentenceCase(titleString) {
                 if (!titleString) return '';
 
-                let formattedTitle = titleString.trim().toLowerCase(); // Convertir todo a minúsculas primero
+                const words = titleString.trim().split(/\s+/); // Split by one or more spaces
+                const formattedWords = [];
+                let newSentence = true; // Flag to track if we are at the beginning of a sentence/subtitle
 
-                // Capitalizar la primera letra del título
-                if (formattedTitle.length > 0) {
-                    formattedTitle = formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1);
+                const minorWords = new Set([
+                    'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía', // preposiciones
+                    'y', 'e', 'ni', 'o', 'u', // conjunciones
+                    'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', // artículos
+                    'pero', 'mas', 'sino', 'aunque', 'porque', 'pues', 'si', 'cuando', 'como', 'donde', 'que' // other common conjunctions/adverbs
+                ]);
+
+                for (let i = 0; i < words.length; i++) {
+                    let word = words[i];
+                    if (word.length === 0) continue;
+
+                    let processedWord = word;
+                    let lastChar = word.slice(-1); // Get last character to check for punctuation
+                    let endsSentence = false;
+
+                    // Check for punctuation that might indicate end of sentence/subtitle (and remove for processing)
+                    if (/[.:?!]/.test(lastChar)) {
+                        endsSentence = true;
+                        processedWord = word.slice(0, -1); // Remove punctuation for processing
+                    }
+                    
+                    // Handle all caps words: convert to Title Case first
+                    // Check if the word is all uppercase (and not just numbers/symbols)
+                    if (processedWord === processedWord.toUpperCase() && processedWord.toLowerCase() !== processedWord) {
+                        processedWord = processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
+                    } else if (newSentence || !minorWords.has(processedWord.toLowerCase())) {
+                        // Capitalize first letter if it's the start of a new sentence/subtitle
+                        // OR if it's not a minor word (to preserve user's proper noun capitalization)
+                        processedWord = processedWord.charAt(0).toUpperCase() + processedWord.slice(1);
+                    } else {
+                        // For minor words not at the start of a sentence, convert to lowercase
+                        processedWord = processedWord.toLowerCase();
+                    }
+
+                    formattedWords.push(processedWord + (endsSentence ? lastChar : ''));
+                    // Set newSentence flag for the next word
+                    newSentence = endsSentence || (lastChar === ':' && processedWord.length > 0); // Also consider colon as start of new sentence/subtitle
                 }
 
-                // Capitalizar la primera letra después de un punto o dos puntos seguido de un espacio
-                formattedTitle = formattedTitle.replace(/([.:?!]\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
-
-                // No modificar la capitalización de nombres propios que el usuario haya ingresado
-                // Esta función no puede identificar nombres propios automáticamente, el usuario debe capitalizarlos.
-
-                return formattedTitle;
+                return formattedWords.join(' ');
             }
 
             // Función para formatear texto en "Title Case" (cada palabra importante capitalizada)
             function formatForTitleCase(textString) {
                 if (!textString) return '';
 
-                // Palabras menores en español que no se capitalizan a menos que sean la primera
                 const minorWords = new Set([
                     'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía', // preposiciones
                     'y', 'e', 'ni', 'o', 'u', // conjunciones
                     'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', // artículos
-                    'pero', 'mas', 'sino', 'aunque', 'porque', 'pues', 'si', 'cuando', 'como', 'donde', 'que' // otras conjunciones/adverbios comunes
+                    'pero', 'mas', 'sino', 'aunque', 'porque', 'pues', 'si', 'cuando', 'como', 'donde', 'que' // other common conjunctions/adverbs
                 ]);
 
-                return textString.split(' ').map((word, index) => {
+                return textString.split(/\s+/).map((word, index) => { // Split by one or more spaces
                     if (word.length === 0) return '';
-                    const lowerCaseWord = word.toLowerCase();
+                    let processedWord = word;
 
-                    // Si es la primera palabra o no es una palabra menor, capitalizar la primera letra
-                    if (index === 0 || !minorWords.has(lowerCaseWord)) {
-                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    // Handle all caps words: convert to Title Case
+                    if (processedWord === processedWord.toUpperCase() && processedWord.toLowerCase() !== processedWord) {
+                        return processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
                     }
-                    return lowerCaseWord; // Mantener en minúscula si es palabra menor y no es la primera
+                    // If it's the first word or not a minor word, capitalize the first letter
+                    else if (index === 0 || !minorWords.has(processedWord.toLowerCase())) {
+                        return processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
+                    }
+                    return processedWord.toLowerCase(); // Keep in lowercase if it's a minor word and not the first
                 }).join(' ');
             }
 
@@ -936,8 +979,8 @@
                 if (docType === 'website') {
                     const author = formatAuthorsForReference(authorNameInput.value.trim());
                     const publicationDate = publicationDateWebsiteInput.value.trim();
-                    const articleTitle = formatTitleForSentenceCase(articleTitleInput.value.trim());
-                    const websiteName = formatForTitleCase(websiteNameInput.value.trim());
+                    const articleTitle = formatTitleForSentenceCase(articleTitleInput.value.trim()); // Aplicar Sentence Case
+                    const websiteName = formatForTitleCase(websiteNameInput.value.trim()); // Aplicar Title Case
                     const pageUrl = pageUrlInput.value.trim();
 
                     if (!articleTitle || !websiteName || !pageUrl) {
@@ -971,7 +1014,7 @@
                 } else if (docType === 'journalArticle') {
                     const author = formatAuthorsForReference(authorNameInput.value.trim());
                     const year = publicationYearJournalInput.value.trim();
-                    const journalArticleTitle = formatTitleForSentenceCase(journalArticleTitleInput.value.trim());
+                    const journalArticleTitle = formatTitleForSentenceCase(journalArticleTitleInput.value.trim()); // Aplicar Sentence Case
                     const journalName = formatForTitleCase(journalNameInput.value.trim()); // Aplicar Title Case
                     const journalVolume = journalVolumeInput.value.trim();
                     const journalIssue = journalIssueInput.value.trim();
