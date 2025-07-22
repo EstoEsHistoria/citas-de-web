@@ -763,9 +763,9 @@
             function formatTitleForSentenceCase(titleString) {
                 if (!titleString) return '';
 
-                const words = titleString.trim().split(/\s+/); // Split by one or more spaces
+                const words = titleString.trim().split(/\s+/);
                 const formattedWords = [];
-                let newSentence = true; // Flag to track if we are at the beginning of a sentence/subtitle
+                let capitalizeNextWord = true; // Flag to capitalize the next word (start of title or after colon/period/etc.)
 
                 const minorWords = new Set([
                     'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía', // preposiciones
@@ -779,31 +779,40 @@
                     if (word.length === 0) continue;
 
                     let processedWord = word;
-                    let lastChar = word.slice(-1); // Get last character to check for punctuation
-                    let endsSentence = false;
+                    let trailingPunctuation = '';
+                    let triggersNewCapitalization = false;
 
-                    // Check for punctuation that might indicate end of sentence/subtitle (and remove for processing)
-                    if (/[.:?!]/.test(lastChar)) {
-                        endsSentence = true;
-                        processedWord = word.slice(0, -1); // Remove punctuation for processing
+                    // Separate trailing punctuation
+                    const punctuationMatch = processedWord.match(/([.,:;?!])$/);
+                    if (punctuationMatch) {
+                        trailingPunctuation = punctuationMatch[1];
+                        processedWord = processedWord.slice(0, -trailingPunctuation.length);
+                        if (/[.:?!]/.test(trailingPunctuation)) {
+                            triggersNewCapitalization = true;
+                        }
                     }
-                    
-                    // Handle all caps words: convert to Title Case first
-                    // Check if the word is all uppercase (and not just numbers/symbols)
-                    if (processedWord === processedWord.toUpperCase() && processedWord.toLowerCase() !== processedWord) {
+
+                    // Apply capitalization rules
+                    if (capitalizeNextWord) {
+                        // Always capitalize the first letter of the first word or after a sentence-ending punctuation/colon
                         processedWord = processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
-                    } else if (newSentence || !minorWords.has(processedWord.toLowerCase())) {
-                        // Capitalize first letter if it's the start of a new sentence/subtitle
-                        // OR if it's not a minor word (to preserve user's proper noun capitalization)
-                        processedWord = processedWord.charAt(0).toUpperCase() + processedWord.slice(1);
-                    } else {
-                        // For minor words not at the start of a sentence, convert to lowercase
+                        capitalizeNextWord = false; // Reset for subsequent words
+                    } else if (minorWords.has(processedWord.toLowerCase())) {
+                        // Minor words are always lowercase (unless they were the very first word of the title/subtitle)
                         processedWord = processedWord.toLowerCase();
+                    } else {
+                        // For other words (non-minor, not start of new sentence/subtitle):
+                        // If the user capitalized it in Sentence Case (e.g., "Juan"), keep it.
+                        // Otherwise, convert to lowercase (e.g., "loco", "LOCO" -> "loco").
+                        if (processedWord.charAt(0) === processedWord.charAt(0).toUpperCase() && processedWord.slice(1) === processedWord.slice(1).toLowerCase()) {
+                            // Keep as is (assumed proper noun or intentionally capitalized by user)
+                        } else {
+                            processedWord = processedWord.toLowerCase(); // Convert to lowercase
+                        }
                     }
 
-                    formattedWords.push(processedWord + (endsSentence ? lastChar : ''));
-                    // Set newSentence flag for the next word
-                    newSentence = endsSentence || (lastChar === ':' && processedWord.length > 0); // Also consider colon as start of new sentence/subtitle
+                    formattedWords.push(processedWord + trailingPunctuation);
+                    capitalizeNextWord = triggersNewCapitalization;
                 }
 
                 return formattedWords.join(' ');
