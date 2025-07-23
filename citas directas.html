@@ -10,10 +10,10 @@
     <meta name="creation_year" content="2025">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Playfair Display -->
+    <!-- Google Fonts - Inter (para el cuerpo) y Playfair Display (para el título principal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <style>
         /* Estilos generales del cuerpo */
         body {
@@ -341,6 +341,12 @@
                 }, 3000);
             }
 
+            // Función para capitalizar la primera letra de una frase
+            function capitalizeFirstLetter(string) {
+                if (!string) return '';
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
             // Helper function to get the capitalized last name from a raw author string for in-text citations
             function getLastNameCapitalized(rawAuthorString) {
                 if (!rawAuthorString) return '';
@@ -354,11 +360,15 @@
                     lastName = words[words.length - 1] || ''; // Take the last word as the last name
                 }
 
-                // Capitalize the first letter of the last name
-                if (lastName.length > 0) {
-                    return lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
-                }
-                return lastName;
+                // Apply Title Case to each word in the last name, respecting common lowercase particles
+                return lastName.split(' ').map((word, index) => {
+                    if (word.length === 0) return '';
+                    const lowercaseParticles = new Set(['de', 'del', 'la', 'las', 'los', 'y']);
+                    if (lowercaseParticles.has(word.toLowerCase()) && index !== 0) {
+                        return word.toLowerCase(); // Keep particles lowercase if not the first word
+                    }
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(); // Capitalize first letter, rest lowercase
+                }).join(' ');
             }
 
             // Function to format multiple authors for citations in the text
@@ -406,12 +416,24 @@
                 copyNarrativeCitationBtn.style.display = 'none';
                 inTextMessageBox.style.display = 'none';
 
-                if (!authorsRaw || !year || !page) { // Page is now mandatory for direct quotes
-                    showInTextMessageBox('Para la Cita en el Texto: rellena Autor(es), Año de Publicación y Número(s) de Página/Párrafo.', 'error');
+                // Validation: all fields are mandatory for direct quotes in this version
+                if (!authorsRaw) {
+                    showInTextMessageBox('Por favor, rellena el campo "Autor(es)".', 'error');
+                    isValid = false;
+                } else if (!year) {
+                    showInTextMessageBox('Por favor, rellena el campo "Año de Publicación".', 'error');
+                    isValid = false;
+                } else if (!page) { // Page is mandatory
+                    showInTextMessageBox('Por favor, rellena el campo "Número(s) de Página/Párrafo".', 'error');
                     isValid = false;
                 }
                 console.log('Validación inicial - isValid:', isValid); // Log después de validación
                 
+                // If validation failed, stop processing
+                if (!isValid) {
+                    return;
+                }
+
                 // Clean up quote text: remove extra spaces and line breaks
                 if (quoteText) {
                     quoteText = quoteText.replace(/\s+/g, ' ').trim();
@@ -444,29 +466,31 @@
                     }
                 }
 
-                if (isValid) {
-                    // Generate Parenthetical Citation
-                    if (quoteText) { // Only include quote if provided
-                        parentheticalCitation = `"${quoteText}" (${authorsFormatted}, ${year}${pagePart ? `, ${pagePart}` : ''}).`;
-                    } else {
-                        parentheticalCitation = `(${authorsFormatted}, ${year}).`;
-                    }
-                    inTextCitationOutputParenthetical.textContent = parentheticalCitation;
-                    copyParentheticalCitationBtn.style.display = 'block';
-                    console.log('Cita parentética generada:', parentheticalCitation);
-
-                    // Generate Narrative Citation
-                    if (quoteText) { // Only include quote if provided
-                        narrativeCitation = `Según ${authorsFormatted} (${year}), "${quoteText}" (${pagePart}).`;
-                    } else {
-                        narrativeCitation = `Según ${authorsFormatted} (${year}).`;
-                    }
-                    inTextCitationOutputNarrative.textContent = narrativeCitation;
-                    copyNarrativeCitationBtn.style.display = 'block';
-                    console.log('Cita narrativa generada:', narrativeCitation);
-
-                    showInTextMessageBox('Citas generadas con éxito.', 'success');
+                // Generate Parenthetical Citation
+                if (quoteText) { // Only include quote if provided
+                    // Capitalize the first letter of the quote for display consistency
+                    const displayQuoteText = capitalizeFirstLetter(quoteText);
+                    parentheticalCitation = `"${displayQuoteText}" (${authorsFormatted}, ${year}${pagePart ? `, ${pagePart}` : ''}).`;
+                } else {
+                    parentheticalCitation = `(${authorsFormatted}, ${year}${pagePart ? `, ${pagePart}` : ''}).`; // Page part is always included here if present
                 }
+                inTextCitationOutputParenthetical.textContent = parentheticalCitation;
+                copyParentheticalCitationBtn.style.display = 'block';
+                console.log('Cita parentética generada:', parentheticalCitation);
+
+                // Generate Narrative Citation
+                if (quoteText) { // Only include quote if provided
+                    // Capitalize the first letter of the quote for display consistency
+                    const displayQuoteText = capitalizeFirstLetter(quoteText);
+                    narrativeCitation = `Según ${authorsFormatted} (${year}), "${displayQuoteText}" (${pagePart}).`;
+                } else {
+                    narrativeCitation = `Según ${authorsFormatted} (${year})${pagePart ? `, ${pagePart}` : ''}.`; // Page part is always included here if present
+                }
+                inTextCitationOutputNarrative.textContent = narrativeCitation;
+                copyNarrativeCitationBtn.style.display = 'block';
+                console.log('Cita narrativa generada:', narrativeCitation);
+
+                showInTextMessageBox('Citas generadas con éxito.', 'success');
             });
 
             // Function to copy text to clipboard

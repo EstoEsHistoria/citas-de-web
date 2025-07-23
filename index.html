@@ -139,6 +139,14 @@
             display: none; /* Oculto por defecto */
         }
         .text-red-600 { color: #dc2626; }
+        .bg-red-100 { background-color: #fee2e2; }
+        .text-green-600 { color: #10b981; }
+        .bg-green-100 { background-color: #d1fae5; }
+        .text-blue-600 { color: #2563eb; }
+        .bg-blue-100 { background-color: #dbeafe; }
+        .text-yellow-800 { color: #92400e; } /* Darker text for yellow background */
+        .bg-yellow-100 { background-color: #fef3c7; } /* Light yellow for warning */
+
         .text-gray-600 { color: #4b5563; }
         .text-gray-700 { color: #374151; }
         .text-gray-800 { color: #1f2937; }
@@ -280,19 +288,25 @@
                         <option value="">Selecciona...</option>
                         <option value="book">Libro</option>
                         <option value="bookChapter">Capítulo de Libro</option>
-                        <option value="journalArticle">Publicación o Artículo</option>
+                        <option value="journalArticle">Publicación o Artículo de Revista</option>
+                        <option value="newspaperArticlePrint">Artículo de Periódico (Impreso)</option>
                         <option value="thesis">Tesis o Disertación</option>
                         <option value="report">Informe</option>
                     </select>
                 </div>
                 <div>
-                    <label for="documentTypeDigital" class="block text-gray-700 text-sm font-semibold">Fuentes Digitales / Online:</label>
+                    <label for="documentTypeDigital" class="block text-gray-700 text-sm font-semibold">Fuentes Digitales / Otros:</label>
                     <select id="documentTypeDigital" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Selecciona...</option>
                         <option value="website">Página Web</option>
                         <option value="video">Video (YouTube, etc.)</option>
                         <option value="socialMedia">Publicación de Red Social</option>
                         <option value="dictionaryEntry">Entrada de Diccionario/Enciclopedia Online</option>
+                        <option value="newspaperArticleOnline">Artículo de Periódico (Online)</option>
+                        <option value="blogPost">Entrada de Blog</option>
+                        <option value="software">Software</option>
+                        <option value="dataSet">Conjunto de Datos</option>
+                        <option value="interview">Entrevista (Comunicación Personal)</option>
                     </select>
                 </div>
             </div>
@@ -308,373 +322,491 @@
             <!-- Campos específicos para Página Web -->
             <div id="websiteFields" class="space-y-4 hidden">
                 <div>
-                    <label for="publicationDateWebsite" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible):</label>
+                    <label for="publicationDateWebsite" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible) (Opcional):</label>
                     <input type="date" id="publicationDateWebsite">
                 </div>
                 <div>
                     <label for="articleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo / Documento:</label>
                     <input type="text" id="articleTitle" placeholder="Ej: ¿Qué es civilización? Parte 1 - Civilización y cultura">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
                 </div>
                 <div>
                     <label for="websiteName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Sitio Web:</label>
-                    <input type="text" id="websiteName" placeholder="Ej: Wikipedia, BBC News, Esto Es Historia">
+                    <input type="text" id="websiteName" placeholder="Ej: Esto Es Historia">
                 </div>
                 <div>
-                    <label for="pageUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Página:</label>
-                    <input type="url" id="pageUrl" placeholder="Ej: https://ejemplo.com/articulo">
+                    <label for="urlWebsite" class="block text-gray-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="urlWebsite" placeholder="Ej: https://www.ejemplo.com/articulo">
                 </div>
             </div>
 
             <!-- Campos específicos para Libro -->
             <div id="bookFields" class="space-y-4 hidden">
                 <div>
-                    <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearBook" placeholder="Ej: 2023 (obligatorio)">
+                    <label for="authorNameBook" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) del Libro (si aplica) - Apellido, Iniciales. (separa con punto y coma):</label>
+                    <input type="text" id="authorNameBook" placeholder="Ej: Borges, J. L. o Borges Jorge Luis">
+                </div>
+                <div>
+                    <label for="editorBook" class="block text-gray-700 text-sm font-semibold mb-2">Editor(es) del Libro (si aplica) - Apellido, Iniciales. (separa con punto y coma):</label>
+                    <input type="text" id="editorBook" placeholder="Ej: García, J. o García Juan; Pérez, M.">
+                </div>
+                <!-- Nuevo campo para indicar si es una recopilación de un editor -->
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="isCompilationBook" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="isCompilationBook" class="ml-2 block text-gray-700 text-sm font-semibold">¿Es una recopilación de un editor (sin autor general)?</label>
+                </div>
+                <div>
+                    <label for="translatorNameBook" class="block text-gray-700 text-sm font-semibold mb-2">Traductor(es) (si aplica) - Apellido, Iniciales. (separa con punto y coma):</label>
+                    <input type="text" id="translatorNameBook" placeholder="Ej: Sánchez, A.">
+                </div>
+                <div>
+                    <label for="publicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación de esta edición:</label>
+                    <input type="number" id="publicationYearBook" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="originalPublicationYearBook" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación Original (si aplica) (Opcional):</label>
+                    <input type="number" id="originalPublicationYearBook" placeholder="Ej: 1883">
                 </div>
                 <div>
                     <label for="bookTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
-                    <input type="text" id="bookTitle" placeholder="Ej: El Quijote de la Mancha">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <input type="text" id="bookTitle" placeholder="Ej: El nombre de la rosa">
                 </div>
                 <div>
-                    <label for="publisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
-                    <input type="text" id="publisher" placeholder="Ej: Penguin Random House">
+                    <label for="publisherBook" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
+                    <input type="text" id="publisherBook" placeholder="Ej: Lumen">
                 </div>
                 <div>
-                    <label for="isbn" class="block text-gray-700 text-sm font-semibold mb-2">ISBN (opcional):</label>
-                    <input type="text" id="isbn" placeholder="Ej: 978-3-16-148410-0">
-                </div>
-            </div>
-
-            <!-- Campos específicos para Publicación o Artículo -->
-            <div id="journalArticleFields" class="space-y-4 hidden">
-                <div>
-                    <label for="publicationYearJournal" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="publicationYearJournal" placeholder="Ej: 2023 (obligatorio)">
-                </div>
-                <div>
-                    <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
-                    <input type="text" id="journalArticleTitle" placeholder="Ej: El impacto de la IA en la sociedad moderna">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
-                </div>
-                <div>
-                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Publicación/Revista:</label>
-                    <input type="text" id="journalName" placeholder="Ej: Nature, Communications Earth & Environment">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen (opcional):</label>
-                        <input type="text" id="journalVolume" placeholder="Ej: 15">
-                    </div>
-                    <div>
-                        <label for="journalIssue" class="block text-gray-700 text-sm font-semibold mb-2">Número (opcional):</label>
-                        <input type="text" id="journalIssue" placeholder="Ej: 3">
-                    </div>
-                </div>
-                <div>
-                    <label for="pageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas (opcional):</label>
-                    <input type="text" id="pageRange" placeholder="Ej: 123-145">
-                </div>
-                <div>
-                    <label for="doi" class="block text-gray-700 text-sm font-semibold mb-2">DOI (opcional):</label>
-                    <input type="text" id="doi" placeholder="Ej: 10.1037/a0028240">
+                    <label for="doiBook" class="block text-gray-700 text-sm font-semibold mb-2">DOI (si aplica) (Opcional):</label>
+                    <input type="text" id="doiBook" placeholder="Ej: 10.1037/0000165-000">
                 </div>
             </div>
 
             <!-- Campos específicos para Capítulo de Libro -->
             <div id="bookChapterFields" class="space-y-4 hidden">
                 <div>
-                    <label for="chapterAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) del Capítulo - Apellido, Iniciales.:</label>
-                    <input type="text" id="chapterAuthorName" placeholder="Ej: Smith, J.">
+                    <label for="chapterAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) del Capítulo - Apellido, Iniciales.:</label>
+                    <input type="text" id="chapterAuthor" placeholder="Ej: Eco, U.">
                 </div>
                 <div>
-                    <label for="chapterPublicationYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="chapterPublicationYear" placeholder="Ej: 2020">
+                    <label for="chapterYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación del Capítulo:</label>
+                    <input type="number" id="chapterYear" placeholder="Ej: 2023">
                 </div>
                 <div>
                     <label for="chapterTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Capítulo:</label>
-                    <input type="text" id="chapterTitle" placeholder="Ej: La evolución de la escritura">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <input type="text" id="chapterTitle" placeholder="Ej: La función del signo en la novela">
                 </div>
                 <div>
-                    <label for="bookEditorName" class="block text-gray-700 text-sm font-semibold mb-2">Editor(es) del Libro (Apellido, Iniciales.; separa con punto y coma):</label>
-                    <input type="text" id="bookEditorName" placeholder="Ej: Jones, A.; Brown, B.">
+                    <label for="editorName" class="block text-gray-700 text-sm font-semibold mb-2">Editor(es) del Libro - Iniciales. Apellido (separa con punto y coma) (Opcional):</label>
+                    <input type="text" id="editorName" placeholder="Ej: M. García; J. Pérez">
                 </div>
                 <div>
                     <label for="bookTitleChapter" class="block text-gray-700 text-sm font-semibold mb-2">Título del Libro:</label>
-                    <input type="text" id="bookTitleChapter" placeholder="Ej: Manual de historia antigua">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <input type="text" id="bookTitleChapter" placeholder="Ej: Ensayos sobre semiótica">
                 </div>
                 <div>
-                    <label for="chapterPageRange" class="block text-gray-700 text-sm font-semibold mb-2">Rango de Páginas del Capítulo (Ej: 123-145):</label>
-                    <input type="text" id="chapterPageRange" placeholder="Ej: 50-75">
+                    <label for="pagesChapter" class="block text-gray-700 text-sm font-semibold mb-2">Páginas del Capítulo (Ej: 15-30) (Opcional):</label>
+                    <input type="text" id="pagesChapter" placeholder="Ej: 15-30">
                 </div>
                 <div>
                     <label for="publisherChapter" class="block text-gray-700 text-sm font-semibold mb-2">Editorial:</label>
-                    <input type="text" id="publisherChapter" placeholder="Ej: Editorial Universitaria">
+                    <input type="text" id="publisherChapter" placeholder="Ej: Paidós">
                 </div>
                 <div>
-                    <label for="doiChapter" class="block text-gray-700 text-sm font-semibold mb-2">DOI (opcional):</label>
-                    <input type="text" id="doiChapter" placeholder="Ej: 10.xxxx/xxxx">
+                    <label for="doiChapter" class="block text-gray-700 text-sm font-semibold mb-2">DOI (si aplica) (Opcional):</label>
+                    <input type="text" id="doiChapter" placeholder="Ej: 10.1037/0000165-000">
+                </div>
+            </div>
+
+            <!-- Campos específicos para Artículo de Revista -->
+            <div id="journalArticleFields" class="space-y-4 hidden">
+                <div>
+                    <label for="journalAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales.:</label>
+                    <input type="text" id="journalAuthor" placeholder="Ej: Smith, J.; Doe, A.">
+                </div>
+                <div>
+                    <label for="journalYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="journalYear" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="journalArticleTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
+                    <input type="text" id="journalArticleTitle" placeholder="Ej: Impacto de la tecnología en la educación">
+                </div>
+                <div>
+                    <label for="journalName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Revista:</label>
+                    <input type="text" id="journalName" placeholder="Ej: Revista de Psicología Aplicada">
+                </div>
+                <div>
+                    <label for="journalVolume" class="block text-gray-700 text-sm font-semibold mb-2">Volumen (Opcional):</label>
+                    <input type="text" id="journalVolume" placeholder="Ej: 15">
+                </div>
+                <div>
+                    <label for="journalIssue" class="block text-gray-700 text-sm font-semibold mb-2">Número (si aplica) (Opcional):</label>
+                    <input type="text" id="journalIssue" placeholder="Ej: 3">
+                </div>
+                <div>
+                    <label for="journalPages" class="block text-gray-700 text-sm font-semibold mb-2">Páginas (Ej: 120-135) (Opcional):</label>
+                    <input type="text" id="journalPages" placeholder="Ej: 120-135">
+                </div>
+                <div>
+                    <label for="journalDoi" class="block text-gray-700 text-sm font-semibold mb-2">DOI (si aplica) (Opcional):</label>
+                    <input type="text" id="journalDoi" placeholder="Ej: 10.1037/a0034916">
+                </div>
+            </div>
+
+            <!-- Campos específicos para Artículo de Periódico (Impreso) -->
+            <div id="newspaperArticlePrintFields" class="space-y-4 hidden">
+                <div>
+                    <label for="newspaperAuthorPrint" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. (si disponible) (Opcional):</label>
+                    <input type="text" id="newspaperAuthorPrint" placeholder="Ej: López, A.">
+                </div>
+                <div>
+                    <label for="newspaperDatePrint" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (Año, Día Mes):</label>
+                    <input type="date" id="newspaperDatePrint">
+                </div>
+                <div>
+                    <label for="newspaperArticleTitlePrint" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
+                    <input type="text" id="newspaperArticleTitlePrint" placeholder="Ej: El futuro de la inteligencia artificial">
+                </div>
+                <div>
+                    <label for="newspaperNamePrint" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Periódico:</label>
+                    <input type="text" id="newspaperNamePrint" placeholder="Ej: La Nación">
+                </div>
+                <div>
+                    <label for="newspaperPagesPrint" class="block text-gray-700 text-sm font-semibold mb-2">Páginas (si aplica, Ej: A1, A4-A5) (Opcional):</label>
+                    <input type="text" id="newspaperPagesPrint" placeholder="Ej: A1, A4-A5">
                 </div>
             </div>
 
             <!-- Campos específicos para Tesis o Disertación -->
             <div id="thesisFields" class="space-y-4 hidden">
                 <div>
-                    <label for="thesisAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales.:</label>
-                    <input type="text" id="thesisAuthorName" placeholder="Ej: Pérez, A.">
+                    <label for="thesisAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales.:</label>
+                    <input type="text" id="thesisAuthor" placeholder="Ej: Rodríguez, L.">
                 </div>
                 <div>
-                    <label for="thesisPublicationYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="thesisPublicationYear" placeholder="Ej: 2022">
+                    <label for="thesisYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="thesisYear" placeholder="Ej: 2022">
                 </div>
                 <div>
                     <label for="thesisTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Tesis/Disertación:</label>
-                    <input type="text" id="thesisTitle" placeholder="Ej: Impacto del cambio climático en la flora patagónica">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <input type="text" id="thesisTitle" placeholder="Ej: Análisis de la resiliencia en adolescentes">
                 </div>
                 <div>
-                    <label for="thesisType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Tesis:</label>
-                    <select id="thesisType">
-                        <option value="Tesis de maestría no publicada">Tesis de maestría no publicada</option>
-                        <option value="Disertación doctoral no publicada">Disertación doctoral no publicada</option>
-                        <option value="Tesis de maestría">Tesis de maestría (publicada)</option>
-                        <option value="Disertación doctoral">Disertación doctoral (publicada)</option>
-                    </select>
+                    <label for="thesisType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Tesis (Ej: Tesis doctoral inédita, Disertación):</label>
+                    <input type="text" id="thesisType" placeholder="Ej: Tesis doctoral inédita">
                 </div>
                 <div>
-                    <label for="universityName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Universidad:</label>
-                    <input type="text" id="universityName" placeholder="Ej: Universidad Nacional de Cuyo">
+                    <label for="thesisUniversity" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de la Universidad:</label>
+                    <input type="text" id="thesisUniversity" placeholder="Ej: Universidad de Buenos Aires">
                 </div>
                 <div>
-                    <label for="thesisUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si es de un repositorio online):</label>
-                    <input type="url" id="thesisUrl" placeholder="Ej: https://repositorio.uncuyo.edu.ar/tesis/123">
+                    <label for="thesisDatabase" class="block text-gray-700 text-sm font-semibold mb-2">Base de Datos (Ej: ProQuest Dissertations & Theses Global) (Opcional):</label>
+                    <input type="text" id="thesisDatabase" placeholder="Ej: ProQuest Dissertations & Theses Global">
+                </div>
+                <div>
+                    <label for="thesisUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si aplica) (Opcional):</label>
+                    <input type="url" id="thesisUrl" placeholder="Ej: https://www.ejemplo.com/tesis">
                 </div>
             </div>
 
             <!-- Campos específicos para Informe -->
             <div id="reportFields" class="space-y-4 hidden">
                 <div>
-                    <label for="reportAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) / Organización (Apellido, Iniciales. o Nombre Completo de la Organización):</label>
-                    <input type="text" id="reportAuthorName" placeholder="Ej: Ministerio de Salud; Organización Mundial de la Salud">
+                    <label for="reportAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. / Nombre de Grupo:</label>
+                    <input type="text" id="reportAuthor" placeholder="Ej: Organización Mundial de la Salud; Smith, J.">
                 </div>
                 <div>
-                    <label for="reportPublicationYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
-                    <input type="number" id="reportPublicationYear" placeholder="Ej: 2024">
+                    <label for="reportYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación:</label>
+                    <input type="number" id="reportYear" placeholder="Ej: 2023">
                 </div>
                 <div>
-                    <label for="reportTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Informe:</label>
-                    <input type="text" id="reportTitle" placeholder="Ej: Informe anual de desarrollo sostenible">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <label for="reportTitle" class="block text-700 text-sm font-semibold mb-2">Título del Informe:</label>
+                    <input type="text" id="reportTitle" placeholder="Ej: Informe anual sobre la salud global">
                 </div>
                 <div>
-                    <label for="reportNumber" class="block text-gray-700 text-sm font-semibold mb-2">Número de Informe (opcional):</label>
+                    <label for="reportNumber" class="block text-gray-700 text-sm font-semibold mb-2">Número de Informe (si aplica) (Opcional):</label>
                     <input type="text" id="reportNumber" placeholder="Ej: No. 123">
                 </div>
                 <div>
-                    <label for="reportPublisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial / Organización que lo publica (si es diferente al autor):</label>
+                    <label for="reportPublisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial / Organización:</label>
                     <input type="text" id="reportPublisher" placeholder="Ej: Naciones Unidas">
                 </div>
                 <div>
-                    <label for="reportUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si es online):</label>
-                    <input type="url" id="reportUrl" placeholder="Ej: https://www.who.int/reports/123">
+                    <label for="reportUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si aplica) (Opcional):</label>
+                    <input type="url" id="reportUrl" placeholder="Ej: https://www.ejemplo.com/informe">
                 </div>
             </div>
 
             <!-- Campos específicos para Video -->
             <div id="videoFields" class="space-y-4 hidden">
                 <div>
-                    <label for="videoAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor / Canal (Nombre de usuario o Nombre del Canal):</label>
-                    <input type="text" id="videoAuthorName" placeholder="Ej: National Geographic; Esto Es Historia">
+                    <label for="videoAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor / Canal (Ej: TED; National Geographic) (Opcional):</label>
+                    <input type="text" id="videoAuthor" placeholder="Ej: TED; National Geographic">
                 </div>
                 <div>
-                    <label for="videoPublicationDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa, si disponible):</label>
-                    <input type="date" id="videoPublicationDate">
+                    <label for="videoDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (Año, Día Mes):</label>
+                    <input type="date" id="videoDate">
                 </div>
                 <div>
                     <label for="videoTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Video:</label>
-                    <input type="text" id="videoTitle" placeholder="Ej: La historia del Imperio Romano en 5 minutos">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <input type="text" id="videoTitle" placeholder="Ej: Por qué deberías hacer cosas inútiles">
                 </div>
                 <div>
-                    <label for="videoPlatform" class="block text-gray-700 text-sm font-semibold mb-2">Plataforma:</label>
-                    <input type="text" id="videoPlatform" placeholder="Ej: YouTube, Vimeo">
+                    <label for="videoPlatform" class="block text-gray-700 text-sm font-semibold mb-2">Plataforma (Ej: YouTube, Vimeo):</label>
+                    <input type="text" id="videoPlatform" placeholder="Ej: YouTube">
                 </div>
                 <div>
-                    <label for="videoUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL del Video:</label>
-                    <input type="url" id="videoUrl" placeholder="Ej: https://www.youtube.com/watch?v=abc123xyz">
+                    <label for="videoUrl" class="block text-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="videoUrl" placeholder="Ej: https://www.youtube.com/watch?v=ejemplo">
                 </div>
             </div>
 
             <!-- Campos específicos para Publicación de Red Social -->
             <div id="socialMediaFields" class="space-y-4 hidden">
                 <div>
-                    <label for="socialMediaAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor (Nombre real, si conocido):</label>
-                    <input type="text" id="socialMediaAuthorName" placeholder="Ej: Juan Pérez">
+                    <label for="socialMediaAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor / Nombre de Usuario (Ej: @APA_Style; American Psychological Association):</label>
+                    <input type="text" id="socialMediaAuthor" placeholder="Ej: @APA_Style; American Psychological Association">
                 </div>
                 <div>
-                    <label for="socialMediaUsername" class="block text-gray-700 text-sm font-semibold mb-2">Nombre de Usuario (@handle):</label>
-                    <input type="text" id="socialMediaUsername" placeholder="Ej: @JuanPerezHistoria">
+                    <label for="socialMediaDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (Año, Día Mes):</label>
+                    <input type="date" id="socialMediaDate">
                 </div>
                 <div>
-                    <label for="socialMediaPublicationDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (completa):</label>
-                    <input type="date" id="socialMediaPublicationDate">
+                    <label for="socialMediaContent" class="block text-gray-700 text-sm font-semibold mb-2">Contenido de la Publicación (primeras 20 palabras):</label>
+                    <input type="text" id="socialMediaContent" placeholder="Ej: ¡Nuevo manual APA ya disponible!">
                 </div>
                 <div>
-                    <label for="socialMediaContent" class="block text-gray-700 text-sm font-semibold mb-2">Contenido del Post (primeras 20 palabras):</label>
-                    <textarea id="socialMediaContent" rows="3" placeholder="Ej: 'Hoy exploramos la fascinante historia de la civilización maya y sus grandes avances...'"></textarea>
-                    <p class="text-gray-500 text-xs mt-1">El formato se ajustará automáticamente.</p>
-                </div>
-                <!-- Eliminado: Tipo de Publicación -->
-                <div>
-                    <label for="socialMediaPlatform" class="block text-gray-700 text-sm font-semibold mb-2">Plataforma:</label>
-                    <input type="text" id="socialMediaPlatform" placeholder="Ej: X, Facebook, Instagram">
+                    <label for="socialMediaType" class="block text-gray-700 text-sm font-semibold mb-2">Tipo de Publicación (Ej: [Tweet], [Actualización de estado de Facebook], [Imagen de Instagram]):</label>
+                    <input type="text" id="socialMediaType" placeholder="Ej: [Tweet]">
                 </div>
                 <div>
-                    <label for="socialMediaUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Publicación:</label>
-                    <input type="url" id="socialMediaUrl" placeholder="Ej: https://x.com/user/status/12345">
+                    <label for="socialMediaPlatform" class="block text-gray-700 text-sm font-semibold mb-2">Plataforma (Ej: Twitter, Facebook, Instagram):</label>
+                    <input type="text" id="socialMediaPlatform" placeholder="Ej: Twitter">
+                </div>
+                <div>
+                    <label for="socialMediaUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="socialMediaUrl" placeholder="Ej: https://twitter.com/ejemplo">
                 </div>
             </div>
 
             <!-- Campos específicos para Entrada de Diccionario/Enciclopedia Online -->
             <div id="dictionaryEntryFields" class="space-y-4 hidden">
                 <div>
-                    <label for="dictionaryAuthorName" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) (opcional, Apellido, Iniciales. o Nombre de la Organización):</label>
-                    <input type="text" id="dictionaryAuthorName" placeholder="Ej: Merriam-Webster; Smith, J.">
+                    <label for="dictAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor (si aplica, Ej: American Psychological Association; Merriam-Webster) (Opcional):</label>
+                    <input type="text" id="dictAuthor" placeholder="Ej: American Psychological Association">
                 </div>
                 <div>
-                    <label for="dictionaryPublicationYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación (opcional, o "s.f." si no hay fecha):</label>
-                    <input type="text" id="dictionaryPublicationYear" placeholder="Ej: 2023 o s.f.">
+                    <label for="dictEntryTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Entrada:</label>
+                    <input type="text" id="dictEntryTitle" placeholder="Ej: Empatía">
                 </div>
                 <div>
-                    <label for="dictionaryEntryTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Entrada:</label>
-                    <input type="text" id="dictionaryEntryTitle" placeholder="Ej: Civilización">
-                    <p class="text-gray-500 text-xs mt-1">Colocar nombres propios respetando mayúsculas y minúsculas.</p>
+                    <label for="dictName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Diccionario/Enciclopedia:</label>
+                    <input type="text" id="dictName" placeholder="Ej: APA Dictionary of Psychology">
                 </div>
                 <div>
-                    <label for="dictionaryName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Diccionario/Enciclopedia:</label>
-                    <input type="text" id="dictionaryName" placeholder="Ej: Wikipedia, Real Academia Española">
-                </div>
-                <div>
-                    <label for="dictionaryUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL de la Entrada:</label>
-                    <input type="url" id="dictionaryUrl" placeholder="Ej: https://dle.rae.es/civilizacion">
+                    <label for="dictUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="dictUrl" placeholder="Ej: https://dictionary.apa.org/empatia">
                 </div>
             </div>
 
-            <!-- El desplegable de Comunicación Personal ha sido eliminado -->
-
-            <!-- Botón para generar la cita -->
-            <button id="generateCitationBtn" class="generate-btn mt-6">
-                Generar Cita APA
-            </button>
-        </div>
-
-        <!-- Sección de salida de la cita -->
-        <div class="mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Cita Generada:</h2>
-            <div id="citationOutput" class="reference-output-box">
-                La cita aparecerá aquí.
+            <!-- Campos específicos para Artículo de Periódico (Online) -->
+            <div id="newspaperArticleOnlineFields" class="space-y-4 hidden">
+                <div>
+                    <label for="newspaperAuthorOnline" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. (si disponible) (Opcional):</label>
+                    <input type="text" id="newspaperAuthorOnline" placeholder="Ej: López, A.">
+                </div>
+                <div>
+                    <label for="newspaperDateOnline" class="block text-700 text-sm font-semibold mb-2">Fecha de Publicación (Año, Día Mes):</label>
+                    <input type="date" id="newspaperDateOnline">
+                </div>
+                <div>
+                    <label for="newspaperArticleTitleOnline" class="block text-gray-700 text-sm font-semibold mb-2">Título del Artículo:</label>
+                    <input type="text" id="newspaperArticleTitleOnline" placeholder="Ej: El futuro de la inteligencia artificial">
+                </div>
+                <div>
+                    <label for="newspaperNameOnline" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Periódico:</label>
+                    <input type="text" id="newspaperNameOnline" placeholder="Ej: La Nación">
+                </div>
+                <div>
+                    <label for="newspaperUrlOnline" class="block text-gray-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="newspaperUrlOnline" placeholder="Ej: https://www.lanacion.com.ar/nota">
+                </div>
             </div>
-            <button id="copyCitationBtn" class="copy-btn mt-4" style="display: none;">
-                Copiar Cita
-            </button>
-            <div id="messageBox"></div>
+
+            <!-- Campos específicos para Entrada de Blog -->
+            <div id="blogPostFields" class="space-y-4 hidden">
+                <div>
+                    <label for="blogAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor(es) - Apellido, Iniciales. / Nombre de Usuario (Opcional):</label>
+                    <input type="text" id="blogAuthor" placeholder="Ej: Smith, J.; Psicología al Día">
+                </div>
+                <div>
+                    <label for="blogDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Publicación (Año, Día Mes):</label>
+                    <input type="date" id="blogDate">
+                </div>
+                <div>
+                    <label for="blogPostTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título de la Entrada del Blog:</label>
+                    <input type="text" id="blogPostTitle" placeholder="Ej: 5 consejos para mejorar tu productividad">
+                </div>
+                <div>
+                    <label for="blogName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Blog:</label>
+                    <input type="text" id="blogName" placeholder="Ej: El Blog de Psicología">
+                </div>
+                <div>
+                    <label for="blogUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL:</label>
+                    <input type="url" id="blogUrl" placeholder="Ej: https://www.psicologiaaldia.com/blog/post">
+                </div>
+            </div>
+
+            <!-- Campos específicos para Software -->
+            <div id="softwareFields" class="space-y-4 hidden">
+                <div>
+                    <label for="softwareAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor / Desarrollador (Ej: Microsoft; IBM Corp.):</label>
+                    <input type="text" id="softwareAuthor" placeholder="Ej: Microsoft">
+                </div>
+                <div>
+                    <label for="softwareYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación/Versión:</label>
+                    <input type="number" id="softwareYear" placeholder="Ej: 2023">
+                </div>
+                <div>
+                    <label for="softwareTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Software:</label>
+                    <input type="text" id="softwareTitle" placeholder="Ej: SPSS Statistics">
+                </div>
+                <div>
+                    <label for="softwareVersion" class="block text-gray-700 text-sm font-semibold mb-2">Versión (Ej: 25.0) (Opcional):</label>
+                    <input type="text" id="softwareVersion" placeholder="Ej: 25.0">
+                </div>
+                <div>
+                    <label for="softwarePublisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial / Distribuidor:</label>
+                    <input type="text" id="softwarePublisher" placeholder="Ej: IBM Corp.">
+                </div>
+                <div>
+                    <label for="softwareUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si aplica) (Opcional):</label>
+                    <input type="url" id="softwareUrl" placeholder="Ej: https://www.ibm.com/spss">
+                </div>
+            </div>
+
+            <!-- Campos específicos para Conjunto de Datos -->
+            <div id="dataSetFields" class="space-y-4 hidden">
+                <div>
+                    <label for="dataSetAuthor" class="block text-gray-700 text-sm font-semibold mb-2">Autor / Creador (Ej: Pew Research Center):</label>
+                    <input type="text" id="dataSetAuthor" placeholder="Ej: Pew Research Center">
+                </div>
+                <div>
+                    <label for="dataSetYear" class="block text-gray-700 text-sm font-semibold mb-2">Año de Publicación/Colección (Ej: 2018; 2015-2019):</label>
+                    <input type="text" id="dataSetYear" placeholder="Ej: 2018 o 2015-2019">
+                </div>
+                <div>
+                    <label for="dataSetTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título del Conjunto de Datos:</label>
+                    <input type="text" id="dataSetTitle" placeholder="Ej: American Trends Panel Wave 26">
+                </div>
+                <div>
+                    <label for="dataSetVersion" class="block text-gray-700 text-sm font-semibold mb-2">Versión (si aplica, Ej: V1) (Opcional):</label>
+                    <input type="text" id="dataSetVersion" placeholder="Ej: V1">
+                </div>
+                <div>
+                    <label for="dataSetPublisher" class="block text-gray-700 text-sm font-semibold mb-2">Editorial / Archivo (Ej: ICPSR):</label>
+                    <input type="text" id="dataSetPublisher" placeholder="Ej: ICPSR">
+                </div>
+                <div>
+                    <label for="dataSetUrl" class="block text-gray-700 text-sm font-semibold mb-2">URL (si aplica) (Opcional):</label>
+                    <input type="url" id="dataSetUrl" placeholder="Ej: https://www.ejemplo.com/dataset">
+                </div>
+            </div>
+
+            <!-- Campos específicos para Entrevista (Comunicación Personal) -->
+            <div id="interviewFields" class="space-y-4 hidden">
+                <div>
+                    <label for="intervieweeName" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Entrevistado (Apellido, Iniciales.):</label>
+                    <input type="text" id="intervieweeName" placeholder="Ej: Smith, J.">
+                </div>
+                <div>
+                    <label for="interviewDate" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de la Entrevista (Año, Día Mes):</label>
+                    <input type="date" id="interviewDate">
+                </div>
+                <div>
+                    <label for="interviewTitle" class="block text-gray-700 text-sm font-semibold mb-2">Título/Descripción de la Entrevista (opcional) (Opcional):</label>
+                    <input type="text" id="interviewTitle" placeholder="Ej: Entrevista personal sobre experiencia laboral">
+                </div>
+                <div>
+                    <label for="interviewMedium" class="block text-gray-700 text-sm font-semibold mb-2">Medio (Ej: Comunicación personal; Grabación de audio):</label>
+                    <input type="text" id="interviewMedium" placeholder="Ej: Comunicación personal">
+                </div>
+                <div>
+                    <label for="interviewSource" class="block text-gray-700 text-sm font-semibold mb-2">Fuente (Ej: Universidad de X; Colección privada):</label>
+                    <input type="text" id="interviewSource" placeholder="Ej: Universidad de X">
+                </div>
+            </div>
+
+
+            <button id="generateCitationBtn" class="generate-btn mt-6 w-full py-3">Generar Cita</button>
+
+            <!-- Área de visualización de la cita -->
+            <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-inner">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Cita Generada:</h3>
+                <p id="citationOutput" class="reference-output-box text-gray-700 italic">La cita aparecerá aquí.</p>
+                <button id="copyCitationBtn" class="copy-btn mt-4 w-full py-2 hidden">Copiar Cita</button>
+                <div id="messageBox" class="mt-4"></div>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Referencias a los elementos del DOM
+            // Elementos del DOM
             const documentTypeFormalSelect = document.getElementById('documentTypeFormal');
             const documentTypeDigitalSelect = document.getElementById('documentTypeDigital');
-            // documentTypeNonRecoverableSelect ha sido eliminado
-
-            // Contenedores de campos específicos
             const commonFieldsDiv = document.getElementById('commonFields');
             const websiteFieldsDiv = document.getElementById('websiteFields');
             const bookFieldsDiv = document.getElementById('bookFields');
-            const journalArticleFieldsDiv = document.getElementById('journalArticleFields');
             const bookChapterFieldsDiv = document.getElementById('bookChapterFields');
+            const journalArticleFieldsDiv = document.getElementById('journalArticleFields');
+            const newspaperArticlePrintFieldsDiv = document.getElementById('newspaperArticlePrintFields');
             const thesisFieldsDiv = document.getElementById('thesisFields');
             const reportFieldsDiv = document.getElementById('reportFields');
             const videoFieldsDiv = document.getElementById('videoFields');
             const socialMediaFieldsDiv = document.getElementById('socialMediaFields');
             const dictionaryEntryFieldsDiv = document.getElementById('dictionaryEntryFields');
-            // personalCommunicationFieldsDiv ha sido eliminado
-
-            // Inputs comunes y específicos
-            const authorNameInput = document.getElementById('authorName');
-            const publicationDateWebsiteInput = document.getElementById('publicationDateWebsite');
-            const articleTitleInput = document.getElementById('articleTitle');
-            const websiteNameInput = document.getElementById('websiteName');
-            const pageUrlInput = document.getElementById('pageUrl');
-            const publicationYearBookInput = document.getElementById('publicationYearBook');
-            const bookTitleInput = document.getElementById('bookTitle');
-            const publisherInput = document.getElementById('publisher');
-            const isbnInput = document.getElementById('isbn');
-            const publicationYearJournalInput = document.getElementById('publicationYearJournal');
-            const journalArticleTitleInput = document.getElementById('journalArticleTitle');
-            const journalNameInput = document.getElementById('journalName');
-            const journalVolumeInput = document.getElementById('journalVolume');
-            const journalIssueInput = document.getElementById('journalIssue');
-            const pageRangeInput = document.getElementById('pageRange');
-            const doiInput = document.getElementById('doi');
-            const chapterAuthorNameInput = document.getElementById('chapterAuthorName');
-            const chapterPublicationYearInput = document.getElementById('chapterPublicationYear');
-            const chapterTitleInput = document.getElementById('chapterTitle');
-            const bookEditorNameInput = document.getElementById('bookEditorName');
-            const bookTitleChapterInput = document.getElementById('bookTitleChapter');
-            const chapterPageRangeInput = document.getElementById('chapterPageRange');
-            const publisherChapterInput = document.getElementById('publisherChapter');
-            const doiChapterInput = document.getElementById('doiChapter');
-            const thesisAuthorNameInput = document.getElementById('thesisAuthorName');
-            const thesisPublicationYearInput = document.getElementById('thesisPublicationYear');
-            const thesisTitleInput = document.getElementById('thesisTitle');
-            const thesisTypeSelect = document.getElementById('thesisType');
-            const universityNameInput = document.getElementById('universityName');
-            const thesisUrlInput = document.getElementById('thesisUrl');
-            const reportAuthorNameInput = document.getElementById('reportAuthorName');
-            const reportPublicationYearInput = document.getElementById('reportPublicationYear');
-            const reportTitleInput = document.getElementById('reportTitle');
-            const reportNumberInput = document.getElementById('reportNumber');
-            const reportPublisherInput = document.getElementById('reportPublisher');
-            const reportUrlInput = document.getElementById('reportUrl');
-            const videoAuthorNameInput = document.getElementById('videoAuthorName');
-            const videoPublicationDateInput = document.getElementById('videoPublicationDate');
-            const videoTitleInput = document.getElementById('videoTitle');
-            const videoPlatformInput = document.getElementById('videoPlatform');
-            const videoUrlInput = document.getElementById('videoUrl');
-            const socialMediaAuthorNameInput = document.getElementById('socialMediaAuthorName');
-            const socialMediaUsernameInput = document.getElementById('socialMediaUsername');
-            const socialMediaPublicationDateInput = document.getElementById('socialMediaPublicationDate');
-            const socialMediaContentInput = document.getElementById('socialMediaContent');
-            // socialMediaTypeSelect ha sido eliminado
-            const socialMediaPlatformInput = document.getElementById('socialMediaPlatform');
-            const socialMediaUrlInput = document.getElementById('socialMediaUrl');
-            const dictionaryAuthorNameInput = document.getElementById('dictionaryAuthorName');
-            const dictionaryPublicationYearInput = document.getElementById('dictionaryPublicationYear');
-            const dictionaryEntryTitleInput = document.getElementById('dictionaryEntryTitle');
-            const dictionaryNameInput = document.getElementById('dictionaryName');
-            const dictionaryUrlInput = document.getElementById('dictionaryUrl');
-            // pcAuthorNameInput y pcDateInput han sido eliminados
+            const newspaperArticleOnlineFieldsDiv = document.getElementById('newspaperArticleOnlineFields');
+            const blogPostFieldsDiv = document.getElementById('blogPostFields');
+            const softwareFieldsDiv = document.getElementById('softwareFields');
+            const dataSetFieldsDiv = document.getElementById('dataSetFields');
+            const interviewFieldsDiv = document.getElementById('interviewFields');
 
             const generateCitationBtn = document.getElementById('generateCitationBtn');
             const citationOutput = document.getElementById('citationOutput');
             const copyCitationBtn = document.getElementById('copyCitationBtn');
             const messageBox = document.getElementById('messageBox');
 
-            // Función para mostrar mensajes temporales al usuario
+            // Mapeo de tipos de documento a sus campos correspondientes
+            const fieldVisibilityMap = {
+                'website': [websiteFieldsDiv, commonFieldsDiv],
+                'book': [bookFieldsDiv], 
+                'bookChapter': [bookChapterFieldsDiv], 
+                'journalArticle': [journalArticleFieldsDiv], 
+                'newspaperArticlePrint': [newspaperArticlePrintFieldsDiv, commonFieldsDiv], 
+                'thesis': [thesisFieldsDiv], 
+                'report': [reportFieldsDiv], 
+                'video': [videoFieldsDiv], 
+                'socialMedia': [socialMediaFieldsDiv], 
+                'dictionaryEntry': [dictionaryEntryFieldsDiv], 
+                'newspaperArticleOnline': [newspaperArticleOnlineFieldsDiv, commonFieldsDiv], 
+                'blogPost': [blogPostFieldsDiv], 
+                'software': [softwareFieldsDiv], 
+                'dataSet': [dataSetFieldsDiv], 
+                'interview': [interviewFieldsDiv], 
+            };
+
+            // Función para mostrar mensajes
             function showMessage(message, type = 'info') {
                 messageBox.textContent = message;
-                messageBox.className = 'mt-4 p-3 rounded-md text-sm text-center'; // Resetear clases
+                messageBox.className = 'mt-4 p-3 rounded-md text-sm text-center'; // Reset classes
                 if (type === 'success') {
                     messageBox.classList.add('bg-green-100', 'text-green-800');
                 } else if (type === 'error') {
                     messageBox.classList.add('bg-red-100', 'text-red-800');
-                } else { // info
+                } else if (type === 'info') {
                     messageBox.classList.add('bg-blue-100', 'text-blue-800');
+                } else if (type === 'warning') { // New warning type
+                    messageBox.classList.add('bg-yellow-100', 'text-yellow-800');
                 }
                 messageBox.style.display = 'block';
 
@@ -684,95 +816,25 @@
                 messageBox.timeoutId = setTimeout(() => {
                     messageBox.style.display = 'none';
                     messageBox.timeoutId = null;
-                }, 3000);
+                }, 7000); // Increased timeout for warnings/info messages
             }
 
-            // Función para formatear una cadena de fecha a "Año, Día de Mes" o "s.f."
-            function formatDateForReference(dateString) {
-                if (!dateString) return 's.f.';
-                const date = new Date(dateString + 'T00:00:00');
-                if (isNaN(date.getTime())) return 's.f.';
-
-                const year = date.getFullYear();
-                const month = date.toLocaleDateString('es-ES', { month: 'long' });
-                const day = date.getDate();
-
-                return `${year}, ${day} de ${month}`;
+            // Función para capitalizar la primera letra de cada palabra (título de la fuente)
+            function toTitleCase(str) {
+                if (!str) return '';
+                return str.replace(/\w\S*/g, function(txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                });
             }
 
-            // Función para formatear un solo nombre de autor a "Apellido, I." o "Apellido"
-            function formatSingleAuthor(nameString) {
-                if (!nameString) return '';
+            // Función para capitalizar solo la primera letra de la primera palabra (título de la obra)
+            // y mantener la capitalización de nombres propios.
+            function toSentenceCase(str) {
+                if (!str) return '';
 
-                let cleanedName = nameString.trim();
-                let lastName = '';
-                let initialsParts = []; // To hold "J", "P"
-
-                // Si contiene una coma, asumimos "Apellido, Nombre(s)"
-                if (cleanedName.includes(',')) {
-                    const parts = cleanedName.split(',');
-                    lastName = parts[0].trim();
-                    const firstNames = parts.slice(1).join(' ').trim();
-                    initialsParts = firstNames.split(' ').filter(p => p.length > 0).map(part => part.charAt(0).toUpperCase());
-                } else {
-                    // Si no contiene coma, asumimos "Nombre(s) Apellido" o "Apellido"
-                    const parts = cleanedName.split(' ').filter(p => p.length > 0);
-                    if (parts.length > 1) {
-                        lastName = parts[parts.length - 1].trim(); // Última palabra es el apellido
-                        initialsParts = parts.slice(0, parts.length - 1).map(part => part.charAt(0).toUpperCase());
-                    } else {
-                        lastName = parts[0].trim(); // Si solo hay una palabra, es el apellido
-                    }
-                }
-                
-                // Asegurarse de que el apellido esté en minúsculas antes de capitalizar solo la primera letra
-                lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
-
-                let authorPart = lastName;
-                if (initialsParts.length > 0) {
-                    authorPart += `, ${initialsParts.join('.')}.`; // Add comma, initials joined by dot, and final dot
-                }
-                // No extra comma or dot if no initials.
-
-                return authorPart;
-            }
-
-            // Función para formatear múltiples autores para la lista de referencias
-            function formatAuthorsForReference(authorString) {
-                if (!authorString) return '';
-
-                const rawAuthors = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
-                const formattedIndividualAuthors = rawAuthors.map(name => formatSingleAuthor(name));
-                const numAuthors = formattedIndividualAuthors.length;
-
-                if (numAuthors === 0) {
-                    return '';
-                } else if (numAuthors === 1) {
-                    return formattedIndividualAuthors[0];
-                } else if (numAuthors <= 20) {
-                    const lastAuthor = formattedIndividualAuthors.pop();
-                    return formattedIndividualAuthors.join(', ') + ' & ' + lastAuthor;
-                } else {
-                    const first19Authors = formattedIndividualAuthors.slice(0, 19).join(', ');
-                    const lastAuthor = formattedIndividualAuthors[numAuthors - 1];
-                    return first19Authors + ', ...., & ' + lastAuthor;
-                }
-            }
-
-            // Función para formatear el título en "Sentence case" (primera letra mayúscula, resto minúscula, excepto nombres propios y después de dos puntos)
-            function formatTitleForSentenceCase(titleString) {
-                if (!titleString) return '';
-
-                const words = titleString.trim().split(/\s+/);
+                const words = str.trim().split(/\s+/);
                 const formattedWords = [];
-                let capitalizeNextWord = true; // Flag to capitalize the next word (start of title or after colon/period/etc.)
-
-                const minorWords = new Set([
-                    'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía', // preposiciones
-                    'y', 'e', 'ni', 'o', 'u', // conjunciones
-                    'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', // artículos
-                    'pero', 'mas', 'sino', 'aunque', 'porque', 'pues', 'si', 'cuando', 'como', 'donde', 'que' // other common conjunctions/adverbs
-                ]);
+                let capitalizeNextWord = true; // Indicador para capitalizar la siguiente palabra (inicio del título o después de dos puntos/punto/etc.)
 
                 for (let i = 0; i < words.length; i++) {
                     let word = words[i];
@@ -782,7 +844,7 @@
                     let trailingPunctuation = '';
                     let triggersNewCapitalization = false;
 
-                    // Separate trailing punctuation
+                    // Separar la puntuación final
                     const punctuationMatch = processedWord.match(/([.,:;?!])$/);
                     if (punctuationMatch) {
                         trailingPunctuation = punctuationMatch[1];
@@ -792,22 +854,19 @@
                         }
                     }
 
-                    // Apply capitalization rules
+                    // Aplicar reglas de capitalización
                     if (capitalizeNextWord) {
-                        // Always capitalize the first letter of the first word or after a sentence-ending punctuation/colon
+                        // Siempre capitalizar la primera letra de la primera palabra o después de un signo de puntuación que termina una oración/dos puntos
                         processedWord = processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
-                        capitalizeNextWord = false; // Reset for subsequent words
-                    } else if (minorWords.has(processedWord.toLowerCase())) {
-                        // Minor words are always lowercase (unless they were the very first word of the title/subtitle)
-                        processedWord = processedWord.toLowerCase();
+                        capitalizeNextWord = false; // Reiniciar para las palabras subsiguientes
                     } else {
-                        // For other words (non-minor, not start of new sentence/subtitle):
-                        // If the user capitalized it in Sentence Case (e.g., "Juan"), keep it.
-                        // Otherwise, convert to lowercase (e.g., "loco", "LOCO" -> "loco").
+                        // Para las palabras subsiguientes:
+                        // Si la palabra ya está capitalizada (ej. "Juan"), mantenerla tal cual (se asume nombre propio).
+                        // De lo contrario, convertir a minúsculas.
                         if (processedWord.charAt(0) === processedWord.charAt(0).toUpperCase() && processedWord.slice(1) === processedWord.slice(1).toLowerCase()) {
-                            // Keep as is (assumed proper noun or intentionally capitalized by user)
+                            // Mantener tal cual (se asume nombre propio o intencionalmente capitalizado por el usuario)
                         } else {
-                            processedWord = processedWord.toLowerCase(); // Convert to lowercase
+                            processedWord = processedWord.toLowerCase(); // Convertir a minúsculas
                         }
                     }
 
@@ -818,383 +877,622 @@
                 return formattedWords.join(' ');
             }
 
-            // Función para formatear texto en "Title Case" (cada palabra importante capitalizada)
-            function formatForTitleCase(textString) {
-                if (!textString) return '';
+            // Función auxiliar para formatear un solo nombre de autor a "Apellido, I."
+            // Esta versión busca preservar la capitalización del usuario para nombres propios
+            // mientras asegura el formato APA (Apellido, Iniciales.).
+            function formatSingleAuthor(nameString) {
+                if (!nameString) return '';
 
-                const minorWords = new Set([
-                    'a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía', // preposiciones
-                    'y', 'e', 'ni', 'o', 'u', // conjunciones
-                    'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', // artículos
-                    'pero', 'mas', 'sino', 'aunque', 'porque', 'pues', 'si', 'cuando', 'como', 'donde', 'que' // other common conjunctions/adverbs
-                ]);
+                let cleanedName = nameString.trim();
+                let lastName = '';
+                let firstNames = [];
 
-                return textString.split(/\s+/).map((word, index) => { // Split by one or more spaces
-                    if (word.length === 0) return '';
-                    let processedWord = word;
-
-                    // Handle all caps words: convert to Title Case
-                    if (processedWord === processedWord.toUpperCase() && processedWord.toLowerCase() !== processedWord) {
-                        return processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
-                    }
-                    // If it's the first word or not a minor word, capitalize the first letter
-                    else if (index === 0 || !minorWords.has(processedWord.toLowerCase())) {
-                        return processedWord.charAt(0).toUpperCase() + processedWord.slice(1).toLowerCase();
-                    }
-                    return processedWord.toLowerCase(); // Keep in lowercase if it's a minor word and not the first
-                }).join(' ');
-            }
-
-
-            // Función para obtener el tipo de documento seleccionado
-            function getSelectedDocumentType() {
-                if (documentTypeFormalSelect.value) return documentTypeFormalSelect.value;
-                if (documentTypeDigitalSelect.value) return documentTypeDigitalSelect.value;
-                return '';
-            }
-
-            // Función para limpiar todos los campos de entrada
-            function clearAllSpecificFields() {
-                authorNameInput.value = '';
-                publicationDateWebsiteInput.value = '';
-                articleTitleInput.value = '';
-                websiteNameInput.value = '';
-                pageUrlInput.value = '';
-                publicationYearBookInput.value = '';
-                bookTitleInput.value = '';
-                publisherInput.value = '';
-                isbnInput.value = '';
-                publicationYearJournalInput.value = '';
-                journalArticleTitleInput.value = '';
-                journalNameInput.value = '';
-                journalVolumeInput.value = '';
-                journalIssueInput.value = '';
-                pageRangeInput.value = '';
-                doiInput.value = '';
-                chapterAuthorNameInput.value = '';
-                chapterPublicationYearInput.value = '';
-                chapterTitleInput.value = '';
-                bookEditorNameInput.value = '';
-                bookTitleChapterInput.value = '';
-                chapterPageRangeInput.value = '';
-                publisherChapterInput.value = '';
-                doiChapterInput.value = '';
-                thesisAuthorNameInput.value = '';
-                thesisPublicationYearInput.value = '';
-                thesisTitleInput.value = '';
-                thesisTypeSelect.value = 'Tesis de maestría no publicada';
-                universityNameInput.value = '';
-                thesisUrlInput.value = '';
-                reportAuthorNameInput.value = '';
-                reportPublicationYearInput.value = '';
-                reportTitleInput.value = '';
-                reportNumberInput.value = '';
-                reportPublisherInput.value = '';
-                reportUrlInput.value = '';
-                videoAuthorNameInput.value = '';
-                videoPublicationDateInput.value = '';
-                videoTitleInput.value = '';
-                videoPlatformInput.value = '';
-                videoUrlInput.value = '';
-                socialMediaAuthorNameInput.value = '';
-                socialMediaUsernameInput.value = '';
-                socialMediaPublicationDateInput.value = '';
-                socialMediaContentInput.value = '';
-                // socialMediaTypeSelect ha sido eliminado
-                const socialMediaPlatformInput = document.getElementById('socialMediaPlatform');
-                const socialMediaUrlInput = document.getElementById('socialMediaUrl');
-                dictionaryAuthorNameInput.value = '';
-                dictionaryPublicationYearInput.value = '';
-                dictionaryEntryTitleInput.value = '';
-                dictionaryNameInput.value = '';
-                dictionaryUrlInput.value = '';
-            }
-
-            // Función para mostrar/ocultar campos según el tipo de documento seleccionado
-            function toggleFieldsVisibility() {
-                const selectedType = getSelectedDocumentType();
-
-                // Ocultar todos los campos específicos y el común de autor por defecto
-                commonFieldsDiv.classList.add('hidden');
-                websiteFieldsDiv.classList.add('hidden');
-                bookFieldsDiv.classList.add('hidden');
-                journalArticleFieldsDiv.classList.add('hidden');
-                bookChapterFieldsDiv.classList.add('hidden');
-                thesisFieldsDiv.classList.add('hidden');
-                reportFieldsDiv.classList.add('hidden');
-                videoFieldsDiv.classList.add('hidden');
-                socialMediaFieldsDiv.classList.add('hidden');
-                dictionaryEntryFieldsDiv.classList.add('hidden');
-
-                // Mostrar campos según el tipo seleccionado
-                if (selectedType === 'website') {
-                    commonFieldsDiv.classList.remove('hidden');
-                    websiteFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'book') {
-                    commonFieldsDiv.classList.remove('hidden');
-                    bookFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'journalArticle') {
-                    commonFieldsDiv.classList.remove('hidden');
-                    journalArticleFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'bookChapter') {
-                    bookChapterFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'thesis') {
-                    thesisFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'report') {
-                    reportFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'video') {
-                    videoFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'socialMedia') {
-                    socialMediaFieldsDiv.classList.remove('hidden');
-                } else if (selectedType === 'dictionaryEntry') {
-                    dictionaryEntryFieldsDiv.classList.remove('hidden');
+                // Caso 1: "Apellido, Nombre(s)" (formato de entrada preferido)
+                if (cleanedName.includes(',')) {
+                    const parts = cleanedName.split(',').map(p => p.trim());
+                    lastName = parts[0];
+                    firstNames = parts.slice(1).join(' ').trim().split(' ').filter(p => p.length > 0);
                 }
-                // El tipo 'personalCommunication' y sus campos han sido eliminados
+                // Caso 2: "Nombre(s) Apellido" (si no hay coma, asumir esta estructura)
+                else {
+                    const nameParts = cleanedName.split(' ').filter(p => p.length > 0);
+                    if (nameParts.length > 1) {
+                        // Asumir que la primera palabra es un nombre y el resto es el apellido.
+                        // Esta es una heurística que funciona mejor para apellidos compuestos como "De la Cruz".
+                        firstNames = [nameParts[0]]; // La primera palabra es el nombre
+                        lastName = nameParts.slice(1).join(' '); // El resto es el apellido
+                    } else {
+                        // Solo una palabra, asumir que es el apellido (sin nombre)
+                        lastName = nameParts[0];
+                        firstNames = [];
+                    }
+                }
+
+                // Capitalizar la primera letra de cada parte del apellido (ej. "de la cruz" -> "De la Cruz")
+                // Esto también preserva la capitalización del usuario si ingresó "De la Cruz" directamente.
+                lastName = lastName.split(' ').map((word, index) => {
+                    if (word.length === 0) return '';
+                    // Manejo especial para partículas comunes en minúscula en nombres compuestos si no son la primera palabra del apellido
+                    const lowercaseParticles = new Set(['de', 'del', 'la', 'las', 'los', 'y']);
+                    if (lowercaseParticles.has(word.toLowerCase()) && index !== 0) {
+                        return word.toLowerCase(); // Mantener las partículas en minúscula si no son la primera palabra del apellido
+                    }
+                    // FIX: Asegurar que el resto de la palabra esté en minúsculas para evitar mayúsculas completas como "GARCIA"
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                }).join(' ');
+
+                // Formatear iniciales (siempre en mayúscula y con un punto)
+                let formattedInitials = firstNames.map(part => part.charAt(0).toUpperCase() + '.').join('');
+
+                // Si hay iniciales, añadir una coma y un espacio antes de ellas
+                if (formattedInitials) {
+                    return `${lastName}, ${formattedInitials}`;
+                } else {
+                    return lastName; // Si no hay iniciales, solo devolver el apellido
+                }
             }
 
-            // Event listeners para los selectores de tipo de documento
-            documentTypeFormalSelect.addEventListener('change', () => {
-                documentTypeDigitalSelect.value = '';
-                clearAllSpecificFields();
-                toggleFieldsVisibility();
+            // Función para formatear autores (función principal)
+            // Devuelve la cadena de autores formateada, asegurando un único punto al final.
+            function formatAuthors(authorString, isEditor = false) {
+                if (!authorString) return '';
+
+                const rawAuthors = authorString.split(';').map(a => a.trim()).filter(a => a !== '');
+
+                if (rawAuthors.length === 0) return '';
+
+                let formattedIndividualAuthors = rawAuthors.map(author => formatSingleAuthor(author));
+
+                if (isEditor) {
+                    // Para editores, el estilo APA es (Inicial. Apellido) o (Inicial. Inicial. Apellido)
+                    // Necesitamos reordenar de "Apellido, Iniciales." a "Iniciales. Apellido"
+                    formattedIndividualAuthors = formattedIndividualAuthors.map(author => {
+                        const parts = author.split(', '); // Divide "Apellido, Iniciales."
+                        if (parts.length === 2 && parts[1].trim() !== '') { // Asegurarse de que haya iniciales
+                            return `${parts[1]} ${parts[0]}`; // Reordenar a "Iniciales. Apellido"
+                        }
+                        return parts[0]; // Si solo es Apellido (ej. autor grupal), solo devolver el nombre
+                    });
+                }
+
+                let finalAuthorString;
+                const numAuthors = formattedIndividualAuthors.length;
+
+                if (numAuthors === 1) {
+                    finalAuthorString = formattedIndividualAuthors[0];
+                } else if (numAuthors === 2) {
+                    finalAuthorString = `${formattedIndividualAuthors[0]} & ${formattedIndividualAuthors[1]}`;
+                } else if (numAuthors <= 20) { // APA 7ª ed. para 2-20 autores
+                    let lastAuthor = formattedIndividualAuthors.pop();
+                    finalAuthorString = `${formattedIndividualAuthors.join(', ')}, & ${lastAuthor}`;
+                } else { // APA 7ª ed. para 21+ autores
+                    const first19Authors = formattedIndividualAuthors.slice(0, 19).join(', ');
+                    const lastAuthor = formattedIndividualAuthors[numAuthors - 1];
+                    finalAuthorString = `${first19Authors}, ..., & ${lastAuthor}`;
+                }
+
+                // FIX: Asegurar que haya exactamente un punto al final del bloque de autores
+                if (!finalAuthorString.endsWith('.')) {
+                    finalAuthorString += '.';
+                }
+                return finalAuthorString;
+            }
+
+            // Función para capitalizar la primera letra de una frase
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            // Función para formatear fechas de publicación
+            function formatDate(dateInput) {
+                if (!dateInput) return 'n.d.'; // Sin fecha
+                const date = new Date(dateInput);
+                const year = date.getFullYear();
+                const month = date.toLocaleString('es-ES', { month: 'long' });
+                const day = date.getDate();
+                return `${year}, ${day} de ${month}`;
+            }
+
+            // Función para formatear la fecha de recuperación
+            function getRetrievalDate() {
+                const now = new Date();
+                const day = now.getDate();
+                const month = now.toLocaleString('es-ES', { month: 'long' });
+                const year = now.getFullYear();
+                return `${day} de ${month}, ${year}`;
+            }
+
+            // Función para ocultar todos los campos específicos
+            function hideAllFields() {
+                Object.values(fieldVisibilityMap).forEach(divs => {
+                    divs.forEach(div => div.classList.add('hidden'));
+                });
+                commonFieldsDiv.classList.add('hidden'); // Asegura que los campos comunes también se oculten
+            } // Removed the extra ')' here
+
+            // Event listener para los selectores de tipo de documento
+            documentTypeFormalSelect.addEventListener('change', (event) => {
+                hideAllFields();
+                documentTypeDigitalSelect.value = ''; // Resetea el otro selector
+                const selectedType = event.target.value;
+                if (fieldVisibilityMap[selectedType]) {
+                    fieldVisibilityMap[selectedType].forEach(div => div.classList.remove('hidden'));
+                }
+                citationOutput.textContent = 'La cita aparecerá aquí.';
+                copyCitationBtn.style.display = 'none';
             });
 
-            documentTypeDigitalSelect.addEventListener('change', () => {
-                documentTypeFormalSelect.value = '';
-                clearAllSpecificFields();
-                toggleFieldsVisibility();
+            documentTypeDigitalSelect.addEventListener('change', (event) => {
+                hideAllFields();
+                documentTypeFormalSelect.value = ''; // Resetea el otro selector
+                const selectedType = event.target.value;
+                if (fieldVisibilityMap[selectedType]) {
+                    fieldVisibilityMap[selectedType].forEach(div => div.classList.remove('hidden'));
+                }
+                citationOutput.textContent = 'La cita aparecerá aquí.';
+                copyCitationBtn.style.display = 'none';
             });
-
-            // Llamada inicial para configurar los campos al cargar la página
-            clearAllSpecificFields();
-            toggleFieldsVisibility();
 
             // Event listener para el botón de generar cita
             generateCitationBtn.addEventListener('click', () => {
-                const docType = getSelectedDocumentType();
                 let citation = '';
                 let isValid = true;
+                const selectedFormalType = documentTypeFormalSelect.value;
+                const selectedDigitalType = documentTypeDigitalSelect.value;
+                const docType = selectedFormalType || selectedDigitalType;
 
-                citationOutput.textContent = 'La cita aparecerá aquí.';
-                copyCitationBtn.style.display = 'none';
-                messageBox.style.display = 'none';
+                // Función auxiliar para obtener valor de input y limpiar espacios
+                const getValue = (id) => document.getElementById(id)?.value.trim();
+                // Función auxiliar para obtener el estado de un checkbox
+                const getChecked = (id) => document.getElementById(id)?.checked;
 
-                if (!docType) {
-                    showMessage('Por favor, selecciona un tipo de documento.', 'error');
-                    return;
-                }
+                switch (docType) {
+                    case 'website':
+                        const authorWebsite = getValue('authorName');
+                        const dateWebsite = getValue('publicationDateWebsite');
+                        const articleTitle = getValue('articleTitle');
+                        const websiteName = getValue('websiteName');
+                        const urlWebsite = getValue('urlWebsite');
 
-                // Define currentDate and formattedRetrievalDate once for all digital types
-                const currentDate = new Date();
-                const formattedRetrievalDate = currentDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-
-                // Lógica para generar la cita según el tipo de documento
-                if (docType === 'website') {
-                    const author = formatAuthorsForReference(authorNameInput.value.trim());
-                    const publicationDate = publicationDateWebsiteInput.value.trim();
-                    const articleTitle = formatTitleForSentenceCase(articleTitleInput.value.trim()); // Aplicar Sentence Case
-                    const websiteName = formatForTitleCase(websiteNameInput.value.trim()); // Aplicar Title Case
-                    const pageUrl = pageUrlInput.value.trim();
-
-                    if (!articleTitle || !websiteName || !pageUrl) {
-                        showMessage('Para Página Web: rellena el Título del Artículo, Nombre del Sitio Web y URL.', 'error');
-                        isValid = false;
-                    } else {
-                        const formattedPublicationDate = publicationDate ? `(${formatDateForReference(publicationDate)})` : '(s.f.)';
-                        
-                        // Eliminar el punto extra después del autor si ya lo tiene
-                        const authorSuffix = author.endsWith('.') ? '' : '.';
-                        if (author) {
-                            citation = `${author}${authorSuffix} (${formattedPublicationDate}). <i>${articleTitle}</i>. ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
-                        } else {
-                            citation = `<i>${articleTitle}</i>. (${formattedPublicationDate}). ${websiteName}. Recuperado ${formattedRetrievalDate}, de ${pageUrl}`;
+                        // Validaciones
+                        if (!articleTitle || !websiteName || !urlWebsite) {
+                            showMessage('Por favor, completa los campos obligatorios para Página Web: Título del Artículo, Nombre del Sitio Web, URL.', 'error');
+                            isValid = false;
+                            break;
                         }
-                    }
-                } else if (docType === 'book') {
-                    const author = formatAuthorsForReference(authorNameInput.value.trim());
-                    const year = publicationYearBookInput.value.trim();
-                    const bookTitle = formatTitleForSentenceCase(bookTitleInput.value.trim()); // Aplicar Sentence Case
-                    const publisher = formatForTitleCase(publisherInput.value.trim()); // Aplicar Title Case a la editorial
-                    const isbn = isbnInput.value.trim();
 
-                    if (!author || !year || !bookTitle || !publisher) {
-                        showMessage('Para Libro: rellena el Autor, Año de Publicación, Título del Libro y Editorial.', 'error');
-                        isValid = false;
-                    } else {
-                        // Eliminar el punto extra después del autor si ya lo tiene
-                        const authorSuffix = author.endsWith('.') ? '' : '.';
-                        citation = `${author}${authorSuffix} (${year}). <i>${bookTitle}</i>. ${publisher}.`;
-                        if (isbn) {
-                            citation += ` ISBN ${isbn}.`;
+                        const formattedAuthorWebsite = formatAuthors(authorWebsite);
+                        const authorPartWebsite = formattedAuthorWebsite ? `${formattedAuthorWebsite} ` : ''; 
+                        const formattedDateWebsite = dateWebsite ? `(${new Date(dateWebsite).getFullYear()})` : '(n.d.)';
+                        const retrievalDateWebsite = getRetrievalDate();
+
+                        citation = `${authorPartWebsite}${formattedDateWebsite}. ${toSentenceCase(articleTitle)}. <i>${toTitleCase(websiteName)}</i>. Recuperado el ${retrievalDateWebsite}, de ${urlWebsite}`;
+                        break;
+
+                    case 'book':
+                        const authorBook = getValue('authorNameBook'); 
+                        const editorBook = getValue('editorBook');     
+                        const isCompilationBookChecked = getChecked('isCompilationBook'); // Nuevo: checkbox
+                        const translatorNameBook = getValue('translatorNameBook'); // Nuevo: traductor
+                        const yearBook = getValue('publicationYearBook');
+                        const originalPublicationYearBook = getValue('originalPublicationYearBook'); // Nuevo: año original
+                        const bookTitle = getValue('bookTitle');
+                        const publisherBook = getValue('publisherBook');
+                        const doiBook = getValue('doiBook');
+
+                        // Validaciones
+                        if (!yearBook || !bookTitle || !publisherBook) {
+                            showMessage('Por favor, completa los campos obligatorios para Libro: Año de Publicación, Título del Libro, Editorial.', 'error');
+                            isValid = false;
+                            break;
                         }
-                    }
-                } else if (docType === 'journalArticle') {
-                    const author = formatAuthorsForReference(authorNameInput.value.trim());
-                    const year = publicationYearJournalInput.value.trim();
-                    const journalArticleTitle = formatTitleForSentenceCase(journalArticleTitleInput.value.trim()); // Aplicar Sentence Case
-                    const journalName = formatForTitleCase(journalNameInput.value.trim()); // Aplicar Title Case
-                    const journalVolume = journalVolumeInput.value.trim();
-                    const journalIssue = journalIssueInput.value.trim();
-                    const pageRange = pageRangeInput.value.trim();
-                    const doi = doiInput.value.trim();
 
-                    if (!author || !year || !journalArticleTitle || !journalName) {
-                        showMessage('Para Publicación o Artículo: rellena Autor, Año de Publicación, Título del Artículo y Nombre de la Publicación/Revista.', 'error');
-                        isValid = false;
-                    } else {
-                        let issuePart = journalIssue ? `(${journalIssue})` : '';
-                        let volumePart = journalVolume ? `<i>${journalVolume}</i>` : '';
-                        let pagesPart = pageRange ? `, ${pageRange}` : '';
-                        let doiUrl = '';
+                        let mainContributorPart = '';
+                        let translatorPart = '';
+                        let originalYearPart = '';
 
-                        if (doi) {
-                            let formattedDoi = doi.trim();
-                            if (!formattedDoi.startsWith('http://') && !formattedDoi.startsWith('https://')) {
-                                formattedDoi = `https://doi.org/${formattedDoi}`;
+                        // Lógica para el contribuyente principal (autor o editor)
+                        if (isCompilationBookChecked) {
+                            if (editorBook) {
+                                mainContributorPart = `${formatAuthors(editorBook, true)} `;
+                                if (authorBook) {
+                                    showMessage('Advertencia: Ha marcado "Es una recopilación de un editor". Si el editor es el responsable principal de la compilación, el campo "Autor(es) del Libro" debería estar vacío. La cita se generará con el editor como autor principal.', 'warning');
+                                }
+                            } else {
+                                showMessage('Error: Ha marcado "Es una recopilación de un editor" pero el campo "Editor(es) del Libro" está vacío. Por favor, ingrese el editor o desmarque la opción.', 'error');
+                                isValid = false;
+                                break;
                             }
-                            doiUrl = formattedDoi;
+                        } else { // No es una recopilación de un editor, prioriza el autor
+                            if (authorBook) {
+                                mainContributorPart = `${formatAuthors(authorBook)} `;
+                                if (editorBook) {
+                                    showMessage('Advertencia: Si el libro tiene un autor principal, el editor no se incluye en la referencia principal del libro según las normas APA. El campo "Editor(es) del Libro" será ignorado.', 'warning');
+                                }
+                            } else if (editorBook) {
+                                // Si no hay autor pero hay editor y no es una compilación explícita, usar editor pero advertir
+                                mainContributorPart = `${formatAuthors(editorBook, true)} `;
+                                showMessage('Advertencia: No se ha especificado un autor principal. La cita se generará con el editor como contribuyente principal. Si es un libro con autor, por favor, rellene el campo "Autor(es) del Libro".', 'warning');
+                            } else {
+                                showMessage('Error: Por favor, completa el Autor(es) del Libro o el Editor(es) del Libro.', 'error');
+                                isValid = false;
+                                break;
+                            }
                         }
 
-                        let journalDetails = `<i>${journalName}</i>`;
-                        if (volumePart) {
-                            journalDetails += `, ${volumePart}${issuePart}`;
-                        } else if (journalIssue) {
-                            journalDetails += `, ${issuePart}`;
+                        // Formato del traductor
+                        if (translatorNameBook) {
+                            const rawTranslators = translatorNameBook.split(';').map(t => t.trim()).filter(t => t !== '');
+                            let formattedTranslators = rawTranslators.map(translator => {
+                                const parts = formatSingleAuthor(translator).split(', ');
+                                if (parts.length === 2) {
+                                    return `${parts[1]} ${parts[0]}`; // Formato "Inicial. Apellido"
+                                }
+                                return parts[0]; // Si solo hay apellido
+                            }).join(', ');
+                            const numTranslators = rawTranslators.length;
+                            const translatorSuffix = numTranslators > 1 ? 'Trads.' : 'Trad.';
+                            translatorPart = ` (${formattedTranslators}, ${translatorSuffix})`;
                         }
-                        
-                        journalDetails += `${pagesPart}`;
-                        
-                        // Eliminar el punto extra después del autor si ya lo tiene
-                        const authorSuffix = author.endsWith('.') ? '' : '.';
-                        citation = `${author}${authorSuffix} (${year}). ${journalArticleTitle}. ${journalDetails}.`; 
-                        if (doiUrl) {
-                            citation += ` ${doiUrl}`;
+
+                        // Formato del año original
+                        if (originalPublicationYearBook) {
+                            originalYearPart = ` (Obra original publicada en ${originalPublicationYearBook})`;
                         }
-                    }
-                } else if (docType === 'bookChapter') {
-                    const chapterAuthor = formatAuthorsForReference(chapterAuthorNameInput.value.trim());
-                    const chapterYear = chapterPublicationYearInput.value.trim();
-                    const chapterTitle = formatTitleForSentenceCase(chapterTitleInput.value.trim()); // Aplicar Sentence Case
-                    const bookEditor = formatAuthorsForReference(bookEditorNameInput.value.trim());
-                    const bookTitle = formatTitleForSentenceCase(bookTitleChapterInput.value.trim()); // Aplicar Sentence Case
-                    const chapterPageRange = chapterPageRangeInput.value.trim();
-                    const publisherChapter = formatForTitleCase(publisherChapterInput.value.trim()); // Aplicar Title Case a la editorial
-                    const doiChapter = doiChapterInput.value.trim();
 
-                    if (!chapterAuthor || !chapterYear || !chapterTitle || !bookEditor || !bookTitle || !publisherChapter) {
-                        showMessage('Para Capítulo de Libro: rellena Autor del Capítulo, Año, Título del Capítulo, Editor(es) del Libro, Título del Libro y Editorial.', 'error');
-                        isValid = false;
-                    } else {
-                        let pagesPart = chapterPageRange ? `(pp. ${chapterPageRange})` : '';
-                        let doiPart = doiChapter ? ` ${doiChapter}` : '';
+                        let bookDoiPart = doiBook ? ` ${doiBook}` : '';
+
+                        citation = `${mainContributorPart}(${yearBook}). <i>${toSentenceCase(bookTitle)}</i>${translatorPart}. ${toTitleCase(publisherBook)}.${bookDoiPart}${originalYearPart}`;
+                        break;
+
+                    case 'bookChapter':
+                        const chapterAuthor = getValue('chapterAuthor');
+                        const chapterYear = getValue('chapterYear');
+                        const chapterTitle = getValue('chapterTitle');
+                        const editorName = getValue('editorName');
+                        const bookTitleChapter = getValue('bookTitleChapter');
+                        const pagesChapter = getValue('pagesChapter');
+                        const publisherChapter = getValue('publisherChapter');
+                        const doiChapter = getValue('doiChapter');
+
+                        // Validaciones
+                        if (!chapterAuthor || !chapterYear || !chapterTitle || !bookTitleChapter || !publisherChapter) {
+                            showMessage('Por favor, completa los campos obligatorios para Capítulo de Libro: Autor(es) del Capítulo, Año de Publicación del Capítulo, Título del Capítulo, Título del Libro, Editorial.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedChapterAuthor = formatAuthors(chapterAuthor);
+                        const authorPartChapter = formattedChapterAuthor ? `${formattedChapterAuthor} ` : ''; 
+                        const formattedEditorName = editorName ? formatAuthors(editorName, true) : ''; // Editor es opcional
+                        // Asegurarse de que el sufijo (Ed.) o (Eds.) se añada correctamente si hay editor
+                        const editorSuffixChapter = editorName && editorName.split(';').filter(e => e.trim() !== '').length > 1 ? '(Eds.)' : '(Ed.)';
+                        const editorPartChapter = formattedEditorName ? `En ${formattedEditorName.replace(/\.$/, '')} ${editorSuffixChapter}, ` : ''; // Eliminar el punto final de formatAuthors para añadir el sufijo
+                        const pagesPartChapter = pagesChapter ? `(pp. ${pagesChapter})` : '';
+                        let chapterDoiPart = doiChapter ? ` ${doiChapter}` : '';
+
+                        citation = `${authorPartChapter}(${chapterYear}). ${toSentenceCase(chapterTitle)}. ${editorPartChapter}<i>${toSentenceCase(bookTitleChapter)}</i> ${pagesPartChapter}. ${toTitleCase(publisherChapter)}.${chapterDoiPart}`;
+                        break;
+
+                    case 'journalArticle':
+                        const journalAuthor = getValue('journalAuthor');
+                        const journalYear = getValue('journalYear');
+                        const journalArticleTitle = getValue('journalArticleTitle');
+                        const journalName = getValue('journalName');
+                        const journalVolume = getValue('journalVolume');
+                        const journalIssue = getValue('journalIssue');
+                        const journalPages = getValue('journalPages');
+                        const journalDoi = getValue('journalDoi');
+
+                        // Validaciones: Volumen ahora es opcional
+                        if (!journalAuthor || !journalYear || !journalArticleTitle || !journalName) {
+                            showMessage('Por favor, completa los campos obligatorios para Artículo de Revista: Autor(es), Año de Publicación, Título del Artículo, Nombre de la Revista.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedJournalAuthor = formatAuthors(journalAuthor);
+                        const authorPartJournal = formattedJournalAuthor ? `${formattedJournalAuthor} ` : ''; 
+                        const volumePart = journalVolume ? `<i>${journalVolume}</i>` : ''; // Volumen es opcional
+                        const issuePart = journalIssue ? `(${journalIssue})` : '';
+                        const pagesPartJournal = journalPages ? `, ${journalPages}` : ''; // Páginas es opcional
+                        let journalDoiPart = journalDoi ? ` ${journalDoi}` : '';
+
+                        // Construcción de la cita para Artículo de Revista, ajustando para volumen opcional
+                        let journalInfo = '';
+                        if (volumePart && issuePart) {
+                            journalInfo = `${volumePart}${issuePart}`;
+                        } else if (volumePart) {
+                            journalInfo = volumePart;
+                        } else if (issuePart) {
+                             // Si solo hay número, APA 7th ed. dice que no se pone cursiva y se pone el número entre paréntesis
+                            journalInfo = `(${journalIssue})`;
+                        }
+
+                        citation = `${authorPartJournal}(${journalYear}). ${toSentenceCase(journalArticleTitle)}. <i>${toTitleCase(journalName)}</i>, ${journalInfo}${pagesPartJournal}.${journalDoiPart}`;
+                        break;
+
+                    case 'newspaperArticlePrint':
+                        const newspaperAuthorPrint = getValue('newspaperAuthorPrint');
+                        const newspaperDatePrint = getValue('newspaperDatePrint');
+                        const newspaperArticleTitlePrint = getValue('newspaperArticleTitlePrint');
+                        const newspaperNamePrint = getValue('newspaperNamePrint');
+                        const newspaperPagesPrint = getValue('newspaperPagesPrint');
+
+                        // Validaciones
+                        if (!newspaperDatePrint || !newspaperArticleTitlePrint || !newspaperNamePrint) {
+                            showMessage('Por favor, completa los campos obligatorios para Artículo de Periódico (Impreso): Fecha de Publicación, Título del Artículo, Nombre del Periódico.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedNewspaperAuthorPrint = newspaperAuthorPrint ? formatAuthors(newspaperAuthorPrint) : '';
+                        const authorPeriodPrint = formattedNewspaperAuthorPrint ? `${formattedNewspaperAuthorPrint} ` : ''; 
+                        const dateObjPrint = new Date(newspaperDatePrint);
+                        const formattedDatePrint = `(${dateObjPrint.getFullYear()}, ${dateObjPrint.toLocaleString('es-ES', { day: 'numeric', month: 'long' })})`;
+                        const pagesPartPrint = newspaperPagesPrint ? `, pp. ${newspaperPagesPrint}` : '';
+
+                        citation = `${authorPeriodPrint}${formattedDatePrint}. ${toSentenceCase(newspaperArticleTitlePrint)}. <i>${toTitleCase(newspaperNamePrint)}</i>${pagesPartPrint}.`;
+                        break;
+
+                    case 'thesis':
+                        const thesisAuthor = getValue('thesisAuthor');
+                        const thesisYear = getValue('thesisYear');
+                        const thesisTitle = getValue('thesisTitle');
+                        const thesisType = getValue('thesisType');
+                        const thesisUniversity = getValue('thesisUniversity');
+                        const thesisDatabase = getValue('thesisDatabase');
+                        const thesisUrl = getValue('thesisUrl');
+
+                        // Validaciones
+                        if (!thesisAuthor || !thesisYear || !thesisTitle || !thesisType || !thesisUniversity) {
+                            showMessage('Por favor, completa los campos obligatorios para Tesis o Disertación: Autor(es), Año de Publicación, Título de la Tesis/Disertación, Tipo de Tesis, Nombre de la Universidad.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedThesisAuthor = formatAuthors(thesisAuthor);
+                        const authorPartThesis = formattedThesisAuthor ? `${formattedThesisAuthor} ` : ''; 
+                        let thesisSource = `${toTitleCase(thesisUniversity)}.`;
+                        if (thesisDatabase) {
+                            thesisSource = `${toTitleCase(thesisDatabase)}.`;
+                        }
+                        if (thesisUrl) {
+                            thesisSource += ` ${thesisUrl}`;
+                        }
+
+                        citation = `${authorPartThesis}(${thesisYear}). <i>${toSentenceCase(thesisTitle)}</i> [${capitalizeFirstLetter(thesisType)}]. ${thesisSource}`;
+                        break;
+
+                    case 'report':
+                        const reportAuthor = getValue('reportAuthor');
+                        const reportYear = getValue('reportYear');
+                        const reportTitle = getValue('reportTitle');
+                        const reportNumber = getValue('reportNumber');
+                        const reportPublisher = getValue('reportPublisher');
+                        const reportUrl = getValue('reportUrl');
+
+                        // Validaciones
+                        if (!reportAuthor || !reportYear || !reportTitle || !reportPublisher) {
+                            showMessage('Por favor, completa los campos obligatorios para Informe: Autor(es), Año de Publicación, Título del Informe, Editorial / Organización.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedReportAuthor = formatAuthors(reportAuthor);
+                        const authorPartReport = formattedReportAuthor ? `${formattedReportAuthor} ` : ''; 
+                        const reportNumberPart = reportNumber ? ` (${reportNumber})` : '';
+                        let reportPublisherPart = toTitleCase(reportPublisher); 
+                        if (reportAuthor.toLowerCase() === reportPublisher.toLowerCase()) { 
+                            reportPublisherPart = '';
+                        } else {
+                            reportPublisherPart = `${reportPublisherPart}.`;
+                        }
+                        let reportUrlPart = reportUrl ? ` ${reportUrl}` : '';
+
+                        citation = `${authorPartReport}(${reportYear}). <i>${toSentenceCase(reportTitle)}</i>${reportNumberPart}. ${reportPublisherPart}${reportUrlPart}`;
+                        break;
+
+                    case 'video':
+                        const videoAuthor = getValue('videoAuthor');
+                        const videoDate = getValue('videoDate');
+                        const videoTitle = getValue('videoTitle');
+                        const videoPlatform = getValue('videoPlatform');
+                        const videoUrl = getValue('videoUrl');
+
+                        // Validaciones
+                        if (!videoDate || !videoTitle || !videoPlatform || !videoUrl) {
+                            showMessage('Por favor, completa los campos obligatorios para Video: Fecha de Publicación, Título del Video, Plataforma, URL.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedVideoAuthor = videoAuthor ? formatAuthors(videoAuthor) : '';
+                        const authorPartVideo = formattedVideoAuthor ? `${formattedVideoAuthor} ` : ''; 
+                        const dateObjVideo = new Date(videoDate);
+                        const formattedDateVideo = `(${dateObjVideo.getFullYear()}, ${dateObjVideo.toLocaleString('es-ES', { month: 'long', day: 'numeric' })})`;
+
+                        citation = `${authorPartVideo}${formattedDateVideo}. <i>${toSentenceCase(videoTitle)}</i> [Video]. ${toTitleCase(videoPlatform)}. ${videoUrl}`;
+                        break;
+
+                    case 'socialMedia':
+                        const socialMediaAuthor = getValue('socialMediaAuthor');
+                        const socialMediaDate = getValue('socialMediaDate');
+                        const socialMediaContent = getValue('socialMediaContent');
+                        const socialMediaType = getValue('socialMediaType');
+                        const socialMediaPlatform = getValue('socialMediaPlatform');
+                        const socialMediaUrl = getValue('socialMediaUrl');
+
+                        // Validaciones
+                        if (!socialMediaAuthor || !socialMediaDate || !socialMediaContent || !socialMediaType || !socialMediaPlatform || !socialMediaUrl) {
+                            showMessage('Por favor, completa todos los campos obligatorios para Publicación de Red Social: Autor / Nombre de Usuario, Fecha de Publicación, Contenido de la Publicación, Tipo de Publicación, Plataforma, URL.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedSocialMediaAuthor = socialMediaAuthor.startsWith('@') ? socialMediaAuthor : formatAuthors(socialMediaAuthor);
+                        const authorPartSocialMedia = formattedSocialMediaAuthor ? `${formattedSocialMediaAuthor} ` : ''; 
+                        const dateObjSocialMedia = new Date(socialMediaDate);
+                        const formattedDateSocialMedia = `(${dateObjSocialMedia.getFullYear()}, ${dateObjSocialMedia.toLocaleString('es-ES', { month: 'long', day: 'numeric' })})`;
+
+                        citation = `${authorPartSocialMedia}${formattedDateSocialMedia}. <i>${toSentenceCase(socialMediaContent)}</i> ${socialMediaType}. ${toTitleCase(socialMediaPlatform)}. ${socialMediaUrl}`;
+                        break;
+
+                    case 'dictionaryEntry':
+                        const dictAuthor = getValue('dictAuthor');
+                        const dictEntryTitle = getValue('dictEntryTitle');
+                        const dictName = getValue('dictName');
+                        const dictUrl = getValue('dictUrl');
+
+                        // Validaciones
+                        if (!dictEntryTitle || !dictName || !dictUrl) {
+                            showMessage('Por favor, completa los campos obligatorios para Entrada de Diccionario/Enciclopedia Online: Título de la Entrada, Nombre del Diccionario/Enciclopedia, URL.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const dictAuthorPart = dictAuthor ? `${formatAuthors(dictAuthor)} ` : ''; 
+                        const retrievalDateDict = getRetrievalDate();
+
+                        citation = `${dictAuthorPart}${toSentenceCase(dictEntryTitle)}. (n.d.). En <i>${toTitleCase(dictName)}</i>. Recuperado el ${retrievalDateDict}, de ${dictUrl}`;
+                        break;
+
+                    case 'newspaperArticleOnline':
+                        const newspaperAuthorOnline = getValue('newspaperAuthorOnline');
+                        const newspaperDateOnline = getValue('newspaperDateOnline');
+                        const newspaperArticleTitleOnline = getValue('newspaperArticleTitleOnline');
+                        const newspaperNameOnline = getValue('newspaperNameOnline');
+                        const newspaperUrlOnline = getValue('newspaperUrlOnline');
+
+                        // Validaciones
+                        if (!newspaperDateOnline || !newspaperArticleTitleOnline || !newspaperNameOnline || !newspaperUrlOnline) {
+                            showMessage('Por favor, completa los campos obligatorios para Artículo de Periódico (Online): Fecha de Publicación, Título del Artículo, Nombre del Periódico, URL.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedNewspaperAuthorOnline = newspaperAuthorOnline ? formatAuthors(newspaperAuthorOnline) : '';
+                        const authorPartOnline = formattedNewspaperAuthorOnline ? `${formattedNewspaperAuthorOnline} ` : ''; 
+                        const dateObjOnline = new Date(newspaperDateOnline);
+                        const formattedDateOnline = `(${dateObjOnline.getFullYear()}, ${dateObjOnline.toLocaleString('es-ES', { day: 'numeric', month: 'long' })})`;
+
+                        citation = `${authorPartOnline}${formattedDateOnline}. ${toSentenceCase(newspaperArticleTitleOnline)}. <i>${toTitleCase(newspaperNameOnline)}</i>. ${newspaperUrlOnline}`;
+                        break;
+
+                    case 'blogPost':
+                        const blogAuthor = getValue('blogAuthor');
+                        const blogDate = getValue('blogDate');
+                        const blogPostTitle = getValue('blogPostTitle');
+                        const blogName = getValue('blogName');
+                        const blogUrl = getValue('blogUrl');
+
+                        // Validaciones
+                        if (!blogDate || !blogPostTitle || !blogName || !blogUrl) {
+                            showMessage('Por favor, completa los campos obligatorios para Entrada de Blog: Fecha de Publicación, Título de la Entrada del Blog, Nombre del Blog, URL.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedBlogAuthor = blogAuthor ? formatAuthors(blogAuthor) : '';
+                        const authorPartBlog = formattedBlogAuthor ? `${formattedBlogAuthor} ` : ''; 
+                        const dateObjBlog = new Date(blogDate);
+                        const formattedDateBlog = `(${dateObjBlog.getFullYear()}, ${dateObjBlog.toLocaleString('es-ES', { day: 'numeric', month: 'long' })})`;
+
+                        citation = `${authorPartBlog}${formattedDateBlog}. ${toSentenceCase(blogPostTitle)}. <i>${toTitleCase(blogName)}</i>. ${blogUrl}`;
+                        break;
+
+                    case 'software':
+                        const softwareAuthor = getValue('softwareAuthor');
+                        const softwareYear = getValue('softwareYear');
+                        const softwareTitle = getValue('softwareTitle');
+                        const softwareVersion = getValue('softwareVersion');
+                        const softwarePublisher = getValue('softwarePublisher');
+                        const softwareUrl = getValue('softwareUrl');
+
+                        // Validaciones
+                        if (!softwareAuthor || !softwareYear || !softwareTitle || !softwarePublisher) {
+                            showMessage('Por favor, completa los campos obligatorios para Software: Autor / Desarrollador, Año de Publicación/Versión, Título del Software, Editorial / Distribuidor.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedSoftwareAuthor = formatAuthors(softwareAuthor);
+                        const authorPartSoftware = formattedSoftwareAuthor ? `${formattedSoftwareAuthor} ` : ''; 
+                        const softwareVersionPart = softwareVersion ? ` (Version ${softwareVersion})` : '';
+                        let softwarePublisherPart = toTitleCase(softwarePublisher); 
+                        if (softwareAuthor.toLowerCase() === softwarePublisher.toLowerCase()) { 
+                            softwarePublisherPart = '';
+                        } else {
+                            softwarePublisherPart = `${softwarePublisherPart}.`;
+                        }
+                        let softwareUrlPart = softwareUrl ? ` ${softwareUrl}` : '';
+
+                        citation = `${authorPartSoftware}(${softwareYear}). <i>${toSentenceCase(softwareTitle)}</i>${softwareVersionPart} [Computer software]. ${softwarePublisherPart}${softwareUrlPart}`;
+                        break;
+
+                    case 'dataSet':
+                        const dataSetAuthor = getValue('dataSetAuthor');
+                        const dataSetYear = getValue('dataSetYear');
+                        const dataSetTitle = getValue('dataSetTitle');
+                        const dataSetVersion = getValue('dataSetVersion');
+                        const dataSetPublisher = getValue('dataSetPublisher');
+                        const dataSetUrl = getValue('dataSetUrl');
+
+                        // Validaciones
+                        if (!dataSetAuthor || !dataSetYear || !dataSetTitle || !dataSetPublisher) {
+                            showMessage('Por favor, completa los campos obligatorios para Conjunto de Datos: Autor / Creador, Año de Publicación/Colección, Título del Conjunto de Datos, Editorial / Archivo.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedDataSetAuthor = formatAuthors(dataSetAuthor);
+                        const authorPartDataSet = formattedDataSetAuthor ? `${formattedDataSetAuthor} ` : ''; 
+                        const dataSetVersionPart = dataSetVersion ? ` (Version ${dataSetVersion})` : '';
+                        let dataSetPublisherPart = toTitleCase(dataSetPublisher); 
+                        if (dataSetAuthor.toLowerCase() === dataSetPublisher.toLowerCase()) { 
+                            dataSetPublisherPart = '';
+                        } else {
+                            dataSetPublisherPart = `${dataSetPublisherPart}.`;
+                        }
+                        let dataSetUrlPart = dataSetUrl ? ` ${dataSetUrl}` : '';
+
+                        citation = `${authorPartDataSet}(${dataSetYear}). <i>${toSentenceCase(dataSetTitle)}</i>${dataSetVersionPart} [Conjunto de datos]. ${dataSetPublisherPart}${dataSetUrlPart}`;
+                        break;
+
+                    case 'interview':
+                        const intervieweeName = getValue('intervieweeName');
+                        const interviewDate = getValue('interviewDate');
+                        const interviewTitle = getValue('interviewTitle');
+                        const interviewMedium = getValue('interviewMedium');
+                        const interviewSource = getValue('interviewSource');
+
+                        // Validaciones
+                        if (!intervieweeName || !interviewDate || !interviewMedium || !interviewSource) {
+                            showMessage('Por favor, completa los campos obligatorios para Entrevista: Nombre del Entrevistado, Fecha de la Entrevista, Medio, Fuente.', 'error');
+                            isValid = false;
+                            break;
+                        }
+
+                        const formattedIntervieweeName = formatAuthors(intervieweeName); 
+                        const authorPartInterview = formattedIntervieweeName ? `${formattedIntervieweeName} ` : ''; 
+                        const dateObjInterview = new Date(interviewDate);
+                        const formattedInterviewDate = `(${dateObjInterview.getFullYear()}, ${dateObjInterview.toLocaleString('es-ES', { day: 'numeric', month: 'long' })})`;
                         
-                        // Eliminar el punto extra después del autor del capítulo si ya lo tiene
-                        const chapterAuthorSuffix = chapterAuthor.endsWith('.') ? '' : '.';
-                        citation = `${chapterAuthor}${chapterAuthorSuffix} (${chapterYear}). ${chapterTitle}. En ${bookEditor} (Ed.${bookEditor.includes('&') ? 's' : ''}), <i>${bookTitle}</i> ${pagesPart}. ${publisherChapter}.${doiPart}`;
-                    }
-                } else if (docType === 'thesis') {
-                    const thesisAuthor = formatAuthorsForReference(thesisAuthorNameInput.value.trim());
-                    const thesisYear = thesisPublicationYearInput.value.trim();
-                    const thesisTitle = formatTitleForSentenceCase(thesisTitleInput.value.trim()); // Aplicar Sentence Case
-                    const thesisType = thesisTypeSelect.value.trim();
-                    const universityName = formatForTitleCase(universityNameInput.value.trim()); // Aplicar Title Case a la universidad
-                    const thesisUrl = thesisUrlInput.value.trim();
-
-                    if (!thesisAuthor || !thesisYear || !thesisTitle || !thesisType || !universityName) {
-                        showMessage('Para Tesis o Disertación: rellena Autor, Año, Título, Tipo de Tesis y Nombre de la Universidad.', 'error');
-                        isValid = false;
-                    } else {
-                        let urlPart = thesisUrl ? ` ${thesisUrl}` : '';
-                        // Eliminar el punto extra después del autor de la tesis si ya lo tiene
-                        const thesisAuthorSuffix = thesisAuthor.endsWith('.') ? '' : '.';
-                        citation = `${thesisAuthor}${thesisAuthorSuffix} (${thesisYear}). <i>${thesisTitle}</i> [${thesisType}, ${universityName}].${urlPart}`;
-                    }
-                } else if (docType === 'report') {
-                    const reportAuthor = formatAuthorsForReference(reportAuthorNameInput.value.trim()); // Aplicar formato de autor
-                    const reportYear = reportPublicationYearInput.value.trim();
-                    const reportTitle = formatTitleForSentenceCase(reportTitleInput.value.trim()); // Aplicar Sentence Case
-                    const reportNumber = reportNumberInput.value.trim();
-                    const reportPublisher = formatForTitleCase(reportPublisherInput.value.trim()); // Aplicar Title Case a la editorial
-                    const reportUrl = reportUrlInput.value.trim();
-
-                    if (!reportAuthor || !reportYear || !reportTitle) {
-                        showMessage('Para Informe: rellena Autor/Organización, Año de Publicación y Título del Informe.', 'error');
-                        isValid = false;
-                    } else {
-                        let numberPart = reportNumber ? ` (${reportNumber})` : '';
-                        let publisherPart = reportPublisher && reportPublisher !== reportAuthor ? `. ${reportPublisher}` : '';
-                        let urlPart = reportUrl ? ` ${reportUrl}` : '';
-
-                        // Eliminar el punto extra después del autor del informe si ya lo tiene
-                        const reportAuthorSuffix = reportAuthor.endsWith('.') ? '' : '.';
-                        citation = `${reportAuthor}${reportAuthorSuffix} (${reportYear}). <i>${reportTitle}</i>${numberPart}.${publisherPart}${urlPart}`;
-                    }
-                } else if (docType === 'video') {
-                    const videoAuthor = formatAuthorsForReference(videoAuthorNameInput.value.trim()); // Aplicar formato de autor
-                    const videoDate = videoPublicationDateInput.value.trim();
-                    const videoTitle = formatTitleForSentenceCase(videoTitleInput.value.trim()); // Aplicar Sentence Case
-                    const videoPlatform = formatForTitleCase(videoPlatformInput.value.trim()); // Aplicar Title Case
-                    const videoUrl = videoUrlInput.value.trim();
-
-                    if (!videoAuthor || !videoDate || !videoTitle || !videoPlatform || !videoUrl) {
-                        showMessage('Para Video: rellena Autor/Canal, Fecha de Publicación, Título del Video, Plataforma y URL.', 'error');
-                        isValid = false;
-                    } else {
-                        const formattedVideoDate = videoDate ? `(${formatDateForReference(videoDate)})` : '(s.f.)';
-                        // Eliminar el punto extra después del autor del video si ya lo tiene
-                        const videoAuthorSuffix = videoAuthor.endsWith('.') ? '' : '.';
-                        citation = `${videoAuthor}${videoAuthorSuffix} ${formattedVideoDate}. <i>${videoTitle}</i> [Video]. ${videoPlatform}. Recuperado ${formattedRetrievalDate}, de ${videoUrl}`;
-                    }
-                } else if (docType === 'socialMedia') {
-                    const smAuthorName = formatAuthorsForReference(socialMediaAuthorNameInput.value.trim()); // Aplicar formato de autor
-                    const smUsername = socialMediaUsernameInput.value.trim();
-                    const smDate = socialMediaPublicationDateInput.value.trim();
-                    let smContent = socialMediaContentInput.value.trim(); // Make it mutable
-                    const smPlatform = formatForTitleCase(socialMediaPlatformInput.value.trim()); // Aplicar Title Case
-                    const smUrl = socialMediaUrlInput.value.trim();
-
-                    if (!smAuthorName || !smUsername || !smDate || !smContent || !smPlatform || !smUrl) {
-                        showMessage('Para Publicación de Red Social: rellena Autor, Nombre de Usuario, Fecha, Contenido, Plataforma y URL.', 'error');
-                        isValid = false;
-                    } else {
-                        // Step 1: Remove URLs
-                        smContent = smContent.replace(/(https?:\/\/[^\s]+)/g, '');
-
-                        // Step 2: Remove Hashtags
-                        smContent = smContent.replace(/#(\w+)/g, '');
-
-                        // Step 3: Remove Emojis (using a broad Unicode range for common emojis)
-                        // This regex targets various emoji blocks.
-                        smContent = smContent.replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, '');
+                        let interviewTitlePart = interviewTitle ? `<i>${toSentenceCase(interviewTitle)}</i>` : '';
                         
-                        // Remove any extra spaces that might result from removals
-                        smContent = smContent.replace(/\s+/g, ' ').trim();
-
-                        const formattedSmDate = smDate ? `(${formatDateForReference(smDate)})` : '(s.f.)';
-                        const contentSnippet = formatTitleForSentenceCase(smContent.split(/\s+/).slice(0, 20).join(' ')); // Aplicar Sentence Case al snippet
-                        const contentFormatted = contentSnippet.length > 0 ? `"${contentSnippet}"` : '';
+                        const titleSuffix = interviewTitlePart.endsWith('.') ? '' : '.';
                         
-                        // The citation now includes "[Publicación]" as the type
-                        // smAuthorName already has the dot if needed, and the dot after username is part of APA format
-                        citation = `${smAuthorName} [${smUsername}]. ${formattedSmDate}. ${contentFormatted} [Publicación]. ${smPlatform}. Recuperado ${formattedRetrievalDate}, de ${smUrl}`;
-                    }
-                } else if (docType === 'dictionaryEntry') {
-                    const dictAuthor = formatAuthorsForReference(dictionaryAuthorNameInput.value.trim()); // Aplicar formato de autor
-                    const dictYear = dictionaryPublicationYearInput.value.trim();
-                    const dictEntryTitle = formatTitleForSentenceCase(dictionaryEntryTitleInput.value.trim()); // Aplicar Sentence Case
-                    const dictName = formatForTitleCase(dictionaryNameInput.value.trim()); // Aplicar Title Case
-                    const dictUrl = dictionaryUrlInput.value.trim();
+                        if (interviewMedium.toLowerCase() === 'comunicación personal') {
+                            citation = `${authorPartInterview}${formattedInterviewDate}. ${interviewTitlePart} [Comunicación personal].`;
+                        } else {
+                            citation = `${authorPartInterview}${formattedInterviewDate}. ${interviewTitlePart}${titleSuffix} [${capitalizeFirstLetter(interviewMedium)}]. ${toTitleCase(interviewSource)}.`; 
+                        }
+                        break;
 
-                    if (!dictEntryTitle || !dictName || !dictUrl) {
-                        showMessage('Para Entrada de Diccionario/Enciclopedia Online: rellena Título de la Entrada, Nombre del Diccionario/Enciclopedia y URL.', 'error');
+                    default:
+                        showMessage('Selecciona un tipo de documento para generar la cita.', 'error');
                         isValid = false;
-                    } else {
-                        const yearPart = dictYear ? `(${dictYear})` : '(s.f.)';
-                        // Eliminar el punto extra después del autor si ya lo tiene
-                        let authorPart = dictAuthor ? `${dictAuthor}${dictAuthor.endsWith('.') ? '' : '.'} ` : '';
-                        
-                        citation = `${authorPart}${yearPart}. ${dictEntryTitle}. En <i>${dictName}</i>. Recuperado ${formattedRetrievalDate}, de ${dictUrl}`;
-                    }
+                        break;
                 }
 
                 if (!isValid) {
